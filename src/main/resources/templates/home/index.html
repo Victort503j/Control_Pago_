@@ -1,0 +1,101 @@
+<html lang="es"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+<head>
+    <style>
+        .containerBorder {
+            border-radius: 7px;
+            border: 1px solid #DFDFDF;
+            margin-top: 2rem;
+            padding: 1rem;
+            margin-left: .5rem;
+            margin-right: .5rem;
+            padding-bottom: 14rem;
+        }
+        .textWelcome {
+            margin-left: 1rem;
+            font-weight:bold;
+        }
+        .line {
+            margin: 0;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            border: 0;
+            height: 1px;
+            background-color: #807E7E;
+        }
+        .card-container {
+            display: flex;
+            gap: 70px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .card {
+            width: 210px;
+            height: 210px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: none;
+        }
+        .card .icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        .card span {
+            font-weight: bold;
+        }
+         .card-link {
+            display: flex;
+            width: 210px;
+            height: 210px;
+            text-decoration: none;
+        }
+        .alumnos {
+            background-color: #FBA7A7;
+        }
+        .pago {
+            background-color: #FFE86D;
+        }
+        .reporte {
+            background-color: #76D1C8;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="containerBorder">
+        <h1 class="textWelcome">¡Bienvenido!</h1>
+        <hr class="line" />
+        <div class="card-container">
+            <a href="/alumnos" class="card-link">
+            <div class="card alumnos">
+                <i class="fas fa-user-graduate icon"></i>
+                <span>ALUMNOS</span>
+            </div>
+            </a>
+            <a href="/pago" class="card-link">
+            <div class="card pago">
+                <i class="fas fa-dollar-sign icon"></i>
+                <span>PAGO</span>
+            </div>
+            </a>
+            <a href="/reporte" class="card-link">
+            <div class="card reporte">
+                <i class="fas fa-chart-line icon"></i>
+                <span>REPORTE</span>
+            </div>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Crear Nuevo Grado</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <h1>Crear Nuevo Grado</h1>
+    <form th:action="@{/grados/save}" th:object="${grado}" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del grado" required/>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/grados}" class="btn btn-secondary">Regresar</a>
+    </form>
+</div>
+</body>
+
+</html>
