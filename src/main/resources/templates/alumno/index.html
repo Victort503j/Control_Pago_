@@ -31,25 +31,19 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Rol</th>
-            <th>Grado</th>
-            <th>Usuario</th>
             <th>Nombre</th>
             <th>Apellido</th>
+            <th>Grado</th>
             <th>Mensualidad</th>
-            <th>Fecha</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="item : ${alumnos}">
             <td th:text="${item.id}"></td>
             <td th:text="${item.nombre}"></td>
-            <td th:text="${item.rol.nombre}"></td>
-            <td th:text="${item.usuario.nombre}"></td>
-            <td th:text="${item.nombre}"></td>
             <td th:text="${item.apellido}"></td>
-            <td th:text="${item.mensualidad}"></td>
-            <td th:text="${item.fecha}"></td>
+            <td th:text="${item.grado.nombre}"></td>
+            <td th:text="'$30'"></td>
             <td>
                 <a th:href="@{/alumnos/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">Detalles</a>
                 <a th:href="@{/alumnos/edit/{id}(id=${item.id})}" class="btn btn-outline-info">Editar</a>

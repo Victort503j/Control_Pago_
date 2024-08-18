@@ -1,21 +1,23 @@
 package com.controlpago.modelos;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-
+import java.util.List;
 
 @Entity
-@Table(name = "grados")
+@Table(name = "grado")
 public class Grado {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "El nombre es requerido")
-    @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    // Getter and setter for id
+    @OneToMany(mappedBy = "grado", cascade = CascadeType.ALL)
+    private List<Alumno> alumnos;
+
+    // Getters y setters
+
     public Integer getId() {
         return id;
     }
@@ -24,12 +26,19 @@ public class Grado {
         this.id = id;
     }
 
-    // Getter and setter for nombre
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<Alumno> getAlumnos() {
+        return alumnos;
+    }
+
+    public void setAlumnos(List<Alumno> alumnos) {
+        this.alumnos = alumnos;
     }
 }
