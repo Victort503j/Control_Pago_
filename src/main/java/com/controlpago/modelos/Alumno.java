@@ -1,12 +1,10 @@
 package com.controlpago.modelos;
 
-import groovy.lang.Grab;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "alumnos")
@@ -20,9 +18,7 @@ public class Alumno {
     @JoinColumn(name = "id_grado", nullable = false)
     private Grado grado;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+
 
     @NotBlank(message = "El nombre es requerido")
     @Column(name = "nombre", nullable = false)
@@ -61,13 +57,7 @@ public class Alumno {
         this.grado = grado;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 
     public String getNombre() {
         return nombre;
@@ -108,7 +98,6 @@ public class Alumno {
     public Alumno(Grado grado, Usuario usuario, String nombre, String apellido, String correoElectronico, String clave, BigDecimal mensualidad, Date fecha) {
 
         this.grado = grado;
-        this.usuario = usuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.mensualidad = mensualidad;

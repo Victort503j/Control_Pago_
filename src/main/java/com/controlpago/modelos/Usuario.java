@@ -2,28 +2,30 @@ package com.controlpago.modelos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "El nombre es requerido")
-    @Column(name = "nombre", nullable = false)
-    private String nombre;
-
-    @NotBlank(message = "El correo electrónico es requerido")
-    @Column(name = "correo_electronico", nullable = false, unique = true)
-    private String correoElectronico;
+    @NotBlank(message = "El login es requerido")
+    private String login;
 
     @NotBlank(message = "La clave es requerida")
-    @Column(name = "clave", nullable = false)
     private String clave;
 
-    // Getters y Setters
+    private int status;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "usuario_rol",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id"))
+    private List<Rol> roles;
+
     public Integer getId() {
         return id;
     }
@@ -32,37 +34,42 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public @NotBlank(message = "El login es requerido") String getLogin() {
+        return login;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setLogin(@NotBlank(message = "El login es requerido") String login) {
+        this.login = login;
     }
 
-    public String getCorreoElectronico() {
-        return correoElectronico;
-    }
-
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
-    }
-
-    public String getClave() {
+    public @NotBlank(message = "La clave es requerida") String getClave() {
         return clave;
     }
 
-    public void setClave(String clave) {
+    public void setClave(@NotBlank(message = "La clave es requerida") String clave) {
         this.clave = clave;
     }
 
-    // Constructor por defecto
-    public Usuario() {}
+    public int getStatus() {
+        return status;
+    }
 
-    // Constructor con parámetros
-    public Usuario(String nombre, String correoElectronico, String clave) {
-        this.nombre = nombre;
-        this.correoElectronico = correoElectronico;
-        this.clave = clave;
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public List<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
+    }
+
+    public void agregar(Rol tempRol) {
+        if (roles == null) {
+            roles = new LinkedList<>();
+        }
+        roles.add(tempRol);
     }
 }

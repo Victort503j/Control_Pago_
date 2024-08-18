@@ -42,4 +42,5 @@ public class AlumnoController {
         return "alumno/index";
     }
 
+
 }

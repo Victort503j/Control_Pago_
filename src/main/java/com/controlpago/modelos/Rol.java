@@ -6,16 +6,13 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table(name = "roles")
 public class Rol {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotBlank(message = "El nombre es requerido")
-    @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    // Getters y Setters
     public Integer getId() {
         return id;
     }
@@ -24,19 +21,11 @@ public class Rol {
         this.id = id;
     }
 
-    public String getNombre() {
+    public @NotBlank(message = "El nombre es requerido") String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    // Constructor por defecto
-    public Rol() {}
-
-    // Constructor con parámetros
-    public Rol(String nombre) {
+    public void setNombre(@NotBlank(message = "El nombre es requerido") String nombre) {
         this.nombre = nombre;
     }
 }
