@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Crear Nuevo Pago</title>
+    <!-- Include Bootstrap CSS here if not already included in the layout -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function actualizarCantidadPagar() {
+            const mensualidad = parseFloat(document.getElementById('mensualidad').value) || 0;
+            document.getElementById('cantidadPagar').value = mensualidad;
+        }
+
+        window.onload = function() {
+            document.getElementById('mensualidad').value = 50;
+            actualizarCantidadPagar();
+        };
+    </script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <h1>Crear Nuevo Pago</h1>
+    <form th:action="@{/pagos/save}" th:object="${pago}" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="alumno">Alumno</label>
+                    <select class="form-control" data-control="select2" th:field="*{alumno}" id="alumno" required>
+                        <option value="">Seleccione un alumno</option>
+                        <option th:each="alumno : ${alumnos}" th:value="${alumno.id}" th:text="${alumno.nombre + ' ' + alumno.apellido}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="mensualidad">Mensualidad:</label>
+                    <input type="number" id="mensualidad" th:field="*{mensualidad}" class="form-control" oninput="actualizarCantidadPagar()">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" th:field="*{fecha}" class="form-control" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cantidadPagar">Cantidad a Pagar:</label>
+                    <input type="text" id="cantidadPagar" th:field="*{cantidadPagar}" class="form-control" required readonly>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="comentario">Comentario:</label>
+                    <textarea id="comentario" th:field="*{comentario}" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/pagos}" class="btn btn-secondary">Regresar</a>
+    </form>
+</div>
+</body>
+</html>

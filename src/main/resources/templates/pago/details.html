@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Pago</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .page-header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .content-container {
+            margin: 20px;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary-custom {
+            background-color: #00AB99;
+            color: #fff;
+            border: none;
+        }
+        .btn-secondary-custom:hover {
+            background-color: #00796b;
+        }
+        .table-header {
+            background-color: #29867C;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="page-header">
+        <h1 class="text-center">Detalles del Pago</h1>
+    </div>
+    <div class="content-container">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" class="form-control" th:value="${pago.alumno.nombre}" readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="apellido">Apellido</label>
+                        <input type="text" id="apellido" class="form-control" th:value="${pago.alumno.apellido}" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table">
+                                <thead class="table-header">
+                                <tr>
+                                    <th>Meses Pagados</th>
+                                    <th>Comentario</th>
+                                    <th>Cantidad a Pagar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="pago : ${pagosDelAlumno}">
+                                    <td th:text="${pago.fecha}"></td>
+                                    <td th:text="${pago.comentario}"></td>
+                                    <td th:text="${pago.cantidadPagar}"></td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+
+                                </tfoot>
+                            </table>
+
+                                <div  class="text-left font-weight-bold">
+                                    Total Pagado: <span th:text="${totalPagado}"></span>
+                                </div>
+                        </div>
+                        <div style="margin: 15px" class="text-right">
+                            <a th:href="@{/pagos}" class="btn btn-secondary-custom font-weight-bold">Regresar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

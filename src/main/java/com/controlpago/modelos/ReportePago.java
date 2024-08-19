@@ -1,4 +1,4 @@
 package com.controlpago.modelos;
 
-public class Reporte {
+public class ReportePago {
 }
