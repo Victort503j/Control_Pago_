@@ -26,17 +26,17 @@
         .logo-container {
             display: flex;
             flex-direction: column;
-            margin-top: 100px;
-            margin-left: 20px;
+            margin-top: 180px;
+            margin-left: 7px;
             align-items: center;
             margin-bottom: 20px;
             text-align: center;
         }
         .logo {
-            width: 50px;
-            height: 50px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         .title {
             color: white;
@@ -45,29 +45,34 @@
         .sb-sidenav-menu {
             margin-top: 20px;
         }
+        .nav-link {
+            color: #fff;
 
-.nav-link {
-    position: relative;
-    color: white;
-    padding: 5px 10px;
-    text-decoration: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.nav-link:hover {
-    background-color: white;
-    color: #29867C;
-    width: 80%;
-    border-radius: 0 5px 5px 0;
-}
-
-.nav-link:hover::before {
-    background-color: white;
-    transition: background-color 0.3s ease;
-}
-
-
-
+        }
+        .nav-link:hover {
+            background-color: #fff;
+            color: #29867C;
+            text-decoration: none;
+            border-radius: 0 10px 10px 0;
+            font-weight: bold;
+        }
+         .dropdown-menu .dropdown-item {
+            color: #000;
+        }
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #1c6d6c;
+            color: #ffffff;
+        }
+        .sb-sidenav {
+            padding-right: 15px;
+            overflow: hidden;
+        }
+        .nav {
+             margin-top: 70px;
+        }
+        .sb-nav-link-icon {
+             margin-left: 6px;
+        }
     </style>
 </head>
 <body>
@@ -80,7 +85,6 @@
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
-    <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
@@ -98,30 +102,30 @@
 </nav>
 <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <nav class="sb-sidenav accordion" style="background: #29867C" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading"></div>
                     <div sec:authorize="hasAnyAuthority('secretaria', 'Secretaria')">
                         <a class="nav-link" th:href="@{/}">
                             <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-                            Inicio
+                           Inicio
                         </a>
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
-                        </a>
-                        <a class="nav-link" th:href="@{/grados}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
-                            Grados
+                            <span class="nav-text">Dashboard</span>
                         </a>
                         <a class="nav-link" th:href="@{/alumnos}">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
                             Alumnos
                         </a>
+                        <a class="nav-link" th:href="@{/grados}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                            Grados
+                        </a>
                         <a class="nav-link" th:href="@{/pagos}">
                             <div class="sb-nav-link-icon"><i class="fas fa-credit-card"></i></div>
-                            Pago
+                            Pagos
                         </a>
                     </div>
                 </div>
