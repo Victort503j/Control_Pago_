@@ -73,6 +73,12 @@
         .sb-nav-link-icon {
              margin-left: 6px;
         }
+        @media (max-width: 768px) {
+             .logo-container {
+                        display: none;
+             }
+        }
+
     </style>
 </head>
 <body>
@@ -145,5 +151,23 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const logoContainer = document.querySelector('.logo-container');
+
+        sidebarToggle.addEventListener('click', function() {
+            if (window.innerWidth <= 768) { // Verifica si es pantalla pequeña
+                logoContainer.style.display = (logoContainer.style.display === 'none' || logoContainer.style.display === '') ? 'flex' : 'none';
+            }
+        });
+
+        // Asegurarse de que el logo esté oculto en pantallas pequeñas al cargar la página
+        if (window.innerWidth <= 768) {
+            logoContainer.style.display = 'none';
+        }
+    });
+</script>
+
 </body>
 </html>
