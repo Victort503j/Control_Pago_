@@ -19,14 +19,6 @@
         .content-container {
             margin: 20px;
         }
-        .btn-custom {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-        }
-        .btn-custom:hover {
-            background-color: #0056b3;
-        }
         .btn-secondary-custom {
             background-color: #00AB99;
             color: #fff;
@@ -34,6 +26,7 @@
         }
         .btn-secondary-custom:hover {
             background-color: #00796b;
+            color: #fff;
         }
         .table-header {
             background-color: #29867C;
@@ -87,9 +80,9 @@
                                 </tfoot>
                             </table>
 
-                                <div  class="text-left font-weight-bold">
-                                    Total Pagado: <span th:text="${totalPagado}"></span>
-                                </div>
+                            <div  class="text-left font-weight-bold">
+                                Total Pagado: <span th:text="${totalPagado}"></span>
+                            </div>
                         </div>
                         <div style="margin: 15px" class="text-right">
                             <a th:href="@{/pagos}" class="btn btn-secondary-custom font-weight-bold">Regresar</a>

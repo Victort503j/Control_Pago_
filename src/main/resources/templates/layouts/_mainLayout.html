@@ -8,7 +8,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Registro Pago</title>
-    <link rel="icon" href="/images/icon.png" type="image/x-icon">
+    <link rel="icon" href="/images/logo.jpg" type="image/x-icon">
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
@@ -17,6 +17,15 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script th:src="@{/js/sweetalert2.min.js}"></script>
     <style>
+        body {
+            overflow: hidden;
+        }
+        #layoutSidenav_content {
+            position: relative;
+            height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 4rem;
+        }
         .bg-custom {
             background-color: #29867C !important;
         }
@@ -41,6 +50,7 @@
         .title {
             color: white;
             font-size: 1.5rem;
+            margin-left: 16px;
         }
         .sb-sidenav-menu {
             margin-top: 20px;
@@ -78,6 +88,19 @@
                         display: none;
              }
         }
+        #layoutSidenav_nav {
+             transition: transform 0.3s ease;
+        }
+
+        #layoutSidenav_nav.active {
+             display: block;
+        }
+        @media (min-width: 769px) {
+             .logo-container {
+                     display: flex;
+            }
+        }
+
 
     </style>
 </head>
@@ -89,20 +112,17 @@
     </div>
 
     <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 d-lg-none" id="sidebarToggle" href="#!">
+        <i class="fas fa-bars"></i>
+    </button>
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <div sec:authorize="isAnonymous()">
+            <div sec:authorize="isAnonymous()">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" th:href="@{/login}">Login</a></li>
-                </div>
-                <li><hr class="dropdown-divider" /></li>
-                <div sec:authorize="isAuthenticated()">
-                    <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
-                </div>
-            </ul>
+                </ul>
+            </div>
         </li>
     </ul>
 </nav>
@@ -133,6 +153,11 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-credit-card"></i></div>
                             Pagos
                         </a>
+                        <a class="nav-link" th:href="@{/logout}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
+                            Cerrar Sesión
+                        </a>
+
                     </div>
                 </div>
             </div>
@@ -153,20 +178,42 @@
 <script src="js/scripts.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const logoContainer = document.querySelector('.logo-container');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const layoutSidenavNav = document.getElementById('layoutSidenav_nav');
+    const logoContainer = document.querySelector('.logo-container');
 
-        sidebarToggle.addEventListener('click', function() {
-            if (window.innerWidth <= 768) { // Verifica si es pantalla pequeña
-                logoContainer.style.display = (logoContainer.style.display === 'none' || logoContainer.style.display === '') ? 'flex' : 'none';
+    function handleResize() {
+        if (window.innerWidth > 768) {
+            layoutSidenavNav.classList.remove('active');
+            logoContainer.style.display = 'flex';
+            layoutSidenavNav.style.transform = 'none';
+            document.body.style.overflow = 'auto';
+        } else {
+            if (!layoutSidenavNav.classList.contains('active')) {
+                layoutSidenavNav.style.transform = 'translateX(-250px)';
             }
-        });
-
-        // Asegurarse de que el logo esté oculto en pantallas pequeñas al cargar la página
-        if (window.innerWidth <= 768) {
             logoContainer.style.display = 'none';
         }
+    }
+
+    sidebarToggle.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+            const isActive = layoutSidenavNav.classList.toggle('active');
+            logoContainer.style.display = isActive ? 'flex' : 'none';
+            layoutSidenavNav.style.transform = isActive ? 'translateX(0)' : 'translateX(-250px)';
+
+            if (!isActive) {
+                document.body.style.backdropFilter = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
     });
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+
 </script>
 
 </body>
