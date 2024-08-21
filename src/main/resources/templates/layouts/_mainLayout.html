@@ -90,6 +90,8 @@
         }
         #layoutSidenav_nav {
              transition: transform 0.3s ease;
+             height: 100vh;
+             width: 250px;
         }
 
         #layoutSidenav_nav.active {
@@ -135,7 +137,7 @@
                     <div sec:authorize="hasAnyAuthority('secretaria', 'Secretaria')">
                         <a class="nav-link" th:href="@{/}">
                             <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-                           Inicio
+                            Inicio
                         </a>
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -163,6 +165,7 @@
             </div>
         </nav>
     </div>
+
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">

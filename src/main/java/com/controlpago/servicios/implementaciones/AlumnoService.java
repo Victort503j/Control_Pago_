@@ -35,8 +35,18 @@ public class AlumnoService implements IAlumnoService {
     }
 
     @Override
-    public void elimanarPorId(Integer id) {
+    public void eliminarPorId(Integer id) {
         alumnoRepository.deleteById(id);
+    }
+    @Override
+    public Page<Alumno> buscarPorCriterios(String nombre, String apellido, Integer gradoId, Pageable pageable) {
+        if (gradoId != null) {
+            return alumnoRepository.findByNombreContainingAndApellidoContainingAndGradoId(
+                    nombre, apellido, gradoId, pageable);
+        } else {
+            return alumnoRepository.findByNombreContainingAndApellidoContaining(
+                    nombre, apellido, pageable);
+        }
     }
 
 }

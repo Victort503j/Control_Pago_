@@ -16,5 +16,7 @@ public interface IAlumnoService {
 
     Alumno crearOEditar(Alumno alumno);
 
-    void elimanarPorId(Integer id);
+    void eliminarPorId(Integer id);
+
+    Page<Alumno> buscarPorCriterios(String nombre, String apellido, Integer gradoId, Pageable pageable);
 }

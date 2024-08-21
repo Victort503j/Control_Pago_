@@ -2,7 +2,6 @@ package com.controlpago.controladores;
 
 import com.controlpago.modelos.Alumno;
 import com.controlpago.modelos.Grado;
-import com.controlpago.modelos.Rol;
 import com.controlpago.servicios.interfaces.IAlumnoService;
 import com.controlpago.servicios.interfaces.IGradoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +42,39 @@ public class AlumnoController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumber);
         }
+        List<Grado> grados = gradoService.obtenerTodos();
+        model.addAttribute("grados", grados);
         return "alumno/index";
     }
+    @GetMapping("/search")
+    public String search(
+            @RequestParam("nombre") Optional<String> nombre,
+            @RequestParam("apellido") Optional<String> apellido,
+            @RequestParam("grado") Optional<Integer> gradoId,
+            @RequestParam("page") Optional<Integer> page,
+            @RequestParam("size") Optional<Integer> size,
+            Model model) {
+
+        int currentPage = page.orElse(1) - 1;
+        int pageSize = size.orElse(5);
+        Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+
+        Page<Alumno> alumnos = alumnoService.buscarPorCriterios(
+                nombre.orElse(""), apellido.orElse(""), gradoId.orElse(null), pageable);
+        model.addAttribute("alumnos", alumnos);
+
+        int totalPage = alumnos.getTotalPages();
+        if (totalPage > 0) {
+            List<Integer> pageNumber = IntStream.rangeClosed(1, totalPage)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumber);
+        }
+        List<Grado> grados = gradoService.obtenerTodos();
+        model.addAttribute("grados", grados);
+        return "alumno/index";
+    }
+
     @GetMapping("/create")
     public String create(Model model) {
         List<Grado> grados = gradoService.obtenerTodos();
@@ -56,6 +86,7 @@ public class AlumnoController {
     @PostMapping("/save")
     public String guardar(@ModelAttribute Alumno pAlumno, BindingResult result, Model model, RedirectAttributes attributes) {
         if (result.hasErrors()) {
+            List<Grado> grados = gradoService.obtenerTodos();
             model.addAttribute("alumno", pAlumno);
             return "alumno/create";
         }
@@ -91,7 +122,7 @@ public class AlumnoController {
 
     @PostMapping("/delete")
     public String delete(@RequestParam("id") Integer id, RedirectAttributes attributes){
-        alumnoService.elimanarPorId(id);
+        alumnoService.eliminarPorId(id);
         attributes.addFlashAttribute("error", "Alumno eliminado exitosamente");
         return "redirect:/alumnos";
     }

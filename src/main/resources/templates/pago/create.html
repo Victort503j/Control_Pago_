@@ -6,8 +6,44 @@
 
 <head>
     <title>Crear Nuevo Pago</title>
-    <!-- Include Bootstrap CSS here if not already included in the layout -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .titulo{
+             margin-top: 13px;
+             margin-bottom: 13px;
+        }
+        .btn-cancelar {
+            background-color: #FF7373;
+            color: #931B1B;
+            border: none;
+            padding: 9px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .btn-cancelar:hover {
+            background-color: #E66262;
+        }
+
+        .btn-guardar {
+            background-color: #00AB99;
+            color: white;
+            border: none;
+             padding: 9px 24px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .btn-guardar:hover {
+            background-color: #009E8C;
+        }
+         .button-group {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    </style>
     <script>
         function actualizarCantidadPagar() {
             const mensualidad = parseFloat(document.getElementById('mensualidad').value) || 0;
@@ -23,7 +59,7 @@
 
 <body>
 <div layout:fragment="content">
-    <h1>Crear Nuevo Pago</h1>
+    <h1 class="titulo">Realizar Pago</h1>
     <form th:action="@{/pagos/save}" th:object="${pago}" method="post">
         <div class="row">
             <div class="col-md-6">
@@ -35,8 +71,6 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="mensualidad">Mensualidad:</label>
@@ -51,9 +85,6 @@
                     <input type="date" id="fecha" th:field="*{fecha}" class="form-control" required>
                 </div>
             </div>
-        </div>
-
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="cantidadPagar">Cantidad a Pagar:</label>
@@ -70,8 +101,10 @@
             </div>
         </div>
         <hr>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a th:href="@{/pagos}" class="btn btn-secondary">Regresar</a>
+        <div class="button-group">
+            <a th:href="@{/pagos}" class="btn btn-cancelar">Cancelar</a>
+            <button type="submit" class="btn btn-guardar">Guardar</button>
+        </div>
     </form>
 </div>
 </body>
