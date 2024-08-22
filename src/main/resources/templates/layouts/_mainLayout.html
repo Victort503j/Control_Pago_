@@ -33,16 +33,14 @@
         .sb-sidenav-dark {
             background-color: #29867C !important;
         }
-        .logo-container {
-            display: flex;
-            flex-direction: column;
-            margin-top: 180px;
-            margin-left: 7px;
-            align-items: center;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .logo {
+       .img-container {
+        display: flex;
+        flex-direction: column;
+        margin: 180px 0 20px 0;
+        align-items: center;
+        text-align: center;
+    }
+        .img {
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -58,7 +56,6 @@
         }
         .nav-link {
             color: #fff;
-
         }
         .nav-link:hover {
             background-color: #fff;
@@ -90,27 +87,16 @@
              }
         }
         #layoutSidenav_nav {
-             transition: transform 0.3s ease;
              height: 100vh;
              width: 250px;
+             transform: none;
         }
-
-        #layoutSidenav_nav.active {
-             display: block;
-        }
-        @media (min-width: 769px) {
-             .logo-container {
-                     display: flex;
-            }
-        }
-
-
     </style>
 </head>
 <body>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-custom">
-    <div class="logo-container">
-        <img src="/images/logo.jpg" alt="Logo" class="logo">
+    <div class="img-container">
+        <img src="/images/logo.jpg" alt="Logo" class="img">
         <h1 class="title">Control de Pago</h1>
     </div>
 
@@ -180,45 +166,5 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const layoutSidenavNav = document.getElementById('layoutSidenav_nav');
-    const logoContainer = document.querySelector('.logo-container');
-
-    function handleResize() {
-        if (window.innerWidth > 768) {
-            layoutSidenavNav.classList.remove('active');
-            logoContainer.style.display = 'flex';
-            layoutSidenavNav.style.transform = 'none';
-            document.body.style.overflow = 'auto';
-        } else {
-            if (!layoutSidenavNav.classList.contains('active')) {
-                layoutSidenavNav.style.transform = 'translateX(-250px)';
-            }
-            logoContainer.style.display = 'none';
-        }
-    }
-
-    sidebarToggle.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-            const isActive = layoutSidenavNav.classList.toggle('active');
-            logoContainer.style.display = isActive ? 'flex' : 'none';
-            layoutSidenavNav.style.transform = isActive ? 'translateX(0)' : 'translateX(-250px)';
-
-            if (!isActive) {
-                document.body.style.backdropFilter = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-    });
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-});
-
-
-</script>
-
 </body>
 </html>
