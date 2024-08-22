@@ -1,5 +1,6 @@
 package com.controlpago.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,7 +40,18 @@ public class DatabaseWebSecurity {
 
                 //Todas las demás vistas requieren autenticación
                 .anyRequest().authenticated());
-        http.formLogin(form -> form.loginPage("/login").permitAll());
+        http.formLogin(form ->form
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/login?error=true")
+        );
+        // Manejo de excepciones
+        http.exceptionHandling(exceptionHandling -> exceptionHandling
+                .authenticationEntryPoint((request, response, authException) ->
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+                .accessDeniedHandler((request, response, accessDeniedException) ->
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden"))
+        );
         return http.build();
     }
 }

@@ -6,25 +6,26 @@
 
 <body>
 <div layout:fragment="content">
-    <h1>Detalles del Alumno</h1>
-    <div>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">ID</dt>
-            <dd class="col-sm-10" th:text="${alumno.id}"></dd>
+    <div class="border border radius-4 rounded-4 p-4 mt-5">
+        <h1>Detalles del Alumno</h1>
+        <div>
+            <dl class="row">
+                <dt class="col-sm-2">ID</dt>
+                <dd class="col-sm-10" th:text="${alumno.id}"></dd>
 
-            <dt class="col-sm-2">NOMBRE</dt>
-            <dd class="col-sm-10" th:text="${alumno.nombre}"></dd>
+                <dt class="col-sm-2">NOMBRE</dt>
+                <dd class="col-sm-10" th:text="${alumno.nombre}"></dd>
 
-            <dt class="col-sm-2">Apellido</dt>
-            <dd class="col-sm-10" th:text="${alumno.apellido}"></dd>
+                <dt class="col-sm-2">Apellido</dt>
+                <dd class="col-sm-10" th:text="${alumno.apellido}"></dd>
 
-            <dt class="col-sm-2">Grado</dt>
-            <dd class="col-sm-10" th:text="${alumno.grado.nombre}"></dd>
+                <dt class="col-sm-2">Grado</dt>
+                <dd class="col-sm-10" th:text="${alumno.grado.nombre}"></dd>
 
-        </dl>
-        <a th:href="@{/alumnos/edit/{id}(id=${alumno.id})}" class="btn btn-outline-info">Editar</a>
-        <a th:href="@{/alumnos}" class="btn btn-secondary">Regresar</a>
+            </dl>
+            <a th:href="@{/alumnos/edit/{id}(id=${alumno.id})}" class="btn btn-outline-info">Editar</a>
+            <a th:href="@{/alumnos}" class="btn btn-secondary">Regresar</a>
+        </div>
     </div>
 </div>
 </body>
