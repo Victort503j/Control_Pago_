@@ -8,43 +8,72 @@
     <title>Crear Nuevo Alumno</title>
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
     <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <style>
+        .btn-cancelar {
+        background-color: #FF7373;
+        color: #931B1B;
+        border: none;
+        padding: 9px 24px;
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 10px;
+        }
+
+        .btn-cancelar:hover {
+        background-color: #E66262;
+        }
+
+        .btn-guardar {
+        background-color: #00AB99;
+        color: white;
+        border: none;
+        padding: 9px 24px;
+        font-size: 18px;
+        font-weight: bold;
+        }
+
+        .btn-guardar:hover {
+        background-color: #009E8C;
+        }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content">
-    <h1>Crear Nuevo Alumno</h1>
-    <form th:action="@{/alumnos/save}" th:object="${alumno}" method="post">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del alumno" required/>
+    <div class="border border-2 rounded-4 p-3 custom-width margin-left mb-4 custom-padding-right mt-4">
+        <h1>Agregar Alumno</h1>
+        <form th:action="@{/alumnos/save}" th:object="${alumno}" method="post">
+            <div class="row space-between">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del alumno" required/>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="apellido">Apellido</label>
+                        <input type="text" class="form-control" th:field="*{apellido}" id="apellido" placeholder="Escriba el apellido del alumno" required/>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="apellido">Apellido</label>
-                    <input type="text" class="form-control" th:field="*{apellido}" id="apellido" placeholder="Escriba el apellido del alumno" required/>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="grado">Grado</label>
-                    <select class="form-select" data-control="select2"  th:field="*{grado}" id="grado" required>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="grado" class="form-label">Grado:</label>
+                    <select class="form-control" data-control="select2"  th:field="*{grado}" id="grado" required>
                         <option value="">Seleccione un grado</option>
                         <option th:each="grado : ${grados}" th:value="${grado.id}" th:text="${grado.nombre}"></option>
                     </select>
                 </div>
             </div>
-        </div>
-        <hr>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a th:href="@{/alumnos}" class="btn btn-secondary">Regresar</a>
-    </form>
+            <div class="row">
+                <div class="col text-end mt-4">
+                    <a th:href="@{/alumnos}" class="btn btn-cancelar me-2">Cancelar</a>
+                    <button type="submit" class="btn btn-guardar">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 </html>

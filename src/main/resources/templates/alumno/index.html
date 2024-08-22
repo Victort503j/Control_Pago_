@@ -1,7 +1,12 @@
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layouts/_mainLayout" xmlns:th="http://www.w3.org/1999/xhtml">
+      layout:decorate="/layouts/_mainLayout"
+      xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .margin {
             margin-top: 1rem !important;
@@ -75,6 +80,7 @@
 <body>
 <div layout:fragment="content">
     <div th:if="${msg != null}">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             Swal.fire({
                 title: "Confirmación",
@@ -85,6 +91,7 @@
     </div>
 
     <div th:if="${error != null}">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             Swal.fire({
                 title: "Error",
@@ -93,75 +100,79 @@
             });
         </script>
     </div>
-    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-        <h1 class="m-0">Alumnos</h1>
-        <a th:href="@{/alumnos/create}" class="btn boton-add">
-            <i class="fas fa-plus"></i> Agregar
-        </a>
-    </div>
+   <div class="border border-2 rounded-4 p-5 mt-4">
+       <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+           <h1 class="m-0">Alumnos</h1>
+           <a th:href="@{/alumnos/create}" class="btn boton-add">
+               <i class="fas fa-plus"></i> Agregar
+           </a>
+       </div>
 
-    <div class="container">
-        <div class="border rounded p-3 custom-width margin-left mb-4 custom-padding-right">
-            <form th:action="@{/alumnos/search}" method="get">
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label for="nombre" class="form-label"><strong>Nombre:</strong></label>
-                        <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Ejemplo: Juan">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="apellido" class="form-label"><strong>Apellido:</strong></label>
-                        <input type="text" name="apellido" class="form-control" id="apellido" placeholder="Ejemplo: Pérez">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="grado" class="form-label"><strong>Grado:</strong></label>
-                        <select name="grado" class="form-select" id="grado">
-                            <option value="" selected>Selecciona el grado de estudio</option>
-                            <th:block th:each="grado : ${grados}">
-                                <option th:value="${grado.id}" th:text="${grado.nombre}"></option>
-                            </th:block>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary boton-custom">Buscar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Grado</th>
-            <th>Mensualidad</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${alumnos}">
-            <td th:text="${item.id}"></td>
-            <td th:text="${item.nombre}"></td>
-            <td th:text="${item.apellido}"></td>
-            <td th:text="${item.grado.nombre}"></td>
-            <td th:text="'$50.00'"></td>
-            <td>
-                <div class="d-flex justify-content-center">
-                    <a th:href="@{/alumnos/details/{id}(id=${item.id})}" class="btn btn-outline-secondary me-2">
-                        <i class="fas fa-info-circle"></i>
-                    </a>
-                    <a th:href="@{/alumnos/edit/{id}(id=${item.id})}" class="btn btn-outline-info me-2">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a th:href="@{/alumnos/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">
-                        <i class="fas fa-trash-alt"></i>
-                    </a>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+       <div>
+           <div class="border rounded-4 p-3 mb-4">
+               <form th:action="@{/alumnos/search}" method="get">
+                   <div class="row">
+                       <div class="col-md-4 mb-3">
+                           <label for="nombre" class="form-label"><strong>Nombre:</strong></label>
+                           <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Ejemplo: Juan">
+                       </div>
+                       <div class="col-md-4 mb-3">
+                           <label for="apellido" class="form-label"><strong>Apellido:</strong></label>
+                           <input type="text" name="apellido" class="form-control" id="apellido" placeholder="Ejemplo: Pérez">
+                       </div>
+                       <div class="col-md-4 mb-3">
+                           <label for="grado" class="form-label"><strong>Grado:</strong></label>
+                           <select name="grado" class="form-select" id="grado">
+                               <option value="" selected>Selecciona el grado de estudio</option>
+                               <th:block th:each="grado : ${grados}">
+                                   <option th:value="${grado.id}" th:text="${grado.nombre}"></option>
+                               </th:block>
+                           </select>
+                       </div>
+                   </div>
+                   <div class="form-actions">
+                       <button type="submit" class="btn btn-primary boton-custom">Buscar</button>
+                   </div>
+               </form>
+           </div>
+       </div>
+       <div>
+           <table class="table table-striped">
+               <thead>
+               <tr>
+                   <th>Id</th>
+                   <th>Nombre</th>
+                   <th>Apellido</th>
+                   <th>Grado</th>
+                   <th>Mensualidad</th>
+                   <th>Acciones</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="item : ${alumnos}">
+                   <td th:text="${item.id}"></td>
+                   <td th:text="${item.nombre}"></td>
+                   <td th:text="${item.apellido}"></td>
+                   <td th:text="${item.grado.nombre}"></td>
+                   <td th:text="'$50.00'"></td>
+                   <td>
+                       <div class="d-flex justify-content-center">
+                           <a th:href="@{/alumnos/details/{id}(id=${item.id})}" class="btn btn-outline-secondary me-2">
+                               <i class="fas fa-info-circle"></i>
+                           </a>
+                           <a th:href="@{/alumnos/edit/{id}(id=${item.id})}" class="btn btn-outline-info me-2">
+                               <i class="fas fa-edit"></i>
+                           </a>
+                           <a th:href="@{/alumnos/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">
+                               <i class="fas fa-trash-alt"></i>
+                           </a>
+                       </div>
+                   </td>
+               </tr>
+               </tbody>
+           </table>
+       </div>
+   </div>
 
     <nav aria-label="Page navigation example">
         <div class="d-flex justify-content-center">
