@@ -83,6 +83,40 @@
     </div>
 
     <h1>Listado de Pagos</h1>
+
+    <div class="container">
+        <div class="border rounded p-3 custom-width margin-left mb-4 custom-padding-right">
+            <form th:action="@{/pagos/search}" method="get">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="alumno" class="form-label"><strong>Alumno:</strong></label>
+                        <select name="alumno" class="form-select" id="alumno">
+                            <option value="" selected>Selecciona el grado de estudio</option>
+                            <th:block th:each="alumno : ${alumnos}">
+                                <option th:value="${alumno.id}" th:text="${alumno.nombre}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="fecha">Fecha:</label>
+                        <input type="date" id="fecha" name="fecha" class="form-control" th:value="${param.fecha}">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="grado" class="form-label"><strong>Grado:</strong></label>
+                        <select name="grado" class="form-select" id="grado">
+                            <option value="" selected>Selecciona el grado de estudio</option>
+                            <th:block th:each="grado : ${grados}">
+                                <option th:value="${grado.id}" th:text="${grado.nombre}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions boton-contenedor">
+                    <button type="submit" class="btn btn-primary boton-custom">Buscar</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <a th:href="@{/pagos/create}" class="btn pay">Realizar Pago</a>
     <table class="table table-striped">
         <thead>
