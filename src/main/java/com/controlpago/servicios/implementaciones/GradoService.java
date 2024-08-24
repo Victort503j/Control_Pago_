@@ -39,4 +39,14 @@ public class GradoService  implements IGradoService {
     public void eliminarPorId(Integer id) {
         gradoRepository.deleteById(id);
     }
+
+    @Override
+    public long contarGrados() {
+        return gradoRepository.count();
+    }
+
+    @Override
+    public long contarTotalGrados() {
+        return gradoRepository.contarTotalGrados();
+    }
 }

@@ -17,4 +17,6 @@ public interface IGradoService {
     Grado crearOEditar(Grado grado);
 
     void eliminarPorId(Integer id);
+    long contarGrados();
+    long contarTotalGrados();
 }

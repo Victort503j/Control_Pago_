@@ -19,4 +19,7 @@ public interface IAlumnoService {
     void eliminarPorId(Integer id);
 
     Page<Alumno> buscarPorCriterios(String nombre, String apellido, Integer gradoId, Pageable pageable);
+
+    long contarAlumnos(); // Existing method
+    long contarTotalAlumnos(); // New method
 }

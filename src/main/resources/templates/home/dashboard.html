@@ -1,9 +1,66 @@
+<!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layouts/_mainLayout" xmlns:sec="http://www.w3.org/1999/xhtml">
-
+      layout:decorate="/layouts/_mainLayout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .card-container {
+            width: 80%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between; /* Distribuye las tarjetas en fila */
+        }
+        .card {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            width: 30%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            justify-content: space-between;
+        }
+        .card .icon {
+            font-size: 36px;
+        }
+        .card.total-alumnos {
+            background-color: #F48F7D;
+        }
+        .card.total-grados {
+            background-color: #FDC433;
+        }
+        .card.total-pagos {
+            background-color: #60BB8C;
+        }
+    </style>
+</head>
+<body>
 <div layout:fragment="content">
-
-    
-
+    <h1 class="mb-3 mt-3">Resumen</h1>
+    <div>
+        <div class="card-container">
+            <div class="card total-alumnos">
+                <span>Total de Alumnos: <span th:text="${totalAlumnos}"></span></span>
+                <i class="fas fa-user icon"></i>
+            </div>
+            <div class="card total-grados">
+                <span>Total de Grados: <span th:text="${totalGrados}"></span></span>
+                <i class="fas fa-school icon"></i>
+            </div>
+            <div class="card total-pagos">
+                <span>Total de Pagos: <span th:text="${totalPagos}"></span></span>
+                <i class="fas fa-credit-card icon"></i>
+            </div>
+        </div>
+    </div>
 </div>
+</body>
+</html>

@@ -48,6 +48,15 @@ public class AlumnoService implements IAlumnoService {
                     nombre, apellido, pageable);
         }
     }
+    @Override
+    public long contarAlumnos() {
+        return alumnoRepository.count();
+    }
+
+    @Override
+    public long contarTotalAlumnos() {
+        return alumnoRepository.contarTotalAlumnos();
+    }
 
 }
 

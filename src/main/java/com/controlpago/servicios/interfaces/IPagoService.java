@@ -22,7 +22,6 @@ public interface IPagoService {
     Pago buscarPorAlumnoYMes(Long alumnoId, LocalDate fecha);
 
     List<Pago> buscarPagosPorAlumno(Integer alumnoId);
-
-
-
+    long contarPagos();
+    long contarTotalPagos();
 }
