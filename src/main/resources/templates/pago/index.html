@@ -89,24 +89,24 @@
             <form th:action="@{/pagos/search}" method="get">
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label for="alumno" class="form-label"><strong>Alumno:</strong></label>
-                        <select name="alumno" class="form-select" id="alumno">
+                        <label for="" class="form-label"><strong>Alumno:</strong></label>
+                        <select name="" class="form-select" id="">
                             <option value="" selected>Selecciona el grado de estudio</option>
-                            <th:block th:each="alumno : ${alumnos}">
-                                <option th:value="${alumno.id}" th:text="${alumno.nombre}"></option>
+                            <th:block th:each=" : ${}">
+                                <option th:value="${}" th:text="${}"></option>
                             </th:block>
                         </select>
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="fecha">Fecha:</label>
-                        <input type="date" id="fecha" name="fecha" class="form-control" th:value="${param.fecha}">
+                        <label for="">Fecha:</label>
+                        <input type="date" id="" name="" class="form-control" th:value="${}">
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="grado" class="form-label"><strong>Grado:</strong></label>
-                        <select name="grado" class="form-select" id="grado">
+                        <label for="" class="form-label"><strong>Grado:</strong></label>
+                        <select name="" class="form-select" id="">
                             <option value="" selected>Selecciona el grado de estudio</option>
-                            <th:block th:each="grado : ${grados}">
-                                <option th:value="${grado.id}" th:text="${grado.nombre}"></option>
+                            <th:block th:each=" : ${grados}">
+                                <option th:value="${}" th:text="${}"></option>
                             </th:block>
                         </select>
                     </div>
