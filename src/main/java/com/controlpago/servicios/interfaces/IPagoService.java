@@ -24,4 +24,13 @@ public interface IPagoService {
     List<Pago> buscarPagosPorAlumno(Integer alumnoId);
     long contarPagos();
     long contarTotalPagos();
+
+    long contarAlumnosQueHanPagado(LocalDate inicioMes, LocalDate finMes);
+    long contarAlumnosQueNoHanPagado(LocalDate inicioMes, LocalDate finMes);
+
+    // Nuevo método para contar los alumnos que han pagado por grado
+    List<Object[]> contarAlumnosQueHanPagadoPorGrado(LocalDate inicioMes, LocalDate finMes);
+
+    // Nuevo método para contar los alumnos que no han pagado por grado
+    List<Object[]> contarAlumnosQueNoHanPagadoPorGrado(LocalDate inicioMes, LocalDate finMes);
 }

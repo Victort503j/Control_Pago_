@@ -11,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Controller
 @RequestMapping("/")
 public class HomeController {
@@ -47,10 +50,29 @@ public class HomeController {
         long totalGrados = gradoService.contarTotalGrados();
         long totalPagos = pagoService.contarTotalPagos();
 
+        // Obtener el rango de fechas del mes actual
+        LocalDate inicioMes = LocalDate.now().withDayOfMonth(1);
+        LocalDate finMes = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
+
+        long alumnosQueHanPagado = pagoService.contarAlumnosQueHanPagado(inicioMes, finMes);
+        long alumnosQueNoHanPagado = pagoService.contarAlumnosQueNoHanPagado(inicioMes, finMes);
+
         model.addAttribute("totalAlumnos", totalAlumnos);
         model.addAttribute("totalGrados", totalGrados);
         model.addAttribute("totalPagos", totalPagos);
+        model.addAttribute("alumnosQueHanPagado", alumnosQueHanPagado);
+        model.addAttribute("alumnosQueNoHanPagado", alumnosQueNoHanPagado);
+
+        // Información sobre los alumnos que han pagado segun el grado
+
+        List<Object[]> pagosPorGrado = pagoService.contarAlumnosQueHanPagadoPorGrado(inicioMes, finMes);
+        List<Object[]> noPagosPorGrado = pagoService.contarAlumnosQueNoHanPagadoPorGrado(inicioMes, finMes);
+
+        model.addAttribute("pagosPorGrado", pagosPorGrado);
+        model.addAttribute("noPagosPorGrado", noPagosPorGrado);
+
 
         return "home/dashboard";
     }
+
 }

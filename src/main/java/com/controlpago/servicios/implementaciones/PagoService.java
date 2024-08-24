@@ -64,4 +64,22 @@ public class PagoService implements IPagoService {
     public long contarTotalPagos() {
         return pagoRepository.contarTotalPagos();
     }
+    public long contarAlumnosQueHanPagado(LocalDate inicioMes, LocalDate finMes) {
+        return pagoRepository.contarAlumnosQueHanPagado(inicioMes, finMes);
+    }
+
+    public long contarAlumnosQueNoHanPagado(LocalDate inicioMes, LocalDate finMes) {
+        return pagoRepository.contarAlumnosQueNoHanPagado(inicioMes, finMes);
+    }
+
+    @Override
+    public List<Object[]> contarAlumnosQueHanPagadoPorGrado(LocalDate inicioMes, LocalDate finMes) {
+        return pagoRepository.contarAlumnosQueHanPagadoPorGrado(inicioMes, finMes);
+    }
+
+    @Override
+    public List<Object[]> contarAlumnosQueNoHanPagadoPorGrado(LocalDate inicioMes, LocalDate finMes) {
+        return pagoRepository.contarAlumnosQueNoHanPagadoPorGrado(inicioMes, finMes);
+    }
+
 }

@@ -14,7 +14,7 @@
             width: 80%;
             margin: auto;
             display: flex;
-            justify-content: space-between; /* Distribuye las tarjetas en fila */
+            justify-content: space-between;
         }
         .card {
             display: flex;
@@ -40,6 +40,15 @@
         .card.total-pagos {
             background-color: #60BB8C;
         }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+            display: flex;
+            justify-content: space-between;
+        }
+        .chart-wrapper {
+            width: 45%;
+        }
     </style>
 </head>
 <body>
@@ -61,6 +70,50 @@
             </div>
         </div>
     </div>
+
+    <!-- Contenedor para las gráficas -->
+    <div class="chart-container">
+        <div class="chart-wrapper">
+            <canvas id="pagosPieChart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+        </div>
+    </div>
+    <div>
+        <h2>Debugging Información para Gráfica de Barras</h2>
+        <th:block th:each="pago : ${noPagosPorGrado}">
+            <span th:text="${pago[0]}"></span>
+        </th:block>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('pagosPieChart').getContext('2d');
+            var alumnosQueHanPagado = /*[[${alumnosQueHanPagado}]]*/ 0;
+            var alumnosQueNoHanPagado = /*[[${alumnosQueNoHanPagado}]]*/ 0;
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Alumnos que han pagado', 'Alumnos que no han pagado'],
+                    datasets: [{
+                        data: [alumnosQueHanPagado, alumnosQueNoHanPagado],
+                        backgroundColor: ['#60BB8C', '#F48F7D']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    title: {
+                        display: true,
+                        text: 'Estado de pagos de alumnos en el mes actual'
+                    }
+                }
+            });
+        });
+        /*]]>*/
+    </script>
 </div>
 </body>
 </html>
