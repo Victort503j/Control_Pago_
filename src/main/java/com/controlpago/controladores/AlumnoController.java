@@ -123,7 +123,7 @@ public class AlumnoController {
     @PostMapping("/delete")
     public String delete(@RequestParam("id") Integer id, RedirectAttributes attributes){
         alumnoService.eliminarPorId(id);
-        attributes.addFlashAttribute("error", "Alumno eliminado exitosamente");
+        attributes.addFlashAttribute("msg", "Alumno eliminado exitosamente");
         return "redirect:/alumnos";
     }
 }

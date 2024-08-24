@@ -3,31 +3,45 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout"
       xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
+</head>
 
 <body>
 <div layout:fragment="content">
     <h1>Eliminar Grado</h1>
     <h3>¿Estás seguro que deseas eliminar el registro seleccionado?</h3>
-    <div>
-        <hr />
+    <div class="border border-2 rounded-4 p-3 custom-width margin-left mb-4 custom-padding-right mt-4">
         <dl class="row">
-            <dt class="col-sm-2">ID</dt>
-            <dd class="col-sm-10" th:text="${alumno.id}"></dd>
+            <div class="mt-3 row">
+                <dt class="col-sm-2">ID</dt>
+                <dd class="col-sm-10" th:text="${alumno.id}"></dd>
+            </div>
 
-            <dt class="col-sm-2">NOMBRE</dt>
-            <dd class="col-sm-10" th:text="${alumno.nombre}"></dd>
+            <div class="mt-3 row">
+                <dt class="col-sm-2">NOMBRE</dt>
+                <dd class="col-sm-10" th:text="${alumno.nombre}"></dd>
+            </div>
 
-            <dt class="col-sm-2">Apellido</dt>
-            <dd class="col-sm-10" th:text="${alumno.apellido}"></dd>
+            <div class="mt-3 row">
+                <dt class="col-sm-2">APELLIDO</dt>
+                <dd class="col-sm-10" th:text="${alumno.apellido}"></dd>
+            </div>
 
-            <dt class="col-sm-2">Grado</dt>
-            <dd class="col-sm-10" th:text="${alumno.grado.nombre}"></dd>
+            <div class="mt-3 row">
+                <dt class="col-sm-2">GRADO</dt>
+                <dd class="col-sm-10" th:text="${alumno.grado.nombre}"></dd>
+            </div>
 
         </dl>
         <form th:action="@{/alumnos/delete}" method="post">
             <input type="hidden" name="id" th:value="${alumno.id}">
-            <input type="submit" value="Eliminar" class="btn btn-danger"> |
-            <a th:href="@{/alumnos}" class="btn btn-secondary">Regresar</a>
+            <div class="mt-5">
+                <input type="submit" value="Eliminar" class="btn btn-cancelar me-3">
+                <a th:href="@{/alumnos}" class="btn btn-guardar">Regresar</a>
+            </div>
         </form>
     </div>
 </div>

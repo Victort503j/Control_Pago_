@@ -1,3 +1,30 @@
 body{
     overflow: hidden !important;
 }
+
+.btn-cancelar {
+    background-color: #ff80804d !important;
+    color: #931B1B !important;
+    border: none;
+    padding: 9px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.btn-cancelar:hover {
+    background-color: #E66262 !important;
+}
+
+.btn-guardar {
+    background-color: #00AB99;
+    color: white;
+    border: none;
+    padding: 9px 24px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.btn-guardar:hover {
+     background-color: #009E8C;
+}
