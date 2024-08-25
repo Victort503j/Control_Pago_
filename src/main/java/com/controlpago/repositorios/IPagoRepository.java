@@ -32,4 +32,6 @@ public interface IPagoRepository extends JpaRepository<Pago, Integer> {
             "GROUP BY g.nombre")
     List<Object[]> contarAlumnosQueNoHanPagadoPorGrado(LocalDate inicioMes, LocalDate finMes);
 
+
+
 }

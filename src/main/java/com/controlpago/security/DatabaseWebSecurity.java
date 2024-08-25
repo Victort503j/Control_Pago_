@@ -42,7 +42,7 @@ public class DatabaseWebSecurity {
                 .anyRequest().authenticated());
         http.formLogin(form ->form
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/dashboard", true)
                 .failureUrl("/login?error=true")
         );
         // Manejo de excepciones

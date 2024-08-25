@@ -122,10 +122,6 @@
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading"></div>
                     <div sec:authorize="hasAnyAuthority('secretaria', 'Secretaria')">
-                        <a class="nav-link" th:href="@{/}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-                            Inicio
-                        </a>
                         <a class="nav-link" th:href="@{/dashboard}">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             <span class="nav-text">Dashboard</span>
