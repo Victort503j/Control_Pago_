@@ -5,26 +5,59 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Crear Nuevo Grado</title>
+    <style>
+        .cancelar {
+       background-color: #FFD4D4;
+       color: #931B1B;
+       border: none;
+       padding: 9px 24px;
+       font-size: 18px;
+       font-weight: bold;
+       margin-right: 10px;
+       }
+
+       .cancelar:hover {
+       background-color:  #FFD4D4;
+       }
+
+       .guardar {
+       background-color: #00AB99;
+       color: white;
+       border: none;
+       padding: 9px 24px;
+       font-size: 18px;
+       font-weight: bold;
+       }
+
+       .guardar:hover {
+       background-color: #009E8C;
+       }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content">
-
-    <h1>Crear Nuevo Grado</h1>
-    <form th:action="@{/grados/save}" th:object="${grado}" method="post">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del grado" required/>
+    <div class="border border-2 rounded-4 p-3 custom-width margin-left mb-4 custom-padding-right mt-4">
+        <h1>Crear Nuevo Grado</h1>
+        <form th:action="@{/grados/save}" th:object="${grado}" method="post">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del grado" required/>
+                    </div>
                 </div>
             </div>
-        </div>
-        <hr>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a th:href="@{/grados}" class="btn btn-secondary">Regresar</a>
-    </form>
+
+            <div class="row">
+                <div class="col text-end mt-4">
+                    <a th:href="@{/grados}" class="btn cancelar">Regresar</a>
+                    <button type="submit" class="btn guardar me-2">Guardar</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
 </div>
 </body>
 

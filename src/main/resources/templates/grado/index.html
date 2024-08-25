@@ -9,6 +9,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listado de Grados</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+
+        .container {
+               border: 1px solid gray;
+               border-radius: 7px;
+               height: 130px;
+               width: 100%;
+               margin: 20px 0 20px 0px;
+        }
+        .form-group {
+               display: flex;
+               flex-direction: column;
+               gap: 8px;
+               margin-top: 10px;
+               margin-left: 15px
+        }
+        .buscar{
+                margin-left: 920px;
+                margin-bottom: 50px;
+        }
+
+        .form-actions {
+            justify-content: flex-end;
+            margin-top: 48px;
+            margin-left: 350px;
+
+        }
+
+        .boton {
+                background-color: #39CBBB;
+                border:none;
+                width: 320px;
+                height: 40px;
+                border-radius:7px;
+                color: #fff;
+        }
+        .input-button-wrapper{
+                display: flex;
+                align-items: center;
+        }
+        .input-button-wrapper input{
+                flex: 1;
+
+        }
+        .search-container {
+                margin-left: 900px;
+        }
+        .agregar{
+             background-color: #29867C;
+            border-color: #29867C;
+            border-radius: 4px;
+            color: white;
+            width: 170px;
+            height: 40px;
+            font-weight: bold;
+            align-items: center;
+        }
+        .agregar:hover {
+            background-color: #247564;
+            border-color: #247564;
+            color: white;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+    </style>
 </head>
 
 <body>
@@ -30,15 +94,45 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             Swal.fire({
-                title: "Eliminado",
+                title: "Error",
                 text: '[[${error}]]',
                 icon: "error"
             });
         </script>
     </div>
-    <h1>Listado de Grados</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <h1>Listado de Grados</h1>
+        <a th:href="@{/grados/create}" class="btn agregar">
+            <i class="fas fa-plus"></i> Agregar
+        </a>
+    </div>
 
-    <a th:href="@{/grados/create}" class="btn btn-outline-primary">Nuevo Grado</a>
+
+
+    <div class="container">
+        <form th:action="@{/grados/search}" method="get">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="grado" class="form-label"><strong>Grado</strong></label>
+                        <select id="grado" name="grado" class="form-select">
+                            <option value="" selected>Selecciona el grado</option>
+                            <th:block th:each="grado : ${grados}">
+                                <option th:value="${grado.id}" th:text="${grado.nombre}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-actions">
+                        <button type="submit" class="boton">Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -52,9 +146,15 @@
             <td th:text="${item.id}"></td>
             <td th:text="${item.nombre}"></td>
             <td>
-                <a th:href="@{/grados/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">Detalles</a>
-                <a th:href="@{/grados/edit/{id}(id=${item.id})}" class="btn btn-outline-info">Editar</a>
-                <a th:href="@{/grados/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">Eliminar</a>
+                <a th:href="@{/grados/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">
+                    <i class="fas fa-info-circle"></i>
+                </a>
+                <a th:href="@{/grados/edit/{id}(id=${item.id})}" class="btn btn-outline-info">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a th:href="@{/grados/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
             </td>
         </tr>
         </tbody>
