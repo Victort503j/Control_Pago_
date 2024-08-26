@@ -33,7 +33,7 @@ public interface IPagoService {
     // Nuevo método para contar los alumnos que no han pagado por grado
     List<Object[]> contarAlumnosQueNoHanPagadoPorGrado(LocalDate inicioMes, LocalDate finMes);
 
-    Page<Pago> buscarPagosPorAlumnoYFecha(String nombre, String apellido, Pageable pageable);
+    Page<Pago> buscarPagosPorNombreCompleto(String nombreCompleto, Pageable pageable);
 
 
 }

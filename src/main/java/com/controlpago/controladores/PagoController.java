@@ -62,8 +62,8 @@ public class PagoController {
     }
 
     @GetMapping("/search")
-    public String search(@RequestParam("nombre") Optional<String> nombre,
-                         @RequestParam("apellido") Optional<String> apellido,
+    public String search(@RequestParam("alumno") Optional<String> nombreCompleto,
+                         @RequestParam("fecha") Optional<String> fecha,
                          @RequestParam("page") Optional<Integer> page,
                          @RequestParam("size") Optional<Integer> size,
                          Model model) {
@@ -71,10 +71,8 @@ public class PagoController {
         int pageSize = size.orElse(5);
         Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
 
-        Page<Pago> pagos = pagoService.buscarPagosPorAlumnoYFecha(
-                nombre.orElse(null),
-                apellido.orElse(null),
-                pageable);
+        Page<Pago> pagos = pagoService.buscarPagosPorNombreCompleto(
+                nombreCompleto.orElse(null), pageable);
 
         model.addAttribute("pagos", pagos);
         List<Alumno> alumnos = alumnoService.obtenerTodos();
@@ -89,6 +87,7 @@ public class PagoController {
         }
         return "pago/index";
     }
+
 
 
     @GetMapping("/create")

@@ -37,13 +37,7 @@ public interface IPagoRepository extends JpaRepository<Pago, Integer> {
 
 
     @Query("SELECT p FROM Pago p WHERE " +
-            " (:nombre IS NULL OR p.alumno.nombre LIKE %:nombre%) AND " +
-            " (:apellido IS NULL OR p.alumno.apellido LIKE %:apellido%)")
-    Page<Pago> buscarPagosPorAlumnoYFecha(@Param("nombre") String nombre,
-                                          @Param("apellido") String apellido,
-                                          Pageable pageable);
-
-
-
+            "(:nombreCompleto IS NULL OR CONCAT(p.alumno.nombre, ' ', p.alumno.apellido) LIKE %:nombreCompleto%)")
+    Page<Pago> buscarPagosPorNombreCompleto(@Param("nombreCompleto") String nombreCompleto, Pageable pageable);
 
 }
