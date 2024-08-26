@@ -4,6 +4,7 @@ import com.controlpago.modelos.Alumno;
 import com.controlpago.modelos.Grado;
 import com.controlpago.modelos.Pago;
 import com.controlpago.servicios.interfaces.IAlumnoService;
+import com.controlpago.servicios.interfaces.IGradoService;
 import com.controlpago.servicios.interfaces.IPagoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,6 +33,9 @@ public class PagoController {
     @Autowired
     private IAlumnoService alumnoService;
 
+    @Autowired
+    private IGradoService gradoService;
+
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1) - 1;
@@ -39,6 +44,12 @@ public class PagoController {
 
         Page<Pago> pagos = pagoService.buscarTodosPaginados(pageable);
         model.addAttribute("pagos", pagos);
+
+        List<Alumno> alumnos = alumnoService.obtenerTodos();
+        model.addAttribute("alumnos", alumnos);
+
+        List<Grado> grados = gradoService.obtenerTodos();
+        model.addAttribute("grados", grados);
 
         int totalPage = pagos.getTotalPages();
         if (totalPage > 0) {
@@ -49,6 +60,37 @@ public class PagoController {
         }
         return "pago/index";
     }
+
+    @GetMapping("/search")
+    public String search(@RequestParam("nombre") Optional<String> nombre,
+                         @RequestParam("apellido") Optional<String> apellido,
+                         @RequestParam("page") Optional<Integer> page,
+                         @RequestParam("size") Optional<Integer> size,
+                         Model model) {
+        int currentPage = page.orElse(1) - 1;
+        int pageSize = size.orElse(5);
+        Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+
+        Page<Pago> pagos = pagoService.buscarPagosPorAlumnoYFecha(
+                nombre.orElse(null),
+                apellido.orElse(null),
+                pageable);
+
+        model.addAttribute("pagos", pagos);
+        List<Alumno> alumnos = alumnoService.obtenerTodos();
+        model.addAttribute("alumnos", alumnos);
+
+        int totalPage = pagos.getTotalPages();
+        if (totalPage > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        return "pago/index";
+    }
+
+
     @GetMapping("/create")
     public String create(Model model){
         List<Alumno> alumnos = alumnoService.obtenerTodos();

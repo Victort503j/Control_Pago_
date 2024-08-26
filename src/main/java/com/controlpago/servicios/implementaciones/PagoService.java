@@ -1,6 +1,5 @@
 package com.controlpago.servicios.implementaciones;
 
-import com.controlpago.modelos.Alumno;
 import com.controlpago.modelos.Pago;
 import com.controlpago.repositorios.IPagoRepository;
 import com.controlpago.servicios.interfaces.IPagoService;
@@ -81,5 +80,11 @@ public class PagoService implements IPagoService {
     public List<Object[]> contarAlumnosQueNoHanPagadoPorGrado(LocalDate inicioMes, LocalDate finMes) {
         return pagoRepository.contarAlumnosQueNoHanPagadoPorGrado(inicioMes, finMes);
     }
+
+    @Override
+    public Page<Pago> buscarPagosPorAlumnoYFecha(String nombre, String apellido, Pageable pageable) {
+        return pagoRepository.buscarPagosPorAlumnoYFecha(nombre, apellido, pageable);
+    }
+
 
 }

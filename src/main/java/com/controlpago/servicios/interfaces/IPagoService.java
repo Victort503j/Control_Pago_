@@ -1,6 +1,5 @@
 package com.controlpago.servicios.interfaces;
 
-import com.controlpago.modelos.Alumno;
 import com.controlpago.modelos.Pago;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +32,8 @@ public interface IPagoService {
 
     // Nuevo método para contar los alumnos que no han pagado por grado
     List<Object[]> contarAlumnosQueNoHanPagadoPorGrado(LocalDate inicioMes, LocalDate finMes);
+
+    Page<Pago> buscarPagosPorAlumnoYFecha(String nombre, String apellido, Pageable pageable);
 
 
 }

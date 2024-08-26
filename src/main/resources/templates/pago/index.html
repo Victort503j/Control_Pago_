@@ -55,6 +55,20 @@
         .btn-detail span {
             margin-left: 5px;
         }
+        .boton-custom {
+            width: 320px;
+            background-color: #39CBBB;
+            border-color: #39CBBB;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .boton-custom:hover {
+            background-color: #2ea599;
+            border-color: #2ea599;
+            color: white;
+        }
+
     </style>
 </head>
 
@@ -81,11 +95,32 @@
             });
         </script>
     </div>
+    <div class="border border-2 rounded-4 p-5 mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+            <h1 class="m-0">Pagos</h1>
+            <a th:href="@{/pagos/create}" class="btn pay">Realizar Pago</a>
+        </div>
 
-    <h1>Listado de Pagos</h1>
-
-    
-    <a th:href="@{/pagos/create}" class="btn pay">Realizar Pago</a>
+        <div>
+            <div class="border rounded-4 p-3 mb-4">
+                <form th:action="@{/pagos/search}" method="get">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="nombre">Nombre:</label>
+                            <input type="text" id="nombre" name="nombre" th:value="${param.nombre}">
+                        </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="apellido">Apellido:</label>
+                            <input type="text" id="apellido" name="apellido" th:value="${param.apellido}">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary boton-custom">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     <table class="table table-striped">
         <thead>
         <tr>
