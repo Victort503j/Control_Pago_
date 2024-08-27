@@ -95,12 +95,14 @@
             });
         </script>
     </div>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <span th:text="${errorMessage}"></span>
+    </div>
     <div class="border border-2 rounded-4 p-5 mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
             <h1 class="m-0">Pagos</h1>
             <a th:href="@{/pagos/create}" class="btn pay">Realizar Pago</a>
         </div>
-
         <div>
             <div class="border rounded-4 p-3 mb-4">
                 <form th:action="@{/pagos/search}" method="get">
@@ -108,24 +110,31 @@
                         <div class="col-md-4 mb-3">
                             <label for="alumno">Alumno:</label>
                             <select id="alumno" name="alumno" class="form-select">
+                                <option selected value="">SELECCIONAR</option>
                                 <option th:each="alumno : ${alumnos}"
                                         th:value="${alumno.nombre} + ' ' + ${alumno.apellido}"
                                         th:text="${alumno.nombre} + ' ' + ${alumno.apellido}">
                                 </option>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary boton-custom">Buscar</button>
+                        <div class="col-md-4 mb-3">
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" id="fecha" name="fecha" th:value="${param.fecha}" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3 d-flex align-items-end justify-content-end">
+                            <button type="submit" class="btn btn-primary boton-custom">Buscar</button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>ID</th>
             <th>Alumno</th>
+            <th>Grado</th>
             <th>Mensualidad</th>
             <th>Fecha</th>
             <th>Cantidad</th>
@@ -160,6 +169,7 @@
             </ul>
         </div>
     </nav>
+</div>
 </div>
 </body>
 </html>

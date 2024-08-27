@@ -35,5 +35,7 @@ public interface IPagoService {
 
     Page<Pago> buscarPagosPorNombreCompleto(String nombreCompleto, Pageable pageable);
 
+    Page<Pago> buscarPagosPorNombreCompletoYFecha(String nombreCompleto, LocalDate fecha, Pageable pageable);
+
 
 }

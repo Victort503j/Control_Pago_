@@ -86,5 +86,10 @@ public class PagoService implements IPagoService {
         return pagoRepository.buscarPagosPorNombreCompleto(nombreCompleto, pageable);
     }
 
+    @Override
+    public Page<Pago> buscarPagosPorNombreCompletoYFecha(String nombreCompleto, LocalDate fecha, Pageable pageable) {
+        return pagoRepository.buscarPagosPorNombreCompletoYFecha(nombreCompleto, fecha, pageable);
+    }
+
 
 }

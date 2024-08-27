@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -71,12 +72,35 @@ public class PagoController {
         int pageSize = size.orElse(5);
         Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
 
-        Page<Pago> pagos = pagoService.buscarPagosPorNombreCompleto(
-                nombreCompleto.orElse(null), pageable);
+        Page<Pago> pagos = Page.empty();  // Inicializamos la variable de pagos
+        LocalDate fechaParsed = null;
+        String errorMessage = null;
 
+        try {
+            // Validación de la fecha, si está presente
+            if (fecha.isPresent() && !fecha.get().isEmpty()) {
+                fechaParsed = LocalDate.parse(fecha.get());
+            }
+
+            // Realizar la búsqueda de pagos, con filtros opcionales
+            pagos = pagoService.buscarPagosPorNombreCompletoYFecha(
+                    nombreCompleto.orElse(null), fechaParsed, pageable);
+
+            if (pagos.isEmpty()) {
+                errorMessage = "No se encontraron pagos para los criterios de búsqueda proporcionados.";
+            }
+
+        } catch (DateTimeParseException e) {
+            errorMessage = "Formato de fecha inválido. Por favor, ingrese una fecha válida.";
+        } catch (Exception e) {
+            errorMessage = "Ocurrió un error al realizar la búsqueda. Por favor, intente nuevamente.";
+        }
+
+        // Añadir los pagos, alumnos y posibles mensajes de error al modelo
         model.addAttribute("pagos", pagos);
         List<Alumno> alumnos = alumnoService.obtenerTodos();
         model.addAttribute("alumnos", alumnos);
+        model.addAttribute("errorMessage", errorMessage);
 
         int totalPage = pagos.getTotalPages();
         if (totalPage > 0) {
@@ -85,9 +109,9 @@ public class PagoController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+
         return "pago/index";
     }
-
 
 
     @GetMapping("/create")
