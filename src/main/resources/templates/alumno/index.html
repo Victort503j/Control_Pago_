@@ -12,7 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
-
         .margin {
             margin-top: 1rem !important;
             margin-right: 1rem !important;
@@ -80,6 +79,13 @@
             justify-content: flex-end;
             margin-top: 1rem;
         }
+        .padding {
+            padding: 1rem 2rem;
+        }
+        .margin-y {
+            margin-bottom: 2rem;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -106,7 +112,7 @@
         </script>
     </div>
 
-   <div class="border border-2 rounded-4 p-5 mt-4">
+   <div class="border border-2 rounded-4 padding margin-y">
        <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
            <h1 class="m-0">Alumnos</h1>
            <a th:href="@{/alumnos/create}" class="btn boton-add">

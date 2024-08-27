@@ -15,14 +15,6 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
-
-        .container {
-               border: 1px solid gray;
-               border-radius: 7px;
-               height: 130px;
-               width: 100%;
-               margin: 20px 0 20px 0px;
-        }
         .form-group {
                display: flex;
                flex-direction: column;
@@ -34,14 +26,12 @@
                 margin-left: 920px;
                 margin-bottom: 50px;
         }
-
         .form-actions {
             justify-content: flex-end;
             margin-top: 48px;
             margin-left: 350px;
 
         }
-
         .boton {
                 background-color: #39CBBB;
                 border:none;
@@ -77,6 +67,16 @@
             color: white;
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
+        .table thead th {
+            background-color: #29867C;
+            color: white;
+        }
+        .margin-y {
+            margin-bottom: 2rem;
+        }
+        .padding {
+            padding: 1rem 2rem;
+        }
     </style>
 </head>
 
@@ -105,63 +105,62 @@
             });
         </script>
     </div>
-    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-        <h1>Listado de Grados</h1>
-        <a th:href="@{/grados/create}" class="btn agregar">
-            <i class="fas fa-plus"></i> Agregar
-        </a>
-    </div>
-
-
-
-    <div class="container">
-        <form th:action="@{/grados}" method="get">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="search" class="form-label"><strong>Grado</strong></label>
-                        <select name="search" class="form-select select2"  id="search">
-                            <option value="" selected>SELECCIONAR</option>
-                            <option th:each="grado : ${allGrados}" th:value="${grado.id}" th:text="${grado.nombre}"></option>
-                        </select>
+    <div class="border border-2 rounded-4 padding mt-4 margin-y">
+        <div class="d-flex justify-content-between align-items-center mb-4 mt-1">
+            <h1>Grados</h1>
+            <a th:href="@{/grados/create}" class="btn agregar">
+                <i class="fas fa-plus"></i> Agregar
+            </a>
+        </div>
+        <div class="border rounded-4 p-3 mb-4">
+            <form th:action="@{/grados}" method="get">
+                <div class="row pb-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="search" class="form-label"><strong>Grado</strong></label>
+                            <select name="search" class="form-select select2"  id="search">
+                                <option value="" selected>SELECCIONAR</option>
+                                <option th:each="grado : ${allGrados}" th:value="${grado.id}" th:text="${grado.nombre}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4 d-flex justify-content-end align-items-end">
+                        <button type="submit" class="boton btn w-100 w-md-auto">Buscar</button>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-actions">
-                        <button type="submit" class="boton">Buscar</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${grados}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.nombre}"></td>
+                <td>
+                    <a th:href="@{/grados/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                    <a th:href="@{/grados/edit/{id}(id=${item.id})}" class="btn btn-outline-info">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a th:href="@{/grados/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${grados}">
-            <td th:text="${item.id}"></td>
-            <td th:text="${item.nombre}"></td>
-            <td>
-                <a th:href="@{/grados/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">
-                    <i class="fas fa-info-circle"></i>
-                </a>
-                <a th:href="@{/grados/edit/{id}(id=${item.id})}" class="btn btn-outline-info">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <a th:href="@{/grados/remove/{id}(id=${item.id})}" class="btn btn-outline-danger">
-                    <i class="fas fa-trash-alt"></i>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 
     <nav aria-label="Page navigation example">
         <div class="d-flex justify-content-center">
@@ -179,7 +178,7 @@
                 allowClear: true
             });
 
-             // Ajustar la altura del Select2 para que coincida con los input
+
             $('.select2-selection--single').css({
                 'height': 'calc(2.25rem + 2px)',
                 'padding': '0.375rem 0.75rem',
@@ -187,10 +186,10 @@
                 'border-radius': '0.25rem'
             });
 
-            // Asegurar el borde y el radio del borde
+
             $('.select2-selection').css({
-                'border': '1px solid #ced4da', // Borde igual al de Bootstrap
-                'border-radius': '0.375rem' // Radio del borde igual al de Bootstrap
+                'border': '1px solid #ced4da',
+                'border-radius': '0.375rem'
             });
         });
     </script>

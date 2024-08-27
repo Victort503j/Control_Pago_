@@ -18,8 +18,8 @@
 <body>
 <div layout:fragment="content">
     <h1 class="mt-3">Agregar Alumno</h1>
-    <div class="border border-2 rounded-4 p-3 custom-width margin-left mb-4 custom-padding-right mt-4">
-        <form th:action="@{/alumnos/save}" th:object="${alumno}" method="post">
+    <form th:action="@{/alumnos/save}" th:object="${alumno}" method="post">
+        <div class="border border-2 rounded-4 p-3 custom-width margin-left custom-padding-right mt-4">
             <div class="row space-between">
                 <div class="col">
                     <div class="form-group mt-4">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-md-6 mb-3 mt-4">
                     <label for="grado" class="form-label">Grado:</label>
                     <select class="form-control" data-control="select2"  th:field="*{grado}" id="grado" required>
@@ -43,14 +43,15 @@
                     </select>
                 </div>
             </div>
-            <div class="row">
-                <div class="col text-end mt-4">
-                    <a th:href="@{/alumnos}" class="btn btn-cancelar me-3">Cancelar</a>
-                    <button type="submit" class="btn btn-guardar">Guardar</button>
-                </div>
+        </div>
+
+        <div class="row mt-1">
+            <div class="col text-end mt-4">
+                <a th:href="@{/alumnos}" class="btn btn-cancelar me-3">Cancelar</a>
+                <button type="submit" class="btn btn-guardar">Guardar</button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -59,7 +60,6 @@
                 allowClear: true
             });
 
-             // Ajustar la altura del Select2 para que coincida con los input
             $('.select2-selection--single').css({
                 'height': 'calc(2.25rem + 2px)',
                 'padding': '0.375rem 0.75rem',
@@ -67,10 +67,9 @@
                 'border-radius': '0.25rem'
             });
 
-            // Asegurar el borde y el radio del borde
             $('.select2-selection').css({
-                'border': '1px solid #ced4da', // Borde igual al de Bootstrap
-                'border-radius': '0.375rem' // Radio del borde igual al de Bootstrap
+                'border': '1px solid #ced4da',
+                'border-radius': '0.375rem'
             });
         });
     </script>

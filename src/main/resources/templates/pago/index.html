@@ -72,7 +72,17 @@
             border-color: #2ea599;
             color: white;
         }
-
+        .table thead th {
+            background-color: #29867C;
+            color: white;
+        }
+        .padding {
+            padding: 10px 3rem 10px 3rem;
+        }
+        .margin-y {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 
@@ -102,7 +112,7 @@
     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
         <span th:text="${errorMessage}"></span>
     </div>
-    <div class="border border-2 rounded-4 p-5 mt-4">
+    <div class="border border-2 rounded-4 padding margin-y">
         <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
             <h1 class="m-0">Pagos</h1>
             <a th:href="@{/pagos/create}" class="btn pay">Realizar Pago</a>
@@ -132,37 +142,37 @@
                 </form>
             </div>
         </div>
+        <table class="table table-striped mt-3">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Alumno</th>
+                <th>Grado</th>
+                <th>Mensualidad</th>
+                <th>Fecha</th>
+                <th>Cantidad</th>
+                <th>Comentario</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pago : ${pagos}">
+                <td th:text="${pago.id}"></td>
+                <td th:text="${pago.alumno.nombre + ' ' + pago.alumno.apellido}"></td>
+                <td th:text="${pago.alumno.grado.nombre}"></td>
+                <td th:text="${pago.mensualidad}"></td>
+                <td th:text="${pago.fecha}"></td>
+                <td th:text="${pago.cantidadPagar}"></td>
+                <td th:text="${pago.comentario}"></td>
+                <td>
+                    <a th:href="@{/pagos/details/{id}(id=${pago.id})}" class="btn btn-detail">
+                        <i class="fa fa-info-circle"></i><span> Detalle de Pago</span>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Alumno</th>
-            <th>Grado</th>
-            <th>Mensualidad</th>
-            <th>Fecha</th>
-            <th>Cantidad</th>
-            <th>Comentario</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="pago : ${pagos}">
-            <td th:text="${pago.id}"></td>
-            <td th:text="${pago.alumno.nombre + ' ' + pago.alumno.apellido}"></td>
-            <td th:text="${pago.alumno.grado.nombre}"></td>
-            <td th:text="${pago.mensualidad}"></td>
-            <td th:text="${pago.fecha}"></td>
-            <td th:text="${pago.cantidadPagar}"></td>
-            <td th:text="${pago.comentario}"></td>
-            <td>
-                <a th:href="@{/pagos/details/{id}(id=${pago.id})}" class="btn btn-detail">
-                    <i class="fa fa-info-circle"></i><span> Detalle de Pago</span>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
 
     <nav aria-label="Page navigation example">
         <div class="d-flex justify-content-center">
@@ -190,8 +200,8 @@
 
             // Asegurar el borde y el radio del borde
             $('.select2-selection').css({
-                'border': '1px solid #ced4da', // Borde igual al de Bootstrap
-                'border-radius': '0.375rem' // Radio del borde igual al de Bootstrap
+                'border': '1px solid #ced4da',
+                'border-radius': '0.375rem'
             });
         });
     </script>
