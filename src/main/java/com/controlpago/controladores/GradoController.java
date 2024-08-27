@@ -4,6 +4,7 @@ import com.controlpago.modelos.Grado;
 import com.controlpago.servicios.interfaces.IGradoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -26,12 +27,29 @@ public class GradoController {
     private IGradoService gradoService;
 
     @GetMapping
-    public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+    public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size, @RequestParam("search") Optional<Integer> search) {
         int currentPage = page.orElse(1) - 1;
         int pageSize = size.orElse(5);
         Pageable pageable = PageRequest.of(currentPage, pageSize);
 
-        Page<Grado> grados = gradoService.buscarTodosPaginados(pageable);
+        List<Grado> allGrados = gradoService.obtenerTodos();
+        model.addAttribute("allGrados", allGrados);
+
+        Page<Grado> grados;
+
+        if (search.isPresent()) {
+            List<Grado> filteredGrados = gradoService.obtenerTodos().stream()
+                    .filter(grado -> grado.getId().equals(search.get()))
+                    .collect(Collectors.toList());
+
+            int start = (int) pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), filteredGrados.size());
+
+            grados = new PageImpl<>(filteredGrados.subList(start, end), pageable, filteredGrados.size());
+        } else {
+            grados = gradoService.buscarTodosPaginados(pageable);
+        }
+
         model.addAttribute("grados", grados);
 
         int totalPage = grados.getTotalPages();
@@ -41,6 +59,7 @@ public class GradoController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+        model.addAttribute("search", search.orElse(null));
         return "grado/index";
     }
 

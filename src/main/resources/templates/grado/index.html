@@ -110,16 +110,14 @@
 
 
     <div class="container">
-        <form th:action="@{/grados/search}" method="get">
+        <form th:action="@{/grados}" method="get">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="grado" class="form-label"><strong>Grado</strong></label>
-                        <select id="grado" name="grado" class="form-select">
-                            <option value="" selected>Selecciona el grado</option>
-                            <th:block th:each="grado : ${grados}">
-                                <option th:value="${grado.id}" th:text="${grado.nombre}"></option>
-                            </th:block>
+                        <label for="search" class="form-label"><strong>Grado</strong></label>
+                        <select name="search" id="search">
+                            <option value="" selected>SELECCIONAR</option>
+                            <option th:each="grado : ${allGrados}" th:value="${grado.id}" th:text="${grado.nombre}"></option>
                         </select>
                     </div>
                 </div>
