@@ -9,6 +9,10 @@
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
     <script src="assets/plugins/global/plugins.bundle.js"></script>
     <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
+    <!--Para el select2-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
         .titulo{
              margin-top: 13px;
@@ -68,7 +72,7 @@
             <div class="col">
                 <div class="form-group mt-4">
                     <label for="alumno">Alumno</label>
-                    <select class="form-control" data-control="select2" th:field="*{alumno}" id="alumno" required>
+                    <select class="form-control" data-control="select2"  th:field="*{alumno}" id="alumno" required>
                         <option value="">Seleccione un alumno</option>
                         <option th:each="alumno : ${alumnos}" th:value="${alumno.id}" th:text="${alumno.nombre + ' ' + alumno.apellido}"></option>
                     </select>
@@ -112,6 +116,28 @@
         </div>
     </form>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#alumno').select2({
+                placeholder: "Selecciona el grado de estudio",
+                allowClear: true
+            });
+
+             // Ajustar la altura del Select2 para que coincida con los input
+            $('.select2-selection--single').css({
+                'height': 'calc(2.25rem + 2px)',
+                'padding': '0.375rem 0.75rem',
+                'line-height': '1.5',
+                'border-radius': '0.25rem'
+            });
+
+            // Asegurar el borde y el radio del borde
+            $('.select2-selection').css({
+                'border': '1px solid #ced4da', // Borde igual al de Bootstrap
+                'border-radius': '0.375rem' // Radio del borde igual al de Bootstrap
+            });
+        });
+    </script>
 </div>
 </body>
 </html>
