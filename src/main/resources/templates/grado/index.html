@@ -131,19 +131,15 @@
                 </div>
             </form>
         </div>
-
-
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Id</th>
                 <th>Nombre</th>
                 <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="item : ${grados}">
-                <td th:text="${item.id}"></td>
                 <td th:text="${item.nombre}"></td>
                 <td>
                     <a th:href="@{/grados/details/{id}(id=${item.id})}" class="btn btn-outline-secondary">

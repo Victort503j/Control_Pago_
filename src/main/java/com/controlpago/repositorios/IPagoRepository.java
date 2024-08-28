@@ -46,5 +46,4 @@ public interface IPagoRepository extends JpaRepository<Pago, Integer> {
     Page<Pago> buscarPagosPorNombreCompletoYFecha(@Param("nombreCompleto") String nombreCompleto,
                                                   @Param("fecha") LocalDate fecha,
                                                   Pageable pageable);
-
 }

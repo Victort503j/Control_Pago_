@@ -145,7 +145,6 @@
         <table class="table table-striped mt-3">
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Alumno</th>
                 <th>Grado</th>
                 <th>Mensualidad</th>
@@ -157,7 +156,6 @@
             </thead>
             <tbody>
             <tr th:each="pago : ${pagos}">
-                <td th:text="${pago.id}"></td>
                 <td th:text="${pago.alumno.nombre + ' ' + pago.alumno.apellido}"></td>
                 <td th:text="${pago.alumno.grado.nombre}"></td>
                 <td th:text="${pago.mensualidad}"></td>

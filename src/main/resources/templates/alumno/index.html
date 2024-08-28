@@ -152,7 +152,6 @@
            <table class="table table-striped">
                <thead>
                <tr>
-                   <th>Id</th>
                    <th>Nombre</th>
                    <th>Apellido</th>
                    <th>Grado</th>
@@ -162,7 +161,6 @@
                </thead>
                <tbody>
                <tr th:each="item : ${alumnos}">
-                   <td th:text="${item.id}"></td>
                    <td th:text="${item.nombre}"></td>
                    <td th:text="${item.apellido}"></td>
                    <td th:text="${item.grado.nombre}"></td>

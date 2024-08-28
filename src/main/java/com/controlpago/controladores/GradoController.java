@@ -3,10 +3,7 @@ package com.controlpago.controladores;
 import com.controlpago.modelos.Grado;
 import com.controlpago.servicios.interfaces.IGradoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +27,7 @@ public class GradoController {
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size, @RequestParam("search") Optional<Integer> search) {
         int currentPage = page.orElse(1) - 1;
         int pageSize = size.orElse(5);
-        Pageable pageable = PageRequest.of(currentPage, pageSize);
+        Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
 
         List<Grado> allGrados = gradoService.obtenerTodos();
         model.addAttribute("allGrados", allGrados);
