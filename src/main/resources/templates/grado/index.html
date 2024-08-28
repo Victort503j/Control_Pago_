@@ -33,18 +33,22 @@
                font-weight: bold;
                transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
          }
-
         .boton-custom:hover {
-            background-color: #52c1b5;
-            border-color: #52c1b5;
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-            color: white;
-        }
-        .boton-custom:focus, .boton-custom:active {
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(0, 200, 180, 0.2);
+             background-color: #52c1b5;
+             border-color: #52c1b5;
+             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+             color: white;
         }
 
+        .boton-custom:focus, .boton-custom:active {
+            background-color: #39CBBB !important;
+            border-color: #39CBBB !important;
+            color: white !important;
+            outline: none;
+            box-shadow: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+        }
         .form-actions {
             justify-content: flex-end;
             margin-top: 48px;
@@ -70,22 +74,34 @@
         .search-container {
                 margin-left: 900px;
         }
-        .agregar{
-             background-color: #29867C;
+        .boton-add{
+            background-color: #29867C;
             border-color: #29867C;
-            border-radius: 4px;
             color: white;
-            width: 170px;
-            height: 40px;
             font-weight: bold;
+            display: flex;
             align-items: center;
+            padding: 0.5rem 1rem;
         }
-        .agregar:hover {
+        .boton-add span {
+           display: inline-block;
+           margin-left: 5px;
+        }
+        .boton-add:hover {
             background-color: #247564;
             border-color: #247564;
             color: white;
             transition: background-color 0.3s ease, border-color 0.3s ease;
         }
+        .boton-add:focus, .boton-add:active {
+           background-color: #247564 !important;
+           border-color: #247564 !important;
+           color: white !important;
+           outline: none;
+           box-shadow: none;
+           -webkit-box-shadow: none;
+           -moz-box-shadow: none;
+       }
         .table thead th {
             background-color: #29867C;
             color: white;
@@ -127,8 +143,8 @@
     <div class="border border-2 rounded-4 padding mt-4 margin-y shadow-box">
         <div class="d-flex justify-content-between align-items-center mb-4 mt-1">
             <h1>Grados</h1>
-            <a th:href="@{/grados/create}" class="btn agregar">
-                <i class="fas fa-plus"></i> Agregar
+            <a th:href="@{/grados/create}" class="btn boton-add">
+                <i class="fas fa-plus"></i><span>Agregar</span>
             </a>
         </div>
         <div class="border rounded-4 p-3 mb-4">

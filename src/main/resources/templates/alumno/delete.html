@@ -7,56 +7,106 @@
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
     <script src="assets/plugins/global/plugins.bundle.js"></script>
     <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
-<style>
-    body {
-           font-family: 'Arial', sans-serif;
-           background-color: #f4f7f6;
-           color: #4b4b4b;
-           margin: 0;
-           padding: 0;
-       }
+    <style>
+        .btn-secondary-custom {
+              background-color: #FFD4D4;
+              color: #931B1B;
+              border: none;
+              font-weight: bold;
+              padding: 9px 24px;
+              font-size: 18px;
+          }
+          .btn-secondary-custom:hover {
+              background-color: #ffcaca;
+              color: #931B1B;
+              box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+              transform: translateY(-2px);
+          }
+          .btn-secondary-custom:focus, .btn-secondary-custom:active {
+              transform: translateY(2px);
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              background-color: #ffcaca !important;
+              border-color: #ffcaca !important;
+              color: #931B1B !important;
+              outline: none;
+              box-shadow: none;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
+          }
+          .btn-delete {
+                background-color: #F73F3F;
+                color: white;
+                border: none;
+                font-weight: bold;
+                margin-left: 1rem;
+                padding: 9px 24px;
+                font-size: 18px;
+          }
 
-       h1 {
-           font-size: 2rem;
-           color: #4B5C65;
-       }
-</style>
+          .btn-delete:hover {
+                background-color:  #fd3b3b;
+                color: #fff;
+                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+                transform: translateY(-2px);
+          }
+          .btn-delete i {
+                margin-right: 8px;
+                color: white;
+          }
+          .btn-delete:focus, .btn-delete:active {
+              transform: translateY(2px);
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              background-color: #fd3b3b !important;
+              border-color: #fd3b3b !important;
+              color: white !important;
+              outline: none;
+              box-shadow: none;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
+          }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content">
-    <h1>Eliminar Grado</h1>
-    <h3>¿Estás seguro que deseas eliminar el registro seleccionado?</h3>
-    <div class="border border-2 rounded-4 p-3 custom-width margin-left mb-4 custom-padding-right mt-4 shadow-box">
-        <dl class="row">
-            <div class="mt-3 row">
-                <dt class="col-sm-2">ID</dt>
-                <dd class="col-sm-10" th:text="${alumno.id}"></dd>
-            </div>
+    <div class="border border-2 rounded-4 p-3 mt-4 shadow-box">
+        <h1>Eliminar Grado</h1>
+        <h3>¿Estás seguro que deseas eliminar el registro seleccionado?</h3>
+        <div class="border border-2 rounded-4 p-3 custom-width margin-left mb-4 custom-padding-right mt-4 shadow-box">
+            <dl class="row">
+                <div class="mt-3 row">
+                    <dt class="col-sm-2">ID</dt>
+                    <dd class="col-sm-10" th:text="${alumno.id}"></dd>
+                </div>
 
-            <div class="mt-3 row">
-                <dt class="col-sm-2">NOMBRE</dt>
-                <dd class="col-sm-10" th:text="${alumno.nombre}"></dd>
-            </div>
+                <div class="mt-3 row">
+                    <dt class="col-sm-2">NOMBRE</dt>
+                    <dd class="col-sm-10" th:text="${alumno.nombre}"></dd>
+                </div>
 
-            <div class="mt-3 row">
-                <dt class="col-sm-2">APELLIDO</dt>
-                <dd class="col-sm-10" th:text="${alumno.apellido}"></dd>
-            </div>
+                <div class="mt-3 row">
+                    <dt class="col-sm-2">APELLIDO</dt>
+                    <dd class="col-sm-10" th:text="${alumno.apellido}"></dd>
+                </div>
 
-            <div class="mt-3 row">
-                <dt class="col-sm-2">GRADO</dt>
-                <dd class="col-sm-10" th:text="${alumno.grado.nombre}"></dd>
-            </div>
+                <div class="mt-3 row">
+                    <dt class="col-sm-2">GRADO</dt>
+                    <dd class="col-sm-10" th:text="${alumno.grado.nombre}"></dd>
+                </div>
 
-        </dl>
-        <form th:action="@{/alumnos/delete}" method="post">
-            <input type="hidden" name="id" th:value="${alumno.id}">
-            <div class="mt-5">
-                <input type="submit" value="Eliminar" class="btn btn-cancelar me-3">
-                <a th:href="@{/alumnos}" class="btn btn-guardar">Regresar</a>
-            </div>
-        </form>
+            </dl>
+            <form th:action="@{/alumnos/delete}" method="post">
+                <input type="hidden" name="id" th:value="${alumno.id}">
+                <div class="row">
+                    <div class="col mt-4 text-end">
+                        <a th:href="@{/grados}" class="btn btn-secondary-custom">Regresar</a>
+                        <button type="submit" class="btn btn-delete">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 </body>

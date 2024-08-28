@@ -7,31 +7,62 @@
 <head>
     <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
     <style>
-        .cancelar {
-       background-color: #FFD4D4;
-       color: #931B1B;
-       border: none;
-       padding: 9px 24px;
-       font-size: 18px;
-       font-weight: bold;
-       margin-right: 10px;
+       .cancelar {
+           background-color: #FFD4D4;
+           color: #931B1B;
+           border: none;
+           padding: 9px 24px;
+           font-size: 18px;
+           font-weight: bold;
+           margin-right: 10px;
        }
 
        .cancelar:hover {
-       background-color:  #FFD4D4;
+           background-color:  #ffcaca;
+           color: #931B1B;
+           box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+           transform: translateY(-2px);
+       }
+       .cancelar:focus, .cancelar:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          background-color: #ffcaca !important;
+          border-color: #ffcaca !important;
+          color: #931B1B !important;
+          outline: none;
+          box-shadow: none;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+       }
+       .btn-save {
+           background-color: #00AB99;
+           color: white;
+           border: none;
+           padding: 9px 24px;
+           font-size: 18px;
+           font-weight: bold;
        }
 
-       .guardar {
-       background-color: #00AB99;
-       color: white;
-       border: none;
-       padding: 9px 24px;
-       font-size: 18px;
-       font-weight: bold;
+       .btn-save:hover {
+           background-color: #009E8C;
+           color: white;
+           box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+           transform: translateY(-2px);
        }
 
-       .guardar:hover {
-       background-color: #009E8C;
+       .btn-save i {
+            color: white;
+       }
+       .btn-save:focus, .btn-save:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          background-color: #009E8C !important;
+          border-color: #009E8C !important;
+          color: white !important;
+          outline: none;
+          box-shadow: none;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
        }
     </style>
 </head>
@@ -53,8 +84,10 @@
             </div>
             <div class="row mt-1">
                 <div class="col text-end mt-4">
-                    <a th:href="@{/grados}" class="btn btn-cancelar">Regresar</a>
-                    <button type="submit" class="btn btn-guardar me-2">Guardar</button>
+                    <a th:href="@{/grados}" class="btn cancelar">Regresar</a>
+                    <button type="submit" class="btn btn-save me-2">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
                 </div>
             </div>
 

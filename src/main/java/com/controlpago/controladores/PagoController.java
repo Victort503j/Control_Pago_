@@ -131,15 +131,15 @@ public class PagoController {
         Long alumnoId = pPago.getAlumno().getId().longValue();
         Pago pagoExistente = pagoService.buscarPorAlumnoYMes(alumnoId, pPago.getFecha());
         if (pagoExistente != null) {
-            result.rejectValue("fecha", "error.pago", "Este alumno ya ha realizado un pago en el mes seleccionado.");
-            model.addAttribute("alumnos", alumnoService.obtenerTodos());
-            return "pago/create";
+            attributes.addFlashAttribute("error", "Este alumno ya ha realizado un pago en el mes seleccionado.");
+            return "redirect:/pagos/create";
         }
 
         pagoService.crearOEditar(pPago);
         attributes.addFlashAttribute("msg", "Pago guardado exitosamente");
         return "redirect:/pagos";
     }
+
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model){
         Pago pago = pagoService.buscarPorId(id).orElse(null);

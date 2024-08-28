@@ -7,20 +7,52 @@
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
     <script src="assets/plugins/global/plugins.bundle.js"></script>
     <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
-<style>
-    body {
-           font-family: 'Arial', sans-serif;
-           background-color: #f4f7f6;
-           color: #4b4b4b;
-           margin: 0;
-           padding: 0;
-       }
+    <style>
+        .cancelar {
+             background-color: #FFD4D4;
+             color: #931B1B;
+             border: none;
+             padding: 9px 24px;
+             font-size: 18px;
+             font-weight: bold;
+             margin-right: 10px;
+         }
 
-       h1 {
-           font-size: 2rem;
-           color: #4B5C65;
-       }
-</style>
+         .cancelar:hover {
+             background-color:  #ffcaca;
+             color: #931B1B;
+             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+             transform: translateY(-2px);
+         }
+         .cancelar:focus, .cancelar:active {
+               transform: translateY(2px);
+               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               background-color: #ffcaca !important;
+               border-color: #ffcaca !important;
+               color: #931B1B !important;
+               outline: none;
+               box-shadow: none;
+               -webkit-box-shadow: none;
+               -moz-box-shadow: none;
+         }
+         .edit {
+              background-color: #39CBBB;
+              color: white;
+              border: none;
+              padding: 9px 24px;
+              font-size: 18px;
+              font-weight: bold;
+         }
+         .edit:hover {
+             background-color: #2bc8b6;
+             color: white;
+             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+             transform: translateY(-2px);
+         }
+         .edit i {
+             color: white;
+         }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -49,10 +81,14 @@
                 </div>
 
             </dl>
-           <div class="mt-5">
-               <a th:href="@{/alumnos}" class="btn btn-cancelar me-3">Regresar</a>
-               <a th:href="@{/alumnos/edit/{id}(id=${alumno.id})}" class="btn btn-guardar">Editar</a>
-           </div>
+            <div class="row mt-1">
+                <div class="col text-end mt-4">
+                    <a th:href="@{/alumnos}" class="btn cancelar">Regresar</a>
+                    <a th:href="@{/alumnos/edit/{id}(id=${alumno.id})}" class="btn edit">
+                        <i class="fas fa-pen"></i> Modificar
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

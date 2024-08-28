@@ -5,6 +5,53 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
+    <style>
+    .cancelar {
+        background-color: #FFD4D4;
+        color: #931B1B;
+        border: none;
+        padding: 9px 24px;
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .cancelar:hover {
+        background-color:  #ffcaca;
+        color: #931B1B;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+    .cancelar:focus, .cancelar:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          background-color: #ffcaca !important;
+          border-color: #ffcaca !important;
+          color: #931B1B !important;
+          outline: none;
+          box-shadow: none;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+    }
+    .edit {
+         background-color: #39CBBB;
+         color: white;
+         border: none;
+         padding: 9px 24px;
+         font-size: 18px;
+         font-weight: bold;
+    }
+    .edit:hover {
+        background-color: #2bc8b6;
+        color: white;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+    .edit i {
+        color: white;
+    }
+
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -21,8 +68,10 @@
                 </dl>
                 <div class="row">
                     <div class="col text-end mt-4">
-                        <a th:href="@{/grados}" class="btn btn-cancelar">Regresar</a>
-                        <a th:href="@{/grados/edit/{id}(id=${grado.id})}" class="btn btn-guardar">Editar</a>
+                        <a th:href="@{/grados}" class="btn cancelar">Regresar</a>
+                        <a th:href="@{/grados/edit/{id}(id=${grado.id})}" class="btn edit">
+                            <i class="fas fa-pen"></i> Modificar
+                        </a>
                     </div>
                 </div>
 

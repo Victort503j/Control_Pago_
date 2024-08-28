@@ -13,27 +13,72 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<style>
-    body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7f6;
-            color: #4b4b4b;
-            margin: 0;
-            padding: 0;
-        }
+    <style>
+        .cancelar {
+               background-color: #FFD4D4;
+               color: #931B1B;
+               border: none;
+               padding: 9px 24px;
+               font-size: 18px;
+               font-weight: bold;
+               margin-right: 10px;
+           }
 
-        h1 {
-            font-size: 2rem;
-            color: #4B5C65;
-        }
-</style>
+           .cancelar:hover {
+               background-color:  #ffcaca;
+               color: #931B1B;
+               box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+               transform: translateY(-2px);
+           }
+           .cancelar:focus, .cancelar:active {
+              transform: translateY(2px);
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              background-color: #ffcaca !important;
+              border-color: #ffcaca !important;
+              color: #931B1B !important;
+              outline: none;
+              box-shadow: none;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
+           }
+           .btn-save {
+               background-color: #00AB99;
+               color: white;
+               border: none;
+               padding: 9px 24px;
+               font-size: 18px;
+               font-weight: bold;
+           }
+
+           .btn-save:hover {
+               background-color: #009E8C;
+               color: white;
+               box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+               transform: translateY(-2px);
+           }
+
+           .btn-save i {
+                color: white;
+           }
+           .btn-save:focus, .btn-save:active {
+              transform: translateY(2px);
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              background-color: #009E8C !important;
+              border-color: #009E8C !important;
+              color: white !important;
+              outline: none;
+              box-shadow: none;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
+           }
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content">
     <h1 class="mt-3">Agregar Alumno</h1>
-    <form th:action="@{/alumnos/save}" th:object="${alumno}" method="post">
-        <div class="border border-2 rounded-4 p-3 custom-width margin-left custom-padding-right mt-4 shadow-box">
+    <div class="border border-2 rounded-4 p-3 custom-width margin-left custom-padding-right mt-4 shadow-box">
+        <form th:action="@{/alumnos/save}" th:object="${alumno}" method="post">
             <div class="row space-between">
                 <div class="col">
                     <div class="form-group mt-4">
@@ -57,15 +102,18 @@
                     </select>
                 </div>
             </div>
-        </div>
 
-        <div class="row mt-1">
-            <div class="col text-end mt-4">
-                <a th:href="@{/alumnos}" class="btn btn-cancelar me-3">Cancelar</a>
-                <button type="submit" class="btn btn-guardar">Guardar</button>
+            <div class="row mt-1">
+                <div class="col text-end mt-4">
+                    <a th:href="@{/alumnos}" class="btn cancelar">Regresar</a>
+                    <button type="submit" class="btn btn-save me-2">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+
 
     <script type="text/javascript">
         $(document).ready(function() {

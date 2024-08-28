@@ -12,18 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <style>
-        body {
-           font-family: 'Arial', sans-serif;
-           background-color: #f4f7f6;
-           color: #4b4b4b;
-           margin: 0;
-           padding: 0;
-       }
-
-       h1 {
-           font-size: 2rem;
-           color: #4B5C65;
-       }
        .margin {
            margin-top: 1rem !important;
            margin-right: 1rem !important;
@@ -38,16 +26,21 @@
            font-weight: bold;
            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
        }
-
        .boton-custom:hover {
-           background-color: #52c1b5;
-           border-color: #52c1b5;
-           box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-           color: white;
+            background-color: #52c1b5;
+            border-color: #52c1b5;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            color: white;
        }
+
        .boton-custom:focus, .boton-custom:active {
-           outline: none;
-           box-shadow: 0 0 0 4px rgba(0, 200, 180, 0.2);
+            background-color: #39CBBB !important;
+            border-color: #39CBBB !important;
+            color: white !important;
+            outline: none;
+            box-shadow: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
        }
        .margin-left {
            margin-left: -10px;
@@ -74,6 +67,15 @@
            border-color: #247564;
            color: white;
            transition: background-color 0.3s ease, border-color 0.3s ease;
+       }
+       .boton-add:focus, .boton-add:active {
+           background-color: #247564 !important;
+           border-color: #247564 !important;
+           color: white !important;
+           outline: none;
+           box-shadow: none;
+           -webkit-box-shadow: none;
+           -moz-box-shadow: none;
        }
        .custom-width {
            width: 102%;
@@ -163,7 +165,7 @@
                        </div>
                    </div>
                    <div class="form-actions">
-                       <button type="submit" class="btn btn-primary boton-custom">Buscar</button>
+                       <button type="submit" class="btn boton-custom">Buscar</button>
                    </div>
                </form>
            </div>
@@ -215,8 +217,8 @@
     </nav>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#grado').select2({
-                placeholder: "SELECCIONAR",
+            $('#alumno').select2({
+                placeholder: "Selecciona el grado de estudio",
                 allowClear: true
             });
 

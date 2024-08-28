@@ -16,18 +16,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
     <style>
-            body {
-               font-family: 'Arial', sans-serif;
-               background-color: #f4f7f6;
-               color: #4b4b4b;
-               margin: 0;
-               padding: 0;
-           }
-
-           h1 {
-               font-size: 2rem;
-               color: #4B5C65;
-           }
            .pay {
                background: linear-gradient(45deg, #7DBB00, #67A600);
                color: #fff;
@@ -47,7 +35,6 @@
                align-items: center;
                justify-content: center;
            }
-
            .pay::before {
                content: '';
                position: absolute;
@@ -60,7 +47,6 @@
                transition: all 0.3s ease;
                transform: rotate(45deg);
            }
-
            .pay:hover::before {
                opacity: 1;
                top: -50%;
@@ -68,23 +54,19 @@
                width: 300%;
                height: 300%;
            }
-
            .pay:hover {
                background: linear-gradient(45deg, #76B200, #5F9D00);
                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
                transform: translateY(-2px);
            }
-
            .pay:active {
                transform: translateY(2px);
                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
            }
-
            .pay i {
                font-size: 18px;
                margin-right: 10px;
            }
-
            .pay span {
                display: inline-block;
                margin-left: 5px;
@@ -109,9 +91,16 @@
               box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
               transform: translateY(-2px);
           }
-          .btn-detail:active {
+          .btn-detail:focus, .btn-detail:active {
               transform: translateY(2px);
               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+              background-color: #3d4a4c !important;
+              border-color: #3d4a4c !important;
+              color: white !important;
+              outline: none;
+              box-shadow: none;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
           }
           .btn-detail i {
               font-size: 16px;
@@ -120,25 +109,34 @@
               margin-left: 5px;
           }
           .boton-custom {
-              width: 320px;
-              background-color: #39CBBB;
-              border-color: #39CBBB;
-              color: white;
-              font-weight: bold;
-              transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-          }
-          .boton-custom:hover {
-              background-color: #52c1b5;
-              border-color: #52c1b5;
-              box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-              color: white;
-          }
+                width: 320px;
+                background-color: #39CBBB;
+                border-color: #39CBBB;
+                color: white;
+                font-weight: bold;
+                transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            }
+            .boton-custom:hover {
+                background-color: #52c1b5;
+                border-color: #52c1b5;
+                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+                color: white;
+            }
+            .boton-custom:focus, .boton-custom:active {
+                background-color: #39CBBB !important;
+                border-color: #39CBBB !important;
+                color: white !important;
+                outline: none;
+                box-shadow: none;
+                -webkit-box-shadow: none;
+                -moz-box-shadow: none;
+            }
           .table thead th {
               background-color: #29867C;
               color: white;
           }
           .padding {
-              padding: 10px 3rem 10px 3rem;
+              padding: 10px 2rem 10px 2rem;
           }
           .margin-y {
               margin-top: 2rem;
@@ -197,7 +195,7 @@
                             <input type="date" id="fecha" name="fecha" th:value="${param.fecha}" class="form-control">
                         </div>
                         <div class="col-md-4 mb-3 d-flex align-items-end justify-content-end">
-                            <button type="submit" class="btn btn-primary boton-custom">Buscar</button>
+                            <button type="submit" class="btn boton-custom">Buscar</button>
                         </div>
                     </div>
                 </form>
@@ -249,7 +247,6 @@
                 allowClear: true
             });
 
-             // Ajustar la altura del Select2 para que coincida con los input
             $('.select2-selection--single').css({
                 'height': 'calc(2.25rem + 2px)',
                 'padding': '0.375rem 0.75rem',
@@ -257,7 +254,6 @@
                 'border-radius': '0.25rem'
             });
 
-            // Asegurar el borde y el radio del borde
             $('.select2-selection').css({
                 'border': '1px solid #ced4da',
                 'border-radius': '0.375rem'

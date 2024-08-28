@@ -9,58 +9,79 @@
     <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css"/>
     <script src="assets/plugins/global/plugins.bundle.js"></script>
     <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!--Para el select2-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
-        body {
-           font-family: 'Arial', sans-serif;
-           background-color: #f4f7f6;
-           color: #4b4b4b;
-           margin: 0;
-           padding: 0;
-       }
-
-       h1 {
-           font-size: 2rem;
-           color: #4B5C65;
-       }
-       .titulo{
-            margin-top: 13px;
-            margin-bottom: 13px;
-       }
-       .btn-cancelar {
-           background-color: #FF7373;
-           color: #931B1B;
-           border: none;
-           padding: 9px 24px;
-           font-size: 18px;
-           font-weight: bold;
-           margin-right: 10px;
-       }
-
-       .btn-cancelar:hover {
-           background-color: #E66262;
-       }
-
-       .btn-guardar {
-           background-color: #00AB99;
-           color: white;
-           border: none;
+        .titulo{
+             margin-top: 13px;
+             margin-bottom: 13px;
+        }
+        .cancelar {
+            background-color: #FFD4D4;
+            color: #931B1B;
+            border: none;
             padding: 9px 24px;
-           font-size: 18px;
-           font-weight: bold;
-       }
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
 
-       .btn-guardar:hover {
-           background-color: #009E8C;
-       }
-        .button-group {
-           display: flex;
-           justify-content: flex-end;
-           margin-top: 20px;
-       }
+        .cancelar:hover {
+            background-color:  #ffcaca;
+            color: #931B1B;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        .cancelar:focus, .cancelar:active {
+           transform: translateY(2px);
+           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+           background-color: #ffcaca !important;
+           border-color: #ffcaca !important;
+           color: #931B1B !important;
+           outline: none;
+           box-shadow: none;
+           -webkit-box-shadow: none;
+           -moz-box-shadow: none;
+        }
+
+        .btn-save {
+                background-color: #00AB99;
+                color: white;
+                border: none;
+                padding: 9px 24px;
+                font-size: 18px;
+                font-weight: bold;
+        }
+
+        .btn-save:hover {
+                background-color: #009E8C;
+                color: white;
+                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+                transform: translateY(-2px);
+        }
+
+        .btn-save i {
+                 color: white;
+        }
+        .btn-save:focus, .btn-save:active {
+               transform: translateY(2px);
+               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+               background-color: #009E8C !important;
+               border-color: #009E8C !important;
+               color: white !important;
+               outline: none;
+               box-shadow: none;
+               -webkit-box-shadow: none;
+               -moz-box-shadow: none;
+         }
+         .button-group {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
     </style>
     <script>
         function actualizarCantidadPagar() {
@@ -77,6 +98,27 @@
 
 <body>
 <div layout:fragment="content">
+    <div th:if="${msg != null}">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                title: "Confirmación",
+                text: '[[${msg}]]',
+                icon: "success"
+            });
+        </script>
+    </div>
+
+    <div th:if="${error != null}">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                title: "Error",
+                text: '[[${error}]]',
+                icon: "error"
+            });
+        </script>
+    </div>
     <div class="border border-2 rounded-4 p-3 mt-4 shadow-box">
         <h1 class="mt-3">Realizar Pago</h1>
         <form th:action="@{/pagos/save}" th:object="${pago}" method="post">
@@ -123,8 +165,8 @@
             </div>
             <div class="row mt-1">
                 <div class="col text-end mt-4">
-                    <a th:href="@{/pagos}" class="btn btn-cancelar me-3">Cancelar</a>
-                    <button type="submit" class="btn btn-guardar">Guardar</button>
+                    <a th:href="@{/pagos}" class="btn cancelar me-3">Cancelar</a>
+                    <button type="submit" class="btn btn-save">Guardar</button>
                 </div>
             </div>
         </form>

@@ -5,6 +5,64 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
+    <style>
+      .btn-secondary-custom {
+          background-color: #FFD4D4;
+          color: #931B1B;
+          border: none;
+          font-weight: bold;
+          padding: 9px 24px;
+          font-size: 18px;
+      }
+      .btn-secondary-custom:hover {
+          background-color: #ffcaca;
+          color: #931B1B;
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+          transform: translateY(-2px);
+      }
+      .btn-secondary-custom:focus, .btn-secondary-custom:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          background-color: #ffcaca !important;
+          border-color: #ffcaca !important;
+          color: #931B1B !important;
+          outline: none;
+          box-shadow: none;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+      }
+      .btn-delete {
+            background-color: #F73F3F;
+            color: white;
+            border: none;
+            font-weight: bold;
+            margin-left: 1rem;
+            padding: 9px 24px;
+            font-size: 18px;
+      }
+
+      .btn-delete:hover {
+            background-color:  #fd3b3b;
+            color: #fff;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+      }
+      .btn-delete i {
+            margin-right: 8px;
+            color: white;
+      }
+      .btn-delete:focus, .btn-delete:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          background-color: #fd3b3b !important;
+          border-color: #fd3b3b !important;
+          color: white !important;
+          outline: none;
+          box-shadow: none;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+      }
+    </style>
 </head>
 
 <body>
@@ -22,10 +80,14 @@
             </dl>
 
             <form th:action="@{/grados/delete}" method="post">
-                <div class="mt-4">
-                    <input type="hidden" name="id" th:value="${grado.id}">
-                    <input type="submit" value="Eliminar" class="btn btn-cancelar">
-                    <a th:href="@{/grados}" class="btn btn-guardar">Regresar</a>
+                <div class="row">
+                    <div class="col mt-4 text-end">
+                        <input type="hidden" name="id" th:value="${grado.id}">
+                        <a th:href="@{/grados}" class="btn btn-secondary-custom">Regresar</a>
+                        <button type="submit" class="btn btn-delete">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
