@@ -106,7 +106,7 @@ public class GradoController {
     @PostMapping("/delete")
     public String delete(@RequestParam("id") Integer id, RedirectAttributes attributes){
         gradoService.eliminarPorId(id);
-        attributes.addFlashAttribute("error", "Grado eliminado exitosamente");
+        attributes.addFlashAttribute("msg", "Grado eliminado exitosamente");
         return "redirect:/grados";
     }
 }
