@@ -4,57 +4,30 @@
       layout:decorate="/layouts/_mainLayout"
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <style>
-        .cancelar {
-           background-color: #FFD4D4;
-           color: #931B1B;
-           border: none;
-           padding: 9px 24px;
-           font-size: 18px;
-           font-weight: bold;
-           margin-right: 10px;
-       }
-
-       .cancelar:hover {
-            background-color:  #FFD4D4;
-            color: #931B1B;
-       }
-
-       .modificar {
-           background-color: #00AB99;
-           color: white;
-           border: none;
-           padding: 9px 24px;
-           font-size: 18px;
-           font-weight: bold;
-       }
-
-       .modificar:hover {
-           background-color: #00AB99;
-           color: white;
-       }
-    </style>
+    <link  th:href="@{/css/style_custom.css}" rel="stylesheet" />
 </head>
 <body>
 <div layout:fragment="content">
-    <h1 class="mt-3">Detalles del Grado</h1>
-    <div class="border border-2 rounded-4 p-3 custom-width margin-left mb-4 custom-padding-right mt-4">
-        <div>
-            <dl class="row">
-                <dt class="col-sm-2">ID</dt>
-                <dd class="col-sm-10" th:text="${grado.id}"></dd>
+    <div class="border border-2 rounded-4 p-3 mt-4 shadow-box">
+        <h1 class="mt-3">Detalles del Grado</h1>
+        <div class="border border-2 rounded-4 p-3 custom-width margin-left mb-4 custom-padding-right mt-4">
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-2 mb-4">ID</dt>
+                    <dd class="col-sm-10 mb-4" th:text="${grado.id}"></dd>
 
-                <dt class="col-sm-2">NOMBRE</dt>
-                <dd class="col-sm-10" th:text="${grado.nombre}"></dd>
-            </dl>
-            <div class="row">
-                <div class="col text-end mt-4">
-                    <a th:href="@{/grados}" class="btn cancelar">Regresar</a>
-                    <a th:href="@{/grados/edit/{id}(id=${grado.id})}" class="btn modificar">Editar</a>
+                    <dt class="col-sm-2">NOMBRE</dt>
+                    <dd class="col-sm-10" th:text="${grado.nombre}"></dd>
+                </dl>
+                <div class="row">
+                    <div class="col text-end mt-4">
+                        <a th:href="@{/grados}" class="btn btn-cancelar">Regresar</a>
+                        <a th:href="@{/grados/edit/{id}(id=${grado.id})}" class="btn btn-guardar">Editar</a>
+                    </div>
                 </div>
+
+
             </div>
-
-
         </div>
     </div>
 
