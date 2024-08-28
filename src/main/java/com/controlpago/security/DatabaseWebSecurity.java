@@ -10,9 +10,11 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class DatabaseWebSecurity {
+
     @Bean
     public UserDetailsManager customUsers(DataSource dataSource){
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
@@ -23,28 +25,28 @@ public class DatabaseWebSecurity {
                 "where u.login = ?");
         return users;
     }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
-                //Aperturar el acceso a los recursos estáticos
+                // Aperturar el acceso a los recursos estáticos
                 .requestMatchers("/assets/**", "/css/**", "/js/**", "/images/**").permitAll()
-                //Las vistas públicas no requieren autenticación
+                // Las vistas públicas no requieren autenticación
                 .requestMatchers("/", "/privacy", "/terms").permitAll()
-
-
-                //Asignar permisos a URLS por roles
-                /*.requestMatchers("/grupos/**").hasAnyAuthority("secretaria", "Secretaria")
-                .requestMatchers("/maestros/**").hasAnyAuthority("secretaria", "Secretaria")
-                .requestMatchers("/asignaciones/**").hasAnyAuthority("secretaria", "Secretaria")*/
+                // Evitar que usuarios autenticados accedan a la página de login
+                .requestMatchers("/login").not().fullyAuthenticated()
+                // Asignar permisos a URLS por roles
                 .requestMatchers("/alumnos/**").hasAnyAuthority("secretaria", "Secretaria")
+                // Todas las demás vistas requieren autenticación
+                .anyRequest().authenticated()
+        );
 
-                //Todas las demás vistas requieren autenticación
-                .anyRequest().authenticated());
         http.formLogin(form ->form
                 .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/dashboard", true)
                 .failureUrl("/login?error=true")
         );
+
         // Manejo de excepciones
         http.exceptionHandling(exceptionHandling -> exceptionHandling
                 .authenticationEntryPoint((request, response, authException) ->
@@ -52,6 +54,7 @@ public class DatabaseWebSecurity {
                 .accessDeniedHandler((request, response, accessDeniedException) ->
                         response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden"))
         );
+
         return http.build();
     }
 }

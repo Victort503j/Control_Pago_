@@ -5,6 +5,8 @@ import com.controlpago.servicios.interfaces.IGradoService;
 import com.controlpago.servicios.interfaces.IPagoService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,11 +31,19 @@ public class HomeController {
 
     @GetMapping
     public String index() {
-        return "home/index";
+        return "home/formLogin";
     }
 
     @GetMapping("/login")
     public String mostrarLogin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !(auth.getPrincipal() instanceof String && auth.getPrincipal().equals("anonymousUser"))) {
+            // Redirige a la página principal si ya está autenticado
+            return "redirect:/dashboard";
+        }
+
+        // Si no está autenticado, muestra la página de inicio de sesión
+        //return "login";
         return "home/formLogin";
     }
 
