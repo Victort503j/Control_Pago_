@@ -28,3 +28,28 @@ body{
 .btn-guardar:hover {
      background-color: #009E8C;
 }
+.shadow-box{
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.18);
+}
+
+.table-section {
+     background-color: #fff;
+     border-radius: 12px;
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+     padding: 20px;
+}
+
+.table-section h2 {
+     color: #29867C;
+     font-size: 24px;
+     margin-bottom: 20px;
+     text-align: center;
+}
+
+table {
+     width: 100%;
+     border-collapse: separate;
+     border-spacing: 0;
+     border-radius: 8px;
+     overflow: hidden;
+}

@@ -65,56 +65,58 @@
 
 <body>
 <div layout:fragment="content">
-    <h1 class="mt-3">Realizar Pago</h1>
-    <form th:action="@{/pagos/save}" th:object="${pago}" method="post">
-        <div class="border border-2 rounded-4 p-3 custom-width margin-left custom-padding-right mt-4">
-            <div class="row space-between">
-                <div class="col">
-                    <div class="form-group mt-4">
-                        <label for="alumno">Alumno</label>
-                        <select class="form-control" data-control="select2"  th:field="*{alumno}" id="alumno" required>
-                            <option value="">Seleccione un alumno</option>
-                            <option th:each="alumno : ${alumnos}" th:value="${alumno.id}" th:text="${alumno.nombre + ' ' + alumno.apellido}"></option>
-                        </select>
+    <div class="border border-2 rounded-4 p-3 mt-4 shadow-box">
+        <h1 class="mt-3">Realizar Pago</h1>
+        <form th:action="@{/pagos/save}" th:object="${pago}" method="post">
+            <div class="border border-2 rounded-4 p-3 custom-width margin-left custom-padding-right mt-4">
+                <div class="row space-between">
+                    <div class="col">
+                        <div class="form-group mt-4">
+                            <label for="alumno">Alumno</label>
+                            <select class="form-control" data-control="select2"  th:field="*{alumno}" id="alumno" required>
+                                <option value="">Seleccione un alumno</option>
+                                <option th:each="alumno : ${alumnos}" th:value="${alumno.id}" th:text="${alumno.nombre + ' ' + alumno.apellido}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group mt-4">
+                            <label for="mensualidad">Mensualidad:</label>
+                            <input type="number" id="mensualidad" th:field="*{mensualidad}" class="form-control" oninput="actualizarCantidadPagar()">
+                        </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="form-group mt-4">
-                        <label for="mensualidad">Mensualidad:</label>
-                        <input type="number" id="mensualidad" th:field="*{mensualidad}" class="form-control" oninput="actualizarCantidadPagar()">
+                <div class="row">
+                    <div class="col-md-6 mb-3 mt-4">
+                        <div class="form-group">
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" id="fecha" th:field="*{fecha}" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3 mt-4">
+                        <div class="form-group">
+                            <label for="cantidadPagar">Cantidad a Pagar:</label>
+                            <input type="text" id="cantidadPagar" th:field="*{cantidadPagar}" class="form-control" required readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="comentario">Comentario:</label>
+                            <textarea id="comentario" th:field="*{comentario}" class="form-control"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6 mb-3 mt-4">
-                    <div class="form-group">
-                        <label for="fecha">Fecha:</label>
-                        <input type="date" id="fecha" th:field="*{fecha}" class="form-control" required>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3 mt-4">
-                    <div class="form-group">
-                        <label for="cantidadPagar">Cantidad a Pagar:</label>
-                        <input type="text" id="cantidadPagar" th:field="*{cantidadPagar}" class="form-control" required readonly>
-                    </div>
+            <div class="row mt-1">
+                <div class="col text-end mt-4">
+                    <a th:href="@{/pagos}" class="btn btn-cancelar me-3">Cancelar</a>
+                    <button type="submit" class="btn btn-guardar">Guardar</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="comentario">Comentario:</label>
-                        <textarea id="comentario" th:field="*{comentario}" class="form-control"></textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-1">
-            <div class="col text-end mt-3">
-                <a th:href="@{/pagos}" class="btn btn-cancelar me-3">Cancelar</a>
-                <button type="submit" class="btn btn-guardar">Guardar</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
     <script type="text/javascript">
         $(document).ready(function() {
             $('#alumno').select2({
