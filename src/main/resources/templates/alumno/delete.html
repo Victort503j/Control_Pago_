@@ -70,7 +70,7 @@
 <body>
 <div layout:fragment="content">
     <div class="border border-2 rounded-4 p-3 mt-4 shadow-box">
-        <h1>Eliminar Grado</h1>
+        <h1>Eliminar Alumno</h1>
         <h3>¿Estás seguro que deseas eliminar el registro seleccionado?</h3>
         <div class="border border-2 rounded-4 p-3 custom-width margin-left mb-4 custom-padding-right mt-4 shadow-box">
             <dl class="row">
@@ -99,7 +99,7 @@
                 <input type="hidden" name="id" th:value="${alumno.id}">
                 <div class="row">
                     <div class="col mt-4 text-end">
-                        <a th:href="@{/grados}" class="btn btn-secondary-custom">Regresar</a>
+                        <a th:href="@{/alumnos}" class="btn btn-secondary-custom">Regresar</a>
                         <button type="submit" class="btn btn-delete">
                             <i class="fas fa-trash"></i> Eliminar
                         </button>
