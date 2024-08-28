@@ -156,11 +156,9 @@
                        </div>
                        <div class="col-md-4 mb-3 ">
                            <label for="grado" class="form-label"><strong>Grado:</strong></label>
-                           <select name="grado" class="form-select select2" id="grado">
-                               <option></option>
-                               <th:block th:each="grado : ${grados}">
-                                   <option th:value="${grado.id}" th:text="${grado.nombre}"></option>
-                               </th:block>
+                           <select name="grado" class="form-select select2"  id="grado">
+                               <option value="" selected>SELECCIONAR</option>
+                               <option th:each="grado : ${grados}" th:value="${grado.id}" th:text="${grado.nombre}"></option>
                            </select>
                        </div>
                    </div>
@@ -217,10 +215,11 @@
     </nav>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#alumno').select2({
+            $('#grado').select2({
                 placeholder: "Selecciona el grado de estudio",
                 allowClear: true
             });
+
 
             $('.select2-selection--single').css({
                 'height': 'calc(2.25rem + 2px)',
@@ -228,6 +227,7 @@
                 'line-height': '1.5',
                 'border-radius': '0.25rem'
             });
+
 
             $('.select2-selection').css({
                 'border': '1px solid #ced4da',
