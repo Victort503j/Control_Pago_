@@ -12,7 +12,6 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
             color: #333;
             margin: 0;
             padding: 0;
@@ -42,43 +41,33 @@
             margin: 0 10px;
             padding: 20px;
             border-radius: 12px;
-            color: #fff;
+            color: #333;
             font-size: 18px;
             font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             text-align: center;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: transform 0.3s;
             height: 150px;
             overflow: hidden;
         }
         .card:hover {
             transform: translateY(-5px);
-            background-color: #1f6d57;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
-        .card .icon {
-            font-size: 36px;
-            position: absolute;
-            top: 50%;
-            left: 20px;
-            transform: translateY(-50%);
-        }
+
         .card .text {
-            margin-left: 70px;
-            position: relative;
-            z-index: 1;
+            margin: 0;
+            text-align: center;
         }
-        .card.total-alumnos {
-            background: linear-gradient(135deg, #1db954, #1f6d57);
-        }
-        .card.total-grados {
-            background: linear-gradient(135deg, #4caf50, #29867C);
-        }
+        .card.total-alumnos,
+        .card.total-grados,
         .card.total-pagos {
-            background: linear-gradient(135deg, #2d6a4f, #1f6d57);
+            background: none;
         }
         .charts-and-calendar {
             display: flex;
@@ -200,6 +189,15 @@
             color: #666;
             font-size: 14px;
         }
+       .icons {
+            width: 78px;
+            height: 78px;
+            position: static;
+            margin-top: 10px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -210,18 +208,19 @@
     <main>
         <section class="summary-cards">
             <div class="card total-alumnos">
-                <i class="fas fa-user icon"></i>
                 <div class="text">Total de Alumnos: <span th:text="${totalAlumnos}"></span></div>
+                <img src="/images/alumnos-icon.png" alt="Alumnos" class="icons">
             </div>
             <div class="card total-grados">
-                <i class="fas fa-school icon"></i>
                 <div class="text">Total de Grados: <span th:text="${totalGrados}"></span></div>
+                <img src="/images/grados-icon.png" alt="Grados" class="icons">
             </div>
             <div class="card total-pagos">
-                <i class="fas fa-credit-card icon"></i>
                 <div class="text">Total de Pagos: <span th:text="${totalPagos}"></span></div>
+                <img src="/images/pagos-icon.png" alt="Pagos" class="icons">
             </div>
         </section>
+
 
         <section class="charts-and-calendar">
             <div class="chart-container">
