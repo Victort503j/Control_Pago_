@@ -204,15 +204,36 @@
        </div>
    </div>
 
-    <nav aria-label="Page navigation example">
-        <div class="d-flex justify-content-center">
-            <ul class="pagination">
-                <li class="page-item" th:each="pagenumber : ${pageNumbers}">
-                    <a class="page-link me-2" th:href="@{/alumnos(page=${pagenumber})}" th:text="${pagenumber}"></a>
-                </li>
-            </ul>
-        </div>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/alumnos(page=1, size=${alumnos.size})}" aria-label="Primera">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/alumnos(page=${currentPage - 1}, size=${alumnos.size})}" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}" th:classappend="${pageNumber == currentPage} ? 'active'">
+                <a class="page-link" th:href="@{/alumnos(page=${pageNumber}, size=${alumnos.size})}" th:text="${pageNumber}"></a>
+            </li>
+
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a class="page-link" th:href="@{/alumnos(page=${currentPage + 1}, size=${alumnos.size})}" aria-label="Siguiente">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a class="page-link" th:href="@{/alumnos(page=${totalPages}, size=${alumnos.size})}" aria-label="Última">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        </ul>
     </nav>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('#grado').select2({

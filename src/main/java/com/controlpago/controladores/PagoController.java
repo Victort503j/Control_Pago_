@@ -39,12 +39,23 @@ public class PagoController {
 
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
-        int currentPage = page.orElse(1) - 1;
+        int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
-        Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("id").descending());
 
         Page<Pago> pagos = pagoService.buscarTodosPaginados(pageable);
         model.addAttribute("pagos", pagos);
+
+        int totalPages = pagos.getTotalPages();
+        if (totalPages > 0) {
+            int startPage = Math.max(1, currentPage - 2);
+            int endPage = Math.min(totalPages, currentPage + 2);
+
+            List<Integer> pageNumbers = IntStream.rangeClosed(startPage, endPage)
+                    .boxed()
+                    .collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
 
         List<Alumno> alumnos = alumnoService.obtenerTodos();
         model.addAttribute("alumnos", alumnos);
@@ -52,15 +63,12 @@ public class PagoController {
         List<Grado> grados = gradoService.obtenerTodos();
         model.addAttribute("grados", grados);
 
-        int totalPage = pagos.getTotalPages();
-        if (totalPage > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
+
         return "pago/index";
     }
+
 
     @GetMapping("/search")
     public String search(@RequestParam("alumno") Optional<String> nombreCompleto,

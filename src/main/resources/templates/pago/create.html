@@ -128,7 +128,7 @@
                         <div class="form-group mt-4">
                             <label for="alumno">Alumno</label>
                             <select class="form-control" data-control="select2"  th:field="*{alumno}" id="alumno" required>
-                                <option value="">Seleccione un alumno</option>
+                                <option value=""></option>
                                 <option th:each="alumno : ${alumnos}" th:value="${alumno.id}" th:text="${alumno.nombre + ' ' + alumno.apellido}"></option>
                             </select>
                         </div>
@@ -174,7 +174,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#alumno').select2({
-                placeholder: "Selecciona el grado de estudio",
+                placeholder: "SELECCIONAR",
                 allowClear: true
             });
 
