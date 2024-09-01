@@ -209,6 +209,7 @@
                 <th>Mensualidad</th>
                 <th>Fecha</th>
                 <th>Cantidad</th>
+                <th>Estado</th>
                 <th>Comentario</th>
                 <th>Acciones</th>
             </tr>
@@ -220,6 +221,7 @@
                 <td th:text="${pago.mensualidad}"></td>
                 <td th:text="${pago.fecha}"></td>
                 <td th:text="${pago.cantidadPagar}"></td>
+                <td th:text="PAGADO"></td>
                 <td th:text="${pago.comentario}"></td>
                 <td>
                     <a th:href="@{/pagos/details/{id}(id=${pago.id})}" class="btn btn-detail">
