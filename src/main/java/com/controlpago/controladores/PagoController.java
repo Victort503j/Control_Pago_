@@ -6,22 +6,30 @@ import com.controlpago.modelos.Pago;
 import com.controlpago.servicios.interfaces.IAlumnoService;
 import com.controlpago.servicios.interfaces.IGradoService;
 import com.controlpago.servicios.interfaces.IPagoService;
+import com.paypal.api.payments.*;
+import com.paypal.base.rest.APIContext;
+import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Converter;
+import org.springframework.cglib.core.Local;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -36,6 +44,12 @@ public class PagoController {
 
     @Autowired
     private IGradoService gradoService;
+
+    private final APIContext apiContext;
+
+    public PagoController(APIContext apiContext) {
+        this.apiContext = apiContext;
+    }
 
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
@@ -123,14 +137,16 @@ public class PagoController {
 
 
     @GetMapping("/create")
+    @Transactional
     public String create(Model model){
         List<Alumno> alumnos = alumnoService.obtenerTodos();
         model.addAttribute("alumnos", alumnos);
         model.addAttribute("pago", new Pago());
         return "pago/create";
     }
+
     @PostMapping("/save")
-    public String guardar(@ModelAttribute Pago pPago, BindingResult result, Model model, RedirectAttributes attributes) {
+    public String guardar(@ModelAttribute Pago pPago, BindingResult result, Model model, RedirectAttributes attributes) throws PayPalRESTException {
         if (result.hasErrors()) {
             model.addAttribute("pago", pPago);
             return "pago/create";
@@ -138,15 +154,99 @@ public class PagoController {
 
         Long alumnoId = pPago.getAlumno().getId().longValue();
         Pago pagoExistente = pagoService.buscarPorAlumnoYMes(alumnoId, pPago.getFecha());
+
         if (pagoExistente != null) {
             attributes.addFlashAttribute("error", "Este alumno ya ha realizado un pago en el mes seleccionado.");
             return "redirect:/pagos/create";
         }
 
-        pagoService.crearOEditar(pPago);
-        attributes.addFlashAttribute("msg", "Pago guardado exitosamente");
-        return "redirect:/pagos";
+        Pago pagoGuardado = pagoService.crearOEditar(pPago);
+        Integer idPago = pagoGuardado.getId();
+        //Pago IdPago = pagoService.buscarPorId(pagoGuardado.getId()).orElse(null);
+
+        //*************************Apartado para paypal**********************
+        // Crear monto
+        Amount amount = new Amount();
+        amount.setCurrency("USD");
+        amount.setTotal(String.format(Locale.forLanguageTag("USD"), "%.2f", pPago.getCantidadPagar())); // Monto fijo o calculado dinámicamente
+
+        // Crear transacción
+        Transaction transaction = new Transaction();
+        transaction.setDescription(pPago.getComentario());
+        transaction.setAmount(amount);
+
+        // Configurar el pago
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.add(transaction);
+
+        Payer payer = new Payer();
+        payer.setPaymentMethod("paypal");
+
+        Payment payment = new Payment();
+        payment.setIntent("sale");
+        payment.setPayer(payer);
+        payment.setTransactions(transactions);
+
+        // Redirección de URLs
+        RedirectUrls redirectUrls = new RedirectUrls();
+        redirectUrls.setCancelUrl("http://localhost:8080/success"); // Cambiar por tu ruta
+        redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + idPago);// Cambiar por tu ruta
+        payment.setRedirectUrls(redirectUrls);
+
+        // Crear el pago en PayPal
+        Payment createdPayment = payment.create(apiContext);
+
+        // Obtener el enlace de aprobación
+        String approvalUrl = null;
+        for (Links link : createdPayment.getLinks()) {
+            if (link.getRel().equals("approval_url")) {
+                return "redirect:" + link.getHref();
+
+            }
+        }
+
+//        if (approvalUrl != null) {
+//
+//            // Capturar el pago una vez que ha sido aprobado (puedes hacer esto sin redirigir al usuario)
+//            String paymentId = createdPayment.getId();  // Obtén el ID del pago
+//            Payment paymentDetails = Payment.get(apiContext, paymentId);
+//            Payment executedPayment = executePayment(paymentId, paymentDetails.getPayer().getFundingOptionId());
+//
+//            Pago UpdatePago = new Pago();
+//            UpdatePago.setId(pPagoSave.getId());
+//            UpdatePago.setTransactionId(executedPayment.getId());
+//            UpdatePago.setAmountPaypal(new BigDecimal(executedPayment.getTransactions().get(0).getAmount().getTotal()));
+//            UpdatePago.setCurrency(executedPayment.getTransactions().get(0).getAmount().getCurrency());
+//            UpdatePago.setPaymentMethodId(executedPayment.getPayer().getPaymentMethod());
+//            UpdatePago.setPaymentStatus(executedPayment.getState());
+//            UpdatePago.setDatePaypal(new Date(executedPayment.getCreateTime()));
+//            UpdatePago.setOrderId(paymentId);
+//            UpdatePago.setDetails(executedPayment.getTransactions().get(0).getDescription());
+//
+//
+//            if (executedPayment != null && executedPayment.getState().equals("approved")) {
+//                // El pago se ha completado exitosamente, realiza acciones adicionales
+//                attributes.addFlashAttribute("msg", "Pago realizado exitosamente.");
+//            } else {
+//                // Hubo un error al completar el pago
+//                attributes.addFlashAttribute("error", "Error al completar el pago.");
+//            }
+//        }
+
+        return "http://localhost:8080/success?alumnoId="+idPago;
     }
+
+    // Metodo para ejecutar el pago y capturarlo
+//    private Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
+//        Payment payment = new Payment();
+//        payment.setId(paymentId);
+//
+//        PaymentExecution paymentExecution = new PaymentExecution();
+//        paymentExecution.setPayerId(payerId);
+//
+//        // Ejecutar el pago para capturarlo
+//        return payment.execute(apiContext, paymentExecution);
+//    }
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model){
@@ -164,6 +264,65 @@ public class PagoController {
         model.addAttribute("pagosDelAlumno", pagosDelAlumno);
         model.addAttribute("totalPagado", totalPagado);
         return "pago/details";
+    }
+
+    @GetMapping("/success")
+    public String success(@RequestParam("paymentId") String paymentId,
+                          @RequestParam("PayerID") String payerId,
+                          @RequestParam("IdPago") Integer IdPago,
+                          Model model) {
+        try {
+            var ok = false;
+            if (ok = true){
+                Payment payment = Payment.get(apiContext, paymentId);
+
+                PaymentExecution paymentExecution = new PaymentExecution();
+                paymentExecution.setPayerId(payerId);
+
+                Payment executedPayment = payment.execute(apiContext, paymentExecution);
+                Pago UpdatePago = pagoService.buscarPorId(IdPago).orElse(null);
+                UpdatePago.setTransactionId(executedPayment.getId());
+                UpdatePago.setAmountPaypal(new BigDecimal(executedPayment.getTransactions().get(0).getAmount().getTotal()));
+                UpdatePago.setCurrency(executedPayment.getTransactions().get(0).getAmount().getCurrency());
+                UpdatePago.setPaymentMethodId(executedPayment.getPayer().getPaymentMethod());
+                UpdatePago.setPaymentStatus(executedPayment.getState());
+
+                String localDate = executedPayment.getCreateTime(); // Valor que recibes
+                String dateOnlyString = localDate.split("T")[0];
+                LocalDate date = LocalDate.parse(dateOnlyString);
+
+                // Asignar la fecha a la entidad
+                UpdatePago.setDatePaypal(date);
+                UpdatePago.setOrderId(paymentId);
+                UpdatePago.setDetails(executedPayment.getTransactions().get(0).getDescription());
+                pagoService.crearOEditar(UpdatePago);
+
+
+                if (executedPayment != null && executedPayment.getState().equals("COMPLETED")) {
+                    // El pago se ha completado exitosamente, realiza acciones adicionales
+                    model.addAttribute("msg", "Pago realizado exitosamente.");
+                } else {
+                    // Hubo un error al completar el pago
+                    model.addAttribute("error", "Error al completar el pago.");
+                }
+
+                model.addAttribute("message", "Pago completado exitosamente!");
+                model.addAttribute("payment", executedPayment);
+
+                return "redirect:/pagos";
+            }
+            return "redirect:/pagos";
+        } catch (PayPalRESTException e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Error al completar el pago: " + e.getMessage());
+            return "http://localhost:8080/pagos";
+        }
+    }
+
+    @GetMapping("/cancel")
+    public String cancel(Model model) {
+        model.addAttribute("message", "El pago fue cancelado.");
+        return "http://localhost:8080/pagos/create";
     }
 
 }
