@@ -146,7 +146,11 @@ public class PagoController {
     }
 
     @PostMapping("/save")
-    public String guardar(@ModelAttribute Pago pPago, BindingResult result, Model model, RedirectAttributes attributes) throws PayPalRESTException {
+    public String guardar(@ModelAttribute Pago pPago,
+                          @RequestParam("metodoPago") String metodoPago,
+                          BindingResult result,
+                          Model model,
+                          RedirectAttributes attributes) throws PayPalRESTException {
         if (result.hasErrors()) {
             model.addAttribute("pago", pPago);
             return "pago/create";
@@ -160,81 +164,50 @@ public class PagoController {
             return "redirect:/pagos/create";
         }
 
-        Pago pagoGuardado = pagoService.crearOEditar(pPago);
-        Integer idPago = pagoGuardado.getId();
-        //Pago IdPago = pagoService.buscarPorId(pagoGuardado.getId()).orElse(null);
+        // Guardar el pago en la base de datos
+        if ("cash".equalsIgnoreCase(metodoPago)) {
+            pPago.setMetodoPago("cash");
+            pagoService.crearOEditar(pPago);
+            attributes.addFlashAttribute("success", "Pago en efectivo guardado exitosamente.");
+            return "redirect:/pagos";
+        } else if ("paypal".equalsIgnoreCase(metodoPago)) {
+            // Lógica de PayPal
+            Amount amount = new Amount();
+            amount.setCurrency("USD");
+            amount.setTotal(String.format(Locale.US, "%.2f", pPago.getCantidadPagar()));
 
-        //*************************Apartado para paypal**********************
-        // Crear monto
-        Amount amount = new Amount();
-        amount.setCurrency("USD");
-        amount.setTotal(String.format(Locale.forLanguageTag("USD"), "%.2f", pPago.getCantidadPagar())); // Monto fijo o calculado dinámicamente
+            Transaction transaction = new Transaction();
+            transaction.setDescription(pPago.getComentario());
+            transaction.setAmount(amount);
 
-        // Crear transacción
-        Transaction transaction = new Transaction();
-        transaction.setDescription(pPago.getComentario());
-        transaction.setAmount(amount);
+            List<Transaction> transactions = new ArrayList<>();
+            transactions.add(transaction);
 
-        // Configurar el pago
-        List<Transaction> transactions = new ArrayList<>();
-        transactions.add(transaction);
+            Payer payer = new Payer();
+            payer.setPaymentMethod("paypal");
 
-        Payer payer = new Payer();
-        payer.setPaymentMethod("paypal");
+            Payment payment = new Payment();
+            payment.setIntent("sale");
+            payment.setPayer(payer);
+            payment.setTransactions(transactions);
 
-        Payment payment = new Payment();
-        payment.setIntent("sale");
-        payment.setPayer(payer);
-        payment.setTransactions(transactions);
+            RedirectUrls redirectUrls = new RedirectUrls();
+            redirectUrls.setCancelUrl("http://localhost:8080/pagos/cancel");
+            redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + pPago.getId());
+            payment.setRedirectUrls(redirectUrls);
 
-        // Redirección de URLs
-        RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl("http://localhost:8080/success"); // Cambiar por tu ruta
-        redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + idPago);// Cambiar por tu ruta
-        payment.setRedirectUrls(redirectUrls);
-
-        // Crear el pago en PayPal
-        Payment createdPayment = payment.create(apiContext);
-
-        // Obtener el enlace de aprobación
-        String approvalUrl = null;
-        for (Links link : createdPayment.getLinks()) {
-            if (link.getRel().equals("approval_url")) {
-                return "redirect:" + link.getHref();
-
+            Payment createdPayment = payment.create(apiContext);
+            for (Links link : createdPayment.getLinks()) {
+                if ("approval_url".equals(link.getRel())) {
+                    return "redirect:" + link.getHref();
+                }
             }
         }
 
-//        if (approvalUrl != null) {
-//
-//            // Capturar el pago una vez que ha sido aprobado (puedes hacer esto sin redirigir al usuario)
-//            String paymentId = createdPayment.getId();  // Obtén el ID del pago
-//            Payment paymentDetails = Payment.get(apiContext, paymentId);
-//            Payment executedPayment = executePayment(paymentId, paymentDetails.getPayer().getFundingOptionId());
-//
-//            Pago UpdatePago = new Pago();
-//            UpdatePago.setId(pPagoSave.getId());
-//            UpdatePago.setTransactionId(executedPayment.getId());
-//            UpdatePago.setAmountPaypal(new BigDecimal(executedPayment.getTransactions().get(0).getAmount().getTotal()));
-//            UpdatePago.setCurrency(executedPayment.getTransactions().get(0).getAmount().getCurrency());
-//            UpdatePago.setPaymentMethodId(executedPayment.getPayer().getPaymentMethod());
-//            UpdatePago.setPaymentStatus(executedPayment.getState());
-//            UpdatePago.setDatePaypal(new Date(executedPayment.getCreateTime()));
-//            UpdatePago.setOrderId(paymentId);
-//            UpdatePago.setDetails(executedPayment.getTransactions().get(0).getDescription());
-//
-//
-//            if (executedPayment != null && executedPayment.getState().equals("approved")) {
-//                // El pago se ha completado exitosamente, realiza acciones adicionales
-//                attributes.addFlashAttribute("msg", "Pago realizado exitosamente.");
-//            } else {
-//                // Hubo un error al completar el pago
-//                attributes.addFlashAttribute("error", "Error al completar el pago.");
-//            }
-//        }
-
-        return "http://localhost:8080/success?alumnoId="+idPago;
+        attributes.addFlashAttribute("error", "Ocurrió un error al procesar el pago.");
+        return "redirect:/pagos/create";
     }
+
 
     // Metodo para ejecutar el pago y capturarlo
 //    private Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
@@ -324,5 +297,4 @@ public class PagoController {
         model.addAttribute("message", "El pago fue cancelado.");
         return "http://localhost:8080/pagos/create";
     }
-
 }

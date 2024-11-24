@@ -82,18 +82,18 @@
             <div class="row space-between">
                 <div class="col">
                     <div class="form-group mt-4">
-                        <label for="nombre">Nombre</label>
+                        <label for="nombre">Nombre:</label>
                         <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del alumno" required/>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group mt-4">
-                        <label for="apellido">Apellido</label>
+                        <label for="apellido">Apellido:</label>
                         <input type="text" class="form-control" th:field="*{apellido}" id="apellido" placeholder="Escriba el apellido del alumno" required/>
                     </div>
                 </div>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-2">
                 <div class="col-md-6 mb-3 mt-4">
                     <label for="grado" class="form-label">Grado:</label>
                     <select class="form-control" data-control="select2"  th:field="*{grado}" id="grado" required>

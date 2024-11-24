@@ -64,6 +64,9 @@
           -webkit-box-shadow: none;
           -moz-box-shadow: none;
        }
+       .margin-b{
+           margin-bottom: 6px;
+       }
     </style>
 </head>
 
@@ -76,7 +79,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="nombre">Nombre</label>
+                            <label for="nombre" class="margin-b">Nombre:</label>
                             <input type="text" class="form-control" th:field="*{nombre}" id="nombre" placeholder="Escriba el nombre del grado" required/>
                         </div>
                     </div>

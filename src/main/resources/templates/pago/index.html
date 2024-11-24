@@ -58,10 +58,13 @@
                background: linear-gradient(45deg, #76B200, #5F9D00);
                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
                transform: translateY(-2px);
+               color: white;
            }
            .pay:active {
-               transform: translateY(2px);
-               box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                transform: translateY(2px);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                background: linear-gradient(45deg, #5F9D00, #4A8600);
+                color: white !important;
            }
            .pay i {
                font-size: 18px;
@@ -142,6 +145,9 @@
               margin-top: 2rem;
               margin-bottom: 2rem;
           }
+         .margin-b{
+              margin-bottom: 6px;
+         }
     </style>
 </head>
 
@@ -181,7 +187,7 @@
                 <form th:action="@{/pagos/search}" method="get">
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label for="alumno">Alumno:</label>
+                            <label for="alumno" class="margin-b"><strong>Alumno:</strong></label>
                             <select id="alumno" name="alumno" class="form-select select2">
                                 <option selected value="">SELECCIONAR</option>
                                 <option th:each="alumno : ${alumnos}"
@@ -191,7 +197,7 @@
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="fecha">Fecha:</label>
+                            <label for="fecha" class="margin-b"><strong>Fecha:</strong></label>
                             <input type="date" id="fecha" name="fecha" th:value="${param.fecha}" class="form-control">
                         </div>
                         <div class="col-md-4 mb-3 d-flex align-items-end justify-content-end">

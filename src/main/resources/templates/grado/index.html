@@ -112,6 +112,9 @@
         .padding {
             padding: 1rem 2rem;
         }
+        .margin-b{
+            margin-bottom: -1px;
+        }
     </style>
 </head>
 
@@ -152,7 +155,7 @@
                 <div class="row pb-4">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="search" class="form-label"><strong>Grado</strong></label>
+                            <label for="search" class="form-label margin-b"><strong>Grado:</strong></label>
                             <select name="search" class="form-select select2"  id="search">
                                 <option value="" selected>SELECCIONAR</option>
                                 <option th:each="grado : ${allGrados}" th:value="${grado.id}" th:text="${grado.nombre}"></option>

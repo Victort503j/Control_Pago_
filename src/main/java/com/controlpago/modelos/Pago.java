@@ -30,6 +30,25 @@ public class Pago {
 
     private String comentario;
 
+    @Column(name = "metodo_pago")
+    private String metodoPago;  // Valores: "cash" o "paypal"
+
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
+    }
+
+    public String getPaymentMethod() {
+        return PaymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        PaymentMethod = paymentMethod;
+    }
+
     private String TransactionId;
     private String PaymentMethod;
     private BigDecimal AmountPaypal;
