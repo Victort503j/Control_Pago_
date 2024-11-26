@@ -16,6 +16,64 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .pay {
+               background: linear-gradient(45deg, #7DBB00, #67A600);
+               color: #fff;
+               border: none;
+               border-radius: 50px;
+               padding: 12px 24px;
+               font-weight: bold;
+               font-size: 16px;
+               text-transform: uppercase;
+               letter-spacing: 1px;
+               transition: all 0.3s ease;
+               cursor: pointer;
+               position: relative;
+               overflow: hidden;
+               box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+               display: inline-flex;
+               align-items: center;
+               justify-content: center;
+           }
+           .pay::before {
+               content: '';
+               position: absolute;
+               top: -50%;
+               left: -50%;
+               width: 200%;
+               height: 200%;
+               background: rgba(255, 255, 255, 0.1);
+               opacity: 0;
+               transition: all 0.3s ease;
+               transform: rotate(45deg);
+           }
+           .pay:hover::before {
+               opacity: 1;
+               top: -50%;
+               left: -30%;
+               width: 300%;
+               height: 300%;
+           }
+           .pay:hover {
+               background: linear-gradient(45deg, #76B200, #5F9D00);
+               box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+               transform: translateY(-2px);
+               color: white;
+           }
+           .pay:active {
+                transform: translateY(2px);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                background: linear-gradient(45deg, #5F9D00, #4A8600);
+                color: white !important;
+           }
+           .pay i {
+               font-size: 18px;
+               margin-right: 10px;
+           }
+           .pay span {
+               display: inline-block;
+               margin-left: 5px;
+           }
        .page-header {
            background-color: #f8f9fa;
            padding: 20px;
