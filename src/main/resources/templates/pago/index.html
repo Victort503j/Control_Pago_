@@ -179,8 +179,8 @@
     </div>
     <div class="border border-2 rounded-4 padding margin-y shadow-box">
         <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-            <h1 class="m-0">Pagos</h1>
-            <a th:href="@{/pagos/create}" class="btn pay"> <i class="fas fa-credit-card"></i><span>Realizar Pago</span></a>
+            <h1 class="m-0">pagos</h1>
+            <a th:href="@{/pagos/studentPaymentRecord}" class="btn pay"> <i class="fas fa-credit-card"></i><span>Boleto de Pago</span></a>
         </div>
         <div>
             <div class="border rounded-4 p-3 mb-4">
@@ -211,26 +211,24 @@
             <thead>
             <tr>
                 <th>Alumno</th>
-                <th>Grado</th>
-                <th>Mensualidad</th>
-                <th>Fecha</th>
-                <th>Cantidad</th>
-                <th>Estado</th>
-                <th>Comentario</th>
+                <th>FechaCreacion</th>
+                <th>FechaActualizado</th>
+                <th>MontoTotal</th>
+                <th>MontoPagado</th>
+                <th>MontoRestante</th>
                 <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="pago : ${pagos}">
-                <td th:text="${pago.alumno.nombre + ' ' + pago.alumno.apellido}"></td>
-                <td th:text="${pago.alumno.grado.nombre}"></td>
-                <td th:text="${pago.mensualidad}"></td>
-                <td th:text="${pago.fecha}"></td>
-                <td th:text="${pago.cantidadPagar}"></td>
-                <td th:text="PAGADO"></td>
-                <td th:text="${pago.comentario}"></td>
+            <tr th:each="payment : ${payments}">
+                <td th:text="${payment.alumno.nombre + ' ' + payment.alumno.apellido}"></td>
+                <td th:text="${payment.createAt}"></td>
+                <td th:text="${payment.updateAt}"></td>
+                <td th:text="${payment.totalAmount}"></td>
+                <td th:text="${payment.paidAmount}"></td>
+                <td th:text="${payment.remainingAmount}"></td>
                 <td>
-                    <a th:href="@{/pagos/details/{id}(id=${pago.id})}" class="btn btn-detail">
+                    <a th:href="@{/pagos/details/{id}(id=${payment.id})}" class="btn btn-detail">
                         <i class="fa fa-info-circle"></i><span> Detalle de Pago</span>
                     </a>
                 </td>
@@ -242,27 +240,27 @@
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/pagos(page=1, size=${pagos.size})}" aria-label="Primera">
+                <a class="page-link" th:href="@{/pagos(page=1, size=${payments.size})}" aria-label="Primera">
                     <span aria-hidden="true">&laquo;&laquo;</span>
                 </a>
             </li>
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/pagos(page=${currentPage - 1}, size=${pagos.size})}" aria-label="Anterior">
+                <a class="page-link" th:href="@{/pagos(page=${currentPage - 1}, size=${payments.size})}" aria-label="Anterior">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
 
             <li class="page-item" th:each="pageNumber : ${pageNumbers}" th:classappend="${pageNumber == currentPage} ? 'active'">
-                <a class="page-link" th:href="@{/pagos(page=${pageNumber}, size=${pagos.size})}" th:text="${pageNumber}"></a>
+                <a class="page-link" th:href="@{/pagos(page=${pageNumber}, size=${payments.size})}" th:text="${pageNumber}"></a>
             </li>
 
             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/pagos(page=${currentPage + 1}, size=${pagos.size})}" aria-label="Siguiente">
+                <a class="page-link" th:href="@{/pagos(page=${currentPage + 1}, size=${payments.size})}" aria-label="Siguiente">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/pagos(page=${totalPages}, size=${pagos.size})}" aria-label="Última">
+                <a class="page-link" th:href="@{/pagos(page=${totalPages}, size=${payments.size})}" aria-label="Última">
                     <span aria-hidden="true">&raquo;&raquo;</span>
                 </a>
             </li>

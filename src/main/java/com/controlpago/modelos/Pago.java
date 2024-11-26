@@ -19,6 +19,10 @@ public class Pago {
     @JoinColumn(name = "alumno_id")
     private Alumno alumno;
 
+    @ManyToOne
+    @JoinColumn(name = "student_payment_record_id")
+    private StudentPaymentRecord studentPaymentRecord;
+
     @NotNull(message = "La mensualidad a pagar es requerida")
     private BigDecimal mensualidad;
 
@@ -29,15 +33,15 @@ public class Pago {
     private BigDecimal cantidadPagar;
 
     private String comentario;
+    @ManyToOne
+    @JoinColumn(name = "metodo_pago_id")
+    private MetodoPago metodoPago;  // Valores: "cash" o "paypal"
 
-    @Column(name = "metodo_pago")
-    private String metodoPago;  // Valores: "cash" o "paypal"
-
-    public String getMetodoPago() {
+    public MetodoPago getMetodoPago() {
         return metodoPago;
     }
 
-    public void setMetodoPago(String metodoPago) {
+    public void setMetodoPago(MetodoPago metodoPago) {
         this.metodoPago = metodoPago;
     }
 
@@ -55,6 +59,14 @@ public class Pago {
     private String Currency;
     private String PaymentStatus;
     private LocalDate DatePaypal;
+
+    public StudentPaymentRecord getStudentPaymentRecord() {
+        return studentPaymentRecord;
+    }
+
+    public void setStudentPaymentRecord(StudentPaymentRecord studentPaymentRecord) {
+        this.studentPaymentRecord = studentPaymentRecord;
+    }
 
     public String getOrderId() {
         return OrderId;

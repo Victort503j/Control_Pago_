@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface IPagoRepository extends JpaRepository<Pago, Integer> {
     Pago findByAlumnoIdAndFechaBetween(Long alumnoId, LocalDate inicioMes, LocalDate finMes);
+    List<Pago> findByStudentPaymentRecord_Id(Integer studentPaymentRecordId);
     List<Pago> findByAlumnoId(Integer alumnoId);
     @Query("SELECT COUNT(p) FROM Pago p")
     long contarTotalPagos();

@@ -54,6 +54,11 @@ public class PagoService implements IPagoService {
     public List<Pago> buscarPagosPorAlumno(Integer alumnoId) {
         return pagoRepository.findByAlumnoId(alumnoId);
     }
+
+    @Override
+    public List<Pago>buscarPagosPorStudentPaymnetRecord(Integer recordId){
+        return pagoRepository.findByStudentPaymentRecord_Id(recordId);
+    }
     @Override
     public long contarPagos() {
         return pagoRepository.count();

@@ -1,15 +1,13 @@
 package com.controlpago.controladores;
 
-import com.controlpago.modelos.Alumno;
-import com.controlpago.modelos.Grado;
-import com.controlpago.modelos.Pago;
-import com.controlpago.servicios.interfaces.IAlumnoService;
-import com.controlpago.servicios.interfaces.IGradoService;
-import com.controlpago.servicios.interfaces.IPagoService;
+import com.controlpago.modelos.*;
+import com.controlpago.servicios.implementaciones.StudentPaymentRecordService;
+import com.controlpago.servicios.interfaces.*;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.cglib.core.Converter;
 import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +43,12 @@ public class PagoController {
     @Autowired
     private IGradoService gradoService;
 
+    @Autowired
+    private IMetodoPagoService metodoPagoService;
+
+    @Autowired
+    private IStudentPaymentRecordService studentPaymentRecordService;
+
     private final APIContext apiContext;
 
     public PagoController(APIContext apiContext) {
@@ -57,10 +61,13 @@ public class PagoController {
         int pageSize = size.orElse(5);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("id").descending());
 
-        Page<Pago> pagos = pagoService.buscarTodosPaginados(pageable);
-        model.addAttribute("pagos", pagos);
+        //Page<Pago> pagos = pagoService.buscarTodosPaginados(pageable);
+        //model.addAttribute("pagos", pagos);
 
-        int totalPages = pagos.getTotalPages();
+        Page<StudentPaymentRecord> studentPaymentRecords = studentPaymentRecordService.buscarTodosPaginados(pageable);
+        model.addAttribute("payments",studentPaymentRecords);
+
+        int totalPages = studentPaymentRecords.getTotalPages();
         if (totalPages > 0) {
             int startPage = Math.max(1, currentPage - 2);
             int endPage = Math.min(totalPages, currentPage + 2);
@@ -135,19 +142,53 @@ public class PagoController {
         return "pago/index";
     }
 
+    @GetMapping("/studentPaymentRecord")
+    public String createPaymentRecord(Model model){
+        List<Alumno> alumnos = alumnoService.obtenerTodos();
+        model.addAttribute("alumnos", alumnos);
+        model.addAttribute("studentPaymentRecord", new StudentPaymentRecord());
+        return "pago/studentPaymentRecord";
+    }
+
+    @PostMapping("/savePaymentRecord")
+    public String guardar(@ModelAttribute StudentPaymentRecord pStudentPaymentRecord, BindingResult result, Model model, RedirectAttributes attributes){
+        Integer recordId = 0;
+        if (result.hasErrors()) {
+            return "rol/create";
+        }
+        if (pStudentPaymentRecord.getId() != null && pStudentPaymentRecord.getId() > 0) {
+            studentPaymentRecordService.crearOEditar(pStudentPaymentRecord);
+            attributes.addFlashAttribute("msg", "actualizado exitosamente");
+        } else {
+            pStudentPaymentRecord.setCreateAt(LocalDate.now());
+            pStudentPaymentRecord.setUpdateAt(LocalDate.now());
+            pStudentPaymentRecord.setStatus(true);
+            pStudentPaymentRecord.setPaidAmount(BigDecimal.ZERO);
+            pStudentPaymentRecord.setRemainingAmount(BigDecimal.ZERO);
+            StudentPaymentRecord Record = studentPaymentRecordService.crearOEditar(pStudentPaymentRecord);
+            recordId = Record.getId();
+            attributes.addFlashAttribute("msg", "creado exitosamente");
+        }
+        String record = String.valueOf(recordId);
+        return "redirect:/pagos/details/"+record;
+    }
+
 
     @GetMapping("/create")
     @Transactional
-    public String create(Model model){
-        List<Alumno> alumnos = alumnoService.obtenerTodos();
-        model.addAttribute("alumnos", alumnos);
+    public String create(Model model, @RequestParam("alumnoId") Integer alumnoId, @RequestParam("payRecordId") Integer payRecordId){
+        Alumno alumno = alumnoService.buscarPorId(alumnoId).orElse(null);
+        StudentPaymentRecord studentPaymentRecord = studentPaymentRecordService.buscarPorId(payRecordId).orElse(null);
+        List<MetodoPago>metodoPagos = metodoPagoService.obtenerTodos();
+        model.addAttribute("alumno", alumno);
+        model.addAttribute("studentPaymentRecord", studentPaymentRecord);
+        model.addAttribute("metodoPagos", metodoPagos);
         model.addAttribute("pago", new Pago());
         return "pago/create";
     }
 
     @PostMapping("/save")
     public String guardar(@ModelAttribute Pago pPago,
-                          @RequestParam("metodoPago") String metodoPago,
                           BindingResult result,
                           Model model,
                           RedirectAttributes attributes) throws PayPalRESTException {
@@ -158,19 +199,26 @@ public class PagoController {
 
         Long alumnoId = pPago.getAlumno().getId().longValue();
         Pago pagoExistente = pagoService.buscarPorAlumnoYMes(alumnoId, pPago.getFecha());
+        Pago pagoSave = new Pago();
+        Integer pagoId = 0;
 
         if (pagoExistente != null) {
             attributes.addFlashAttribute("error", "Este alumno ya ha realizado un pago en el mes seleccionado.");
             return "redirect:/pagos/create";
         }
 
+        Integer metodoPagoId = pPago.getMetodoPago().getId();
+        Optional<MetodoPago> metodoPago = metodoPagoService.buscarPorId(metodoPagoId);
         // Guardar el pago en la base de datos
-        if ("cash".equalsIgnoreCase(metodoPago)) {
-            pPago.setMetodoPago("cash");
-            pagoService.crearOEditar(pPago);
+        if (pPago.getMetodoPago().getId().equals(1)) {
+            pPago.setMetodoPago(pPago.getMetodoPago());
+            Pago pagosave=pagoService.crearOEditar(pPago);
             attributes.addFlashAttribute("success", "Pago en efectivo guardado exitosamente.");
-            return "redirect:/pagos";
-        } else if ("paypal".equalsIgnoreCase(metodoPago)) {
+            return "redirect:/pagos/details/"+pagosave.getStudentPaymentRecord().getId();
+        } else if (pPago.getMetodoPago().getId().equals(2)) {
+            pPago.setMetodoPago(pPago.getMetodoPago());
+            pagoSave = pagoService.crearOEditar(pPago);
+            pagoId = pagoSave.getId();
             // Lógica de PayPal
             Amount amount = new Amount();
             amount.setCurrency("USD");
@@ -193,7 +241,7 @@ public class PagoController {
 
             RedirectUrls redirectUrls = new RedirectUrls();
             redirectUrls.setCancelUrl("http://localhost:8080/pagos/cancel");
-            redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + pPago.getId());
+            redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + pagoId);
             payment.setRedirectUrls(redirectUrls);
 
             Payment createdPayment = payment.create(apiContext);
@@ -223,18 +271,23 @@ public class PagoController {
 
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id") Integer id, Model model){
-        Pago pago = pagoService.buscarPorId(id).orElse(null);
-        if (pago == null) {
+        StudentPaymentRecord studentPaymentRecord = studentPaymentRecordService.buscarPorId(id).orElse(null);
+        List<Pago> pagos = pagoService.buscarPagosPorStudentPaymnetRecord(studentPaymentRecord.getId());
+
+        List<Alumno> alumnos = alumnoService.obtenerTodos();
+
+        if (pagos == null) {
             return "redirect:/pagos";
         }
 
-        List<Pago> pagosDelAlumno = pagoService.buscarPagosPorAlumno(pago.getAlumno().getId().intValue());
-        BigDecimal totalPagado = pagosDelAlumno.stream()
+        BigDecimal totalPagado = pagos.stream()
                 .map(Pago::getCantidadPagar)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        model.addAttribute("pago", pago);
-        model.addAttribute("pagosDelAlumno", pagosDelAlumno);
+        model.addAttribute("pagos", pagos);
+        model.addAttribute("alumno", alumnos);
+        model.addAttribute("studentPaymentRecord", studentPaymentRecord);
+//        model.addAttribute("pagosDelAlumno", pagosDelAlumno);
         model.addAttribute("totalPagado", totalPagado);
         return "pago/details";
     }
@@ -282,7 +335,7 @@ public class PagoController {
                 model.addAttribute("message", "Pago completado exitosamente!");
                 model.addAttribute("payment", executedPayment);
 
-                return "redirect:/pagos";
+                return "redirect:/pagos/details/"+UpdatePago.getStudentPaymentRecord().getId();
             }
             return "redirect:/pagos";
         } catch (PayPalRESTException e) {
