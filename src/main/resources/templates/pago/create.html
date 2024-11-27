@@ -85,11 +85,11 @@
     <script>
         function actualizarCantidadPagar() {
             const mensualidad = parseFloat(document.getElementById('mensualidad').value) || 0;
-            document.getElementById('cantidadPagar').value = mensualidad;
+            document.getElementById('cantidadPagar').value = mensualidad.toFixed(2);
         }
 
         window.onload = function() {
-            document.getElementById('mensualidad').value = 50;
+            document.getElementById('mensualidad').value = 50; // Este valor lo puedes ajustar según sea necesario
             actualizarCantidadPagar();
         };
     </script>
@@ -167,8 +167,8 @@
                     </div>
                     <div class="col-md-6">
                         <label for="metodoPago">Método de Pago:</label>
-                        <select class="form-control" data-control="select2"  th:field="*{metodoPago}" id="metodoPago" required>
-                            <option value=""></option>
+                        <select class="form-control" data-control="select2" th:field="*{metodoPago}" id="metodoPago" required>
+                            <option value="" selected>SELECCIONAR</option>
                             <option th:each="metodoPago : ${metodoPagos}" th:value="${metodoPago.id}" th:text="${metodoPago.paymentMethod}"></option>
                         </select>
                     </div>
@@ -184,31 +184,6 @@
             </div>
         </form>
     </div>
-<!--    <script type="text/javascript">-->
-<!--        $(document).ready(function() {-->
-<!--            $('#alumno').select2({-->
-<!--                placeholder: "SELECCIONAR",-->
-<!--                allowClear: true-->
-<!--            });-->
-
-<!--            $('#metodoPago').select2({-->
-<!--                placeholder: "Seleccione un método de pago",-->
-<!--                allowClear: true-->
-<!--            });-->
-
-<!--            $('.select2-selection&#45;&#45;single').css({-->
-<!--                'height': 'calc(2.25rem + 2px)',-->
-<!--                'padding': '0.375rem 0.75rem',-->
-<!--                'line-height': '1.5',-->
-<!--                'border-radius': '0.25rem'-->
-<!--            });-->
-
-<!--            $('.select2-selection').css({-->
-<!--                'border': '1px solid #ced4da',-->
-<!--                'border-radius': '0.375rem'-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
 </div>
 </body>
 </html>

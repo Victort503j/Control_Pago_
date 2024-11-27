@@ -199,8 +199,6 @@ public class PagoController {
 
         Long alumnoId = pPago.getAlumno().getId().longValue();
         Pago pagoExistente = pagoService.buscarPorAlumnoYMes(alumnoId, pPago.getFecha());
-        Pago pagoSave = new Pago();
-        Integer pagoId = 0;
 
         if (pagoExistente != null) {
             attributes.addFlashAttribute("error", "Este alumno ya ha realizado un pago en el mes seleccionado.");
@@ -208,18 +206,15 @@ public class PagoController {
         }
 
         Integer metodoPagoId = pPago.getMetodoPago().getId();
-        Optional<MetodoPago> metodoPago = metodoPagoService.buscarPorId(metodoPagoId);
-        // Guardar el pago en la base de datos
-        if (pPago.getMetodoPago().getId().equals(1)) {
+        if (metodoPagoId.equals(1)) { // Pago en efectivo
             pPago.setMetodoPago(pPago.getMetodoPago());
-            Pago pagosave=pagoService.crearOEditar(pPago);
+            Pago pagosave = pagoService.crearOEditar(pPago);
             attributes.addFlashAttribute("success", "Pago en efectivo guardado exitosamente.");
-            return "redirect:/pagos/details/"+pagosave.getStudentPaymentRecord().getId();
-        } else if (pPago.getMetodoPago().getId().equals(2)) {
+            return "redirect:/pagos/details/" + pagosave.getStudentPaymentRecord().getId();
+        } else if (metodoPagoId.equals(2)) { // Pago con PayPal
             pPago.setMetodoPago(pPago.getMetodoPago());
-            pagoSave = pagoService.crearOEditar(pPago);
-            pagoId = pagoSave.getId();
-            // Lógica de PayPal
+            Pago pagoSave = pagoService.crearOEditar(pPago);
+
             Amount amount = new Amount();
             amount.setCurrency("USD");
             amount.setTotal(String.format(Locale.US, "%.2f", pPago.getCantidadPagar()));
@@ -241,21 +236,29 @@ public class PagoController {
 
             RedirectUrls redirectUrls = new RedirectUrls();
             redirectUrls.setCancelUrl("http://localhost:8080/pagos/cancel");
-            redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + pagoId);
+            redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + pagoSave.getId());
             payment.setRedirectUrls(redirectUrls);
 
             Payment createdPayment = payment.create(apiContext);
+
+            String approvalUrl = "";
             for (Links link : createdPayment.getLinks()) {
                 if ("approval_url".equals(link.getRel())) {
-                    return "redirect:" + link.getHref();
+                    approvalUrl = link.getHref();
+                    break;
                 }
+            }
+
+            if (!approvalUrl.isEmpty()) {
+                model.addAttribute("qrLink", approvalUrl);
+                model.addAttribute("pago", pPago);
+                return "pago/qr";
             }
         }
 
         attributes.addFlashAttribute("error", "Ocurrió un error al procesar el pago.");
         return "redirect:/pagos/create";
     }
-
 
     // Metodo para ejecutar el pago y capturarlo
 //    private Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
