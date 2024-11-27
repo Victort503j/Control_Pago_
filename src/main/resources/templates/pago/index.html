@@ -187,13 +187,15 @@
                 <form th:action="@{/pagos/search}" method="get">
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label for="alumno" class="margin-b"><strong>Alumno:</strong></label>
-                            <select id="alumno" name="alumno" class="form-select select2">
+                            <label for="nombre" class="margin-b"><strong>Nombre:</strong></label>
+                            <select id="nombre" name="nombre" class="form-select select2">
                                 <option selected value="">SELECCIONAR</option>
-                                <option th:each="alumno : ${alumnos}"
-                                        th:value="${alumno.nombre} + ' ' + ${alumno.apellido}"
-                                        th:text="${alumno.nombre} + ' ' + ${alumno.apellido}">
-                                </option>
+                                <option th:each="alumno : ${alumnos}" th:value="${alumno.nombre}" th:text="${alumno.nombre}"></option>
+                            </select>
+                            <label for="apellido" class="margin-b"><strong>Apellido:</strong></label>
+                            <select id="apellido" name="apellido" class="form-select select2">
+                                <option selected value="">SELECCIONAR</option>
+                                <option th:each="alumno : ${alumnos}" th:value="${alumno.apellido}" th:text="${alumno.apellido}"></option>
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
@@ -201,10 +203,14 @@
                             <input type="date" id="fecha" name="fecha" th:value="${param.fecha}" class="form-control">
                         </div>
                         <div class="col-md-4 mb-3 d-flex align-items-end justify-content-end">
+                            <!-- Parámteros ocultos para enviar page y size -->
+                            <input type="hidden" name="page" th:value="${param.page != null ? param.page : 1}" />
+                            <input type="hidden" name="size" th:value="${param.size != null ? param.size : 10}" />
                             <button type="submit" class="btn boton-custom">Buscar</button>
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
         <table class="table table-striped mt-3">
@@ -239,37 +245,50 @@
 
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
+            <!-- Primera página -->
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/pagos(page=1, size=${payments.size})}" aria-label="Primera">
+                <a class="page-link" th:href="@{/pagos/studentPaymentRecord(page=1, size=${param.size})}" aria-label="Primera">
                     <span aria-hidden="true">&laquo;&laquo;</span>
                 </a>
             </li>
+
+            <!-- Página anterior -->
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/pagos(page=${currentPage - 1}, size=${payments.size})}" aria-label="Anterior">
+                <a class="page-link" th:href="@{/pagos/studentPaymentRecord(page=${currentPage - 1}, size=${param.size})}" aria-label="Anterior">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
 
+            <!-- Números de páginas -->
             <li class="page-item" th:each="pageNumber : ${pageNumbers}" th:classappend="${pageNumber == currentPage} ? 'active'">
-                <a class="page-link" th:href="@{/pagos(page=${pageNumber}, size=${payments.size})}" th:text="${pageNumber}"></a>
+                <a class="page-link" th:href="@{/pagos/studentPaymentRecord(page=${pageNumber}, size=${param.size})}" th:text="${pageNumber}"></a>
             </li>
 
+            <!-- Página siguiente -->
             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/pagos(page=${currentPage + 1}, size=${payments.size})}" aria-label="Siguiente">
+                <a class="page-link" th:href="@{/pagos/studentPaymentRecord(page=${currentPage + 1}, size=${param.size})}" aria-label="Siguiente">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
+
+            <!-- Última página -->
             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/pagos(page=${totalPages}, size=${payments.size})}" aria-label="Última">
+                <a class="page-link" th:href="@{/pagos/studentPaymentRecord(page=${totalPages}, size=${param.size})}" aria-label="Última">
                     <span aria-hidden="true">&raquo;&raquo;</span>
                 </a>
             </li>
         </ul>
     </nav>
 
+
+
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#alumno').select2({
+            $('#nombre').select2({
+                placeholder: "Selecciona el grado de estudio",
+                allowClear: true
+            });
+            $('#apellido').select2({
                 placeholder: "Selecciona el grado de estudio",
                 allowClear: true
             });

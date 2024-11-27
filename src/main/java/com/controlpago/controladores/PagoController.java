@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/pagos")
@@ -64,6 +66,8 @@ public class PagoController {
         //Page<Pago> pagos = pagoService.buscarTodosPaginados(pageable);
         //model.addAttribute("pagos", pagos);
 
+
+
         Page<StudentPaymentRecord> studentPaymentRecords = studentPaymentRecordService.buscarTodosPaginados(pageable);
         model.addAttribute("payments",studentPaymentRecords);
 
@@ -92,55 +96,68 @@ public class PagoController {
 
 
     @GetMapping("/search")
-    public String search(@RequestParam("alumno") Optional<String> nombreCompleto,
-                         @RequestParam("fecha") Optional<String> fecha,
-                         @RequestParam("page") Optional<Integer> page,
-                         @RequestParam("size") Optional<Integer> size,
-                         Model model) {
-        int currentPage = page.orElse(1) - 1;
-        int pageSize = size.orElse(5);
-        Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+    public String search(
+            @RequestParam("nombre") Optional<String> nombre,
+            @RequestParam("apellido") Optional<String> apellido,
+            @RequestParam("fecha") Optional<String> fecha,
+            @RequestParam(value = "page", defaultValue = "1") Optional<Integer> page,
+            @RequestParam(value = "size", defaultValue = "10") Optional<Integer> size,
+            Model model) {
 
-        Page<Pago> pagos = Page.empty();  // Inicializamos la variable de pagos
+        // Parámetros por defecto para la paginación
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(5);
+        Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("id").descending());
+
+        // Inicialización de variables
+        Page<StudentPaymentRecord> payment = Page.empty();
         LocalDate fechaParsed = null;
         String errorMessage = null;
 
         try {
-            // Validación de la fecha, si está presente
+            // Validación de la fecha
             if (fecha.isPresent() && !fecha.get().isEmpty()) {
                 fechaParsed = LocalDate.parse(fecha.get());
             }
 
-            // Realizar la búsqueda de pagos, con filtros opcionales
-            pagos = pagoService.buscarPagosPorNombreCompletoYFecha(
-                    nombreCompleto.orElse(null), fechaParsed, pageable);
+            // Búsqueda en el servicio
+            payment = studentPaymentRecordService.buscarAlumnoPorNombreCompletoYFecha(
+                    nombre.orElse(null),
+                    apellido.orElse(null),
+                    fechaParsed,
+                    pageable
+            );
 
-            if (pagos.isEmpty()) {
-                errorMessage = "No se encontraron pagos para los criterios de búsqueda proporcionados.";
+            // Mensaje de error si no hay resultados
+            if (payment.isEmpty()) {
+                errorMessage = "No se encontraron registros para los criterios de búsqueda.";
             }
 
         } catch (DateTimeParseException e) {
             errorMessage = "Formato de fecha inválido. Por favor, ingrese una fecha válida.";
         } catch (Exception e) {
-            errorMessage = "Ocurrió un error al realizar la búsqueda. Por favor, intente nuevamente.";
+            errorMessage = "Ocurrió un error inesperado al realizar la búsqueda.";
         }
 
-        // Añadir los pagos, alumnos y posibles mensajes de error al modelo
-        model.addAttribute("pagos", pagos);
-        List<Alumno> alumnos = alumnoService.obtenerTodos();
-        model.addAttribute("alumnos", alumnos);
+        // Agregar datos al modelo
+        model.addAttribute("payment", payment);
         model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("alumnos", alumnoService.obtenerTodos()); // Lista de alumnos para el filtro
 
-        int totalPage = pagos.getTotalPages();
-        if (totalPage > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPage)
+        // Paginación
+        int totalPages = payment.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "pago/index";
+        return "pago/index"; // Retornar la vista
     }
+
+
+
 
     @GetMapping("/studentPaymentRecord")
     public String createPaymentRecord(Model model){
@@ -236,7 +253,7 @@ public class PagoController {
 
             RedirectUrls redirectUrls = new RedirectUrls();
             redirectUrls.setCancelUrl("http://localhost:8080/pagos/cancel");
-            redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + pagoSave.getId());
+            redirectUrls.setReturnUrl("http://192.168.1.151:8080/pagos/success?IdPago=" + pagoSave.getId());
             payment.setRedirectUrls(redirectUrls);
 
             Payment createdPayment = payment.create(apiContext);
@@ -325,27 +342,33 @@ public class PagoController {
                 UpdatePago.setOrderId(paymentId);
                 UpdatePago.setDetails(executedPayment.getTransactions().get(0).getDescription());
                 pagoService.crearOEditar(UpdatePago);
+                return "/pago/customerOk";
 
 
-                if (executedPayment != null && executedPayment.getState().equals("COMPLETED")) {
-                    // El pago se ha completado exitosamente, realiza acciones adicionales
-                    model.addAttribute("msg", "Pago realizado exitosamente.");
-                } else {
-                    // Hubo un error al completar el pago
-                    model.addAttribute("error", "Error al completar el pago.");
-                }
+//                if (executedPayment != null && executedPayment.getState().equals("COMPLETED")) {
+//                    // El pago se ha completado exitosamente, realiza acciones adicionales
+//                    model.addAttribute("msg", "Pago realizado exitosamente.");
+//                } else {
+//                    // Hubo un error al completar el pago
+//                    model.addAttribute("error", "Error al completar el pago.");
+//                }
 
-                model.addAttribute("message", "Pago completado exitosamente!");
-                model.addAttribute("payment", executedPayment);
+//                model.addAttribute("message", "Pago completado exitosamente!");
+//                model.addAttribute("payment", executedPayment);
 
-                return "redirect:/pagos/details/"+UpdatePago.getStudentPaymentRecord().getId();
+                //return "redirect:/pagos/details/"+UpdatePago.getStudentPaymentRecord().getId();
+                //return "/pago/customerOk";
             }
             return "redirect:/pagos";
         } catch (PayPalRESTException e) {
             e.printStackTrace();
             model.addAttribute("error", "Error al completar el pago: " + e.getMessage());
-            return "http://localhost:8080/pagos";
+            return "/pago";
         }
+    }
+    @GetMapping("/customerOk")
+    public String customerOk() {
+        return "/pago/customerOk";  // Asegúrate de que el nombre del archivo HTML sea correcto
     }
 
     @GetMapping("/cancel")
@@ -353,4 +376,12 @@ public class PagoController {
         model.addAttribute("message", "El pago fue cancelado.");
         return "http://localhost:8080/pagos/create";
     }
+
+//    @GetMapping("/qr")
+//    public String qr(@RequestParam("paymentRecordId")Integer paymentRecordId,
+//                     Model model){
+//        StudentPaymentRecord studentPaymentRecord = studentPaymentRecordService.buscarPorId(paymentRecordId).orElse(null);
+//        model.addAttribute("studentPaymentRecord", studentPaymentRecord);
+//        return "pago/qr";
+//    }
 }

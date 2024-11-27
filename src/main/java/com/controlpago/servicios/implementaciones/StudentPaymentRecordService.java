@@ -1,5 +1,6 @@
 package com.controlpago.servicios.implementaciones;
 
+import com.controlpago.modelos.Pago;
 import com.controlpago.modelos.StudentPaymentRecord;
 import com.controlpago.repositorios.IStudentPaymentRecordRepository;
 import com.controlpago.servicios.interfaces.IStudentPaymentRecordService;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,4 +42,10 @@ public class StudentPaymentRecordService implements IStudentPaymentRecordService
     public void eliminarPorId(Integer id){
         studentPaymentRecordRepository.deleteById(id);
     }
+
+    @Override
+    public Page<StudentPaymentRecord> buscarAlumnoPorNombreCompletoYFecha(String nombre, String apellido, LocalDate fecha, Pageable pageable) {
+        return studentPaymentRecordRepository.buscarAlumnoPorNombreCompletoYFecha(nombre,apellido,fecha,pageable);
+    }
+
 }

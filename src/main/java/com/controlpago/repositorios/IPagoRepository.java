@@ -1,6 +1,7 @@
 package com.controlpago.repositorios;
 
 import com.controlpago.modelos.Pago;
+import com.controlpago.modelos.StudentPaymentRecord;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -41,12 +42,13 @@ public interface IPagoRepository extends JpaRepository<Pago, Integer> {
             "(:nombreCompleto IS NULL OR CONCAT(p.alumno.nombre, ' ', p.alumno.apellido) LIKE %:nombreCompleto%)")
     Page<Pago> buscarPagosPorNombreCompleto(@Param("nombreCompleto") String nombreCompleto, Pageable pageable);
 
-    @Query("SELECT p FROM Pago p WHERE " +
-            "(:nombreCompleto IS NULL OR CONCAT(p.alumno.nombre, ' ', p.alumno.apellido) LIKE %:nombreCompleto%) AND " +
-            "(:fecha IS NULL OR p.fecha = :fecha)")
-    Page<Pago> buscarPagosPorNombreCompletoYFecha(@Param("nombreCompleto") String nombreCompleto,
-                                                  @Param("fecha") LocalDate fecha,
-                                                  Pageable pageable);
+//    @Query("SELECT p FROM studentPaymentRecord p WHERE " +
+//            "(:nombreCompleto IS NULL OR CONCAT(p.alumno.nombre, ' ', p.alumno.apellido) LIKE %:nombreCompleto%) AND " +
+//            "(:fecha IS NULL OR p.fecha = :fecha)")
+//    Page<StudentPaymentRecord> buscarAlumnosPorNombreCompletoYFecha(@Param("nombreCompleto") String nombreCompleto,
+//                                                                    @Param("fecha") LocalDate fecha,
+//                                                                    Pageable pageable);
+
 
 
 }

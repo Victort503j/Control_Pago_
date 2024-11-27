@@ -32,7 +32,7 @@ public class DatabaseWebSecurity {
                 // Aperturar el acceso a los recursos estáticos
                 .requestMatchers("/assets/**", "/css/**", "/js/**", "/images/**").permitAll()
                 // Las vistas públicas no requieren autenticación
-                .requestMatchers("/", "/privacy", "/terms", "/pagos/success*").permitAll()
+                .requestMatchers("/", "/privacy", "/terms", "/pagos/success*", "/pago/success*","/pagos/customerOk", "/pago/customerOk").permitAll()
                 // Evitar que usuarios autenticados accedan a la página de login
                 .requestMatchers("/login").not().fullyAuthenticated()
                 // Asignar permisos a URLS por roles

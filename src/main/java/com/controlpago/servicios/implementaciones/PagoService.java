@@ -1,7 +1,9 @@
 package com.controlpago.servicios.implementaciones;
 
 import com.controlpago.modelos.Pago;
+import com.controlpago.modelos.StudentPaymentRecord;
 import com.controlpago.repositorios.IPagoRepository;
+import com.controlpago.repositorios.IStudentPaymentRecordRepository;
 import com.controlpago.servicios.interfaces.IPagoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,8 @@ public class PagoService implements IPagoService {
 
     @Autowired
     private IPagoRepository pagoRepository;
+    @Autowired
+    private IStudentPaymentRecordRepository studentPaymentRecordRepository;
 
     @Override
     public Page<Pago> buscarTodosPaginados(Pageable pageable) {
@@ -91,10 +95,11 @@ public class PagoService implements IPagoService {
         return pagoRepository.buscarPagosPorNombreCompleto(nombreCompleto, pageable);
     }
 
-    @Override
-    public Page<Pago> buscarPagosPorNombreCompletoYFecha(String nombreCompleto, LocalDate fecha, Pageable pageable) {
-        return pagoRepository.buscarPagosPorNombreCompletoYFecha(nombreCompleto, fecha, pageable);
-    }
+
+//    @Override
+//    public Page<StudentPaymentRecord> buscarPagosPorNombreCompletoYFecha(String nombreCompleto, LocalDate fecha, Pageable pageable) {
+//        return studentPaymentRecordRepository.buscarAlumnoPorNombreCompletoYFecha(nombreCompleto, fecha, pageable);
+//    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.controlpago.servicios.interfaces;
 
 import com.controlpago.modelos.Pago;
+import com.controlpago.modelos.StudentPaymentRecord;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -36,7 +37,6 @@ public interface IPagoService {
 
     Page<Pago> buscarPagosPorNombreCompleto(String nombreCompleto, Pageable pageable);
 
-    Page<Pago> buscarPagosPorNombreCompletoYFecha(String nombreCompleto, LocalDate fecha, Pageable pageable);
 
 
 }
