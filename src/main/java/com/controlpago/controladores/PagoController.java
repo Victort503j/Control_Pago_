@@ -194,6 +194,7 @@ public class PagoController {
     public String guardar(@ModelAttribute Pago pPago,
                           BindingResult result,
                           Model model,
+                          @RequestParam("payRecordId") Integer payRecordId,
                           RedirectAttributes attributes) throws PayPalRESTException {
         if (result.hasErrors()) {
             model.addAttribute("pago", pPago);
@@ -205,7 +206,7 @@ public class PagoController {
 
         if (pagoExistente != null) {
             attributes.addFlashAttribute("error", "Este alumno ya ha realizado un pago en el mes seleccionado.");
-            return "redirect:/pagos/create";
+            return "redirect:/pagos/create?alumnoId="+alumnoId+"&"+"payRecordId="+payRecordId;
         }
 
         Integer metodoPagoId = pPago.getMetodoPago().getId();
