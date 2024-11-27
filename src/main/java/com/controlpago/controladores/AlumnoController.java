@@ -70,13 +70,20 @@ public class AlumnoController {
                 nombre.orElse(""), apellido.orElse(""), gradoId.orElse(null), pageable);
         model.addAttribute("alumnos", alumnos);
 
-        int totalPage = alumnos.getTotalPages();
-        if (totalPage > 0) {
-            List<Integer> pageNumber = IntStream.rangeClosed(1, totalPage)
+        int totalPages = alumnos.getTotalPages();
+        if (totalPages > 0) {
+            int startPage = Math.max(1, currentPage - 2);
+            int endPage = Math.min(totalPages, currentPage + 2);
+
+            List<Integer> pageNumber = IntStream.rangeClosed(startPage, endPage)
                     .boxed()
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumber);
         }
+        
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
+
         List<Grado> grados = gradoService.obtenerTodos();
         model.addAttribute("grados", grados);
         return "alumno/index";
