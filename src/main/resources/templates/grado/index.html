@@ -156,9 +156,12 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="search" class="form-label margin-b"><strong>Grado:</strong></label>
-                            <select name="search" class="form-select select2"  id="search">
-                                <option value="" selected>SELECCIONAR</option>
-                                <option th:each="grado : ${allGrados}" th:value="${grado.id}" th:text="${grado.nombre}"></option>
+                            <select name="search" class="form-select select2" id="search">
+                                <option value="" th:selected="${search == null || search == ''}">SELECCIONAR</option>
+                                <option th:each="grado : ${allGrados}"
+                                        th:value="${grado.nombre}"
+                                        th:text="${grado.nombre}"
+                                        th:selected="${grado.nombre == search}"></option>
                             </select>
                         </div>
                     </div>

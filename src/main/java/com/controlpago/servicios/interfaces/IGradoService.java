@@ -19,4 +19,9 @@ public interface IGradoService {
     void eliminarPorId(Integer id);
     long contarGrados();
     long contarTotalGrados();
+
+    Page<Grado> buscarPorNombrePaginado(String nombre, Pageable pageable);
+
+
+
 }

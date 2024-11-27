@@ -24,34 +24,30 @@ public class GradoController {
     private IGradoService gradoService;
 
     @GetMapping
-    public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+    public String index(Model model,
+                        @RequestParam("page") Optional<Integer> page,
+                        @RequestParam("size") Optional<Integer> size,
+                        @RequestParam("search") Optional<String> search) {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
+
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("id").descending());
+        Page<Grado> grados;
 
-        Page<Grado> grados = gradoService.buscarTodosPaginados(pageable);
-        model.addAttribute("grados", grados);
-
-        int totalPages = grados.getTotalPages();
-        if (totalPages > 0) {
-            int startPage = Math.max(1, currentPage - 2);
-            int endPage = Math.min(totalPages, currentPage + 2);
-
-            List<Integer> pageNumbers = IntStream.rangeClosed(startPage, endPage)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
+        if (search.isPresent() && !search.get().isBlank()) {
+            grados = gradoService.buscarPorNombrePaginado(search.get(), pageable);
+        } else {
+            grados = gradoService.buscarTodosPaginados(pageable);
         }
 
-        List<Grado> allGrados = gradoService.obtenerTodos();
-        model.addAttribute("allGrados", allGrados);
-
+        model.addAttribute("grados", grados);
+        model.addAttribute("allGrados", gradoService.obtenerTodos());
+        model.addAttribute("search", search.orElse(""));
         model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalPages", grados.getTotalPages());
 
         return "grado/index";
     }
-
 
 
     @GetMapping("/create")

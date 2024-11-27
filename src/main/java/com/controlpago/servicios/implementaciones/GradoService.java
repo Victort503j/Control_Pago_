@@ -49,4 +49,12 @@ public class GradoService  implements IGradoService {
     public long contarTotalGrados() {
         return gradoRepository.contarTotalGrados();
     }
+
+    @Override
+    public Page<Grado> buscarPorNombrePaginado(String nombre, Pageable pageable) {
+        return gradoRepository.findByNombreContainingIgnoreCase(nombre, pageable);
+    }
+
+
+
 }
