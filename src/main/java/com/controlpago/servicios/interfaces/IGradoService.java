@@ -23,5 +23,4 @@ public interface IGradoService {
     Page<Grado> buscarPorNombrePaginado(String nombre, Pageable pageable);
 
 
-
 }

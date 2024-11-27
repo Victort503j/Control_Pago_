@@ -14,6 +14,4 @@ public interface IGradoRepository extends JpaRepository<Grado, Integer> {
     long contarTotalGrados();
 
     Page<Grado> findByNombreContainingIgnoreCase(String nombre, Pageable pageable);
-
-
 }
