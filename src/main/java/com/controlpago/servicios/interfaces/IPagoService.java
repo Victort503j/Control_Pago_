@@ -19,14 +19,19 @@ public interface IPagoService {
     Pago crearOEditar(Pago pago);
 
     void eliminarPorId(Integer id);
+
     Pago buscarPorAlumnoYMes(Long alumnoId, LocalDate fecha);
 
     List<Pago> buscarPagosPorAlumno(Integer alumnoId);
-    List<Pago>buscarPagosPorStudentPaymnetRecord(Integer recordId);
+
+    List<Pago> buscarPagosPorStudentPaymnetRecord(Integer recordId);
+
     long contarPagos();
+
     long contarTotalPagos();
 
     long contarAlumnosQueHanPagado(LocalDate inicioMes, LocalDate finMes);
+
     long contarAlumnosQueNoHanPagado(LocalDate inicioMes, LocalDate finMes);
 
     // Nuevo método para contar los alumnos que han pagado por grado
@@ -35,8 +40,7 @@ public interface IPagoService {
     // Nuevo método para contar los alumnos que no han pagado por grado
     List<Object[]> contarAlumnosQueNoHanPagadoPorGrado(LocalDate inicioMes, LocalDate finMes);
 
-    Page<Pago> buscarPagosPorNombreCompleto(String nombreCompleto, Pageable pageable);
-
+    public Page<StudentPaymentRecord> buscarAlumnoPorNombreCompleto(String nombreCompleto, Pageable pageable);
 
 
 }

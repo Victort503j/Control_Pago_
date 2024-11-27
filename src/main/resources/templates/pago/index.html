@@ -187,25 +187,16 @@
                 <form th:action="@{/pagos/search}" method="get">
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label for="nombre" class="margin-b"><strong>Nombre:</strong></label>
+                            <label for="nombre" class="margin-b"><strong>Nombre Completo:</strong></label>
                             <select id="nombre" name="nombre" class="form-select select2">
                                 <option selected value="">SELECCIONAR</option>
-                                <option th:each="alumno : ${alumnos}" th:value="${alumno.nombre}" th:text="${alumno.nombre}"></option>
+                                <!-- Se combina el nombre y apellido -->
+                                <option th:each="alumno : ${alumnos}"
+                                        th:value="${alumno.nombre + ' ' + alumno.apellido}"
+                                        th:text="${alumno.nombre + ' ' + alumno.apellido}"></option>
                             </select>
-                            <label for="apellido" class="margin-b"><strong>Apellido:</strong></label>
-                            <select id="apellido" name="apellido" class="form-select select2">
-                                <option selected value="">SELECCIONAR</option>
-                                <option th:each="alumno : ${alumnos}" th:value="${alumno.apellido}" th:text="${alumno.apellido}"></option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="fecha" class="margin-b"><strong>Fecha:</strong></label>
-                            <input type="date" id="fecha" name="fecha" th:value="${param.fecha}" class="form-control">
                         </div>
                         <div class="col-md-4 mb-3 d-flex align-items-end justify-content-end">
-                            <!-- Parámteros ocultos para enviar page y size -->
-                            <input type="hidden" name="page" th:value="${param.page != null ? param.page : 1}" />
-                            <input type="hidden" name="size" th:value="${param.size != null ? param.size : 10}" />
                             <button type="submit" class="btn boton-custom">Buscar</button>
                         </div>
                     </div>

@@ -1,5 +1,6 @@
 package com.controlpago.repositorios;
 
+import com.controlpago.modelos.Grado;
 import com.controlpago.modelos.Pago;
 import com.controlpago.modelos.StudentPaymentRecord;
 import org.springframework.data.domain.Page;
@@ -13,8 +14,11 @@ import java.util.List;
 
 public interface IPagoRepository extends JpaRepository<Pago, Integer> {
     Pago findByAlumnoIdAndFechaBetween(Long alumnoId, LocalDate inicioMes, LocalDate finMes);
+
     List<Pago> findByStudentPaymentRecord_Id(Integer studentPaymentRecordId);
+
     List<Pago> findByAlumnoId(Integer alumnoId);
+
     @Query("SELECT COUNT(p) FROM Pago p")
     long contarTotalPagos();
 
@@ -42,12 +46,11 @@ public interface IPagoRepository extends JpaRepository<Pago, Integer> {
             "(:nombreCompleto IS NULL OR CONCAT(p.alumno.nombre, ' ', p.alumno.apellido) LIKE %:nombreCompleto%)")
     Page<Pago> buscarPagosPorNombreCompleto(@Param("nombreCompleto") String nombreCompleto, Pageable pageable);
 
-//    @Query("SELECT p FROM studentPaymentRecord p WHERE " +
-//            "(:nombreCompleto IS NULL OR CONCAT(p.alumno.nombre, ' ', p.alumno.apellido) LIKE %:nombreCompleto%) AND " +
-//            "(:fecha IS NULL OR p.fecha = :fecha)")
-//    Page<StudentPaymentRecord> buscarAlumnosPorNombreCompletoYFecha(@Param("nombreCompleto") String nombreCompleto,
-//                                                                    @Param("fecha") LocalDate fecha,
-//                                                                    Pageable pageable);
+    @Query("SELECT spr FROM StudentPaymentRecord spr " +
+            "WHERE (:nombreCompleto IS NULL OR :nombreCompleto = '' OR CONCAT(spr.alumno.nombre, ' ', spr.alumno.apellido) LIKE %:nombreCompleto%)")
+    Page<StudentPaymentRecord> buscarPorNombreCompleto(
+            @Param("nombreCompleto") String nombreCompleto,
+            Pageable pageable);
 
 
 

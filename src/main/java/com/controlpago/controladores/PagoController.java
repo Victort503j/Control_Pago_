@@ -99,59 +99,45 @@ public class PagoController {
     public String search(
             @RequestParam("nombre") Optional<String> nombre,
             @RequestParam("apellido") Optional<String> apellido,
-            @RequestParam("fecha") Optional<String> fecha,
             @RequestParam(value = "page", defaultValue = "1") Optional<Integer> page,
             @RequestParam(value = "size", defaultValue = "10") Optional<Integer> size,
             Model model) {
 
         // Parámetros por defecto para la paginación
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(5);
+        int pageSize = size.orElse(10);
         Pageable pageable = PageRequest.of(currentPage - 1, pageSize, Sort.by("id").descending());
 
-        // Inicialización de variables
-        Page<StudentPaymentRecord> payment = Page.empty();
-        LocalDate fechaParsed = null;
-        String errorMessage = null;
-
-        try {
-            // Validación de la fecha
-            if (fecha.isPresent() && !fecha.get().isEmpty()) {
-                fechaParsed = LocalDate.parse(fecha.get());
-            }
-
-            // Búsqueda en el servicio
-            payment = studentPaymentRecordService.buscarAlumnoPorNombreCompletoYFecha(
-                    nombre.orElse(null),
-                    apellido.orElse(null),
-                    fechaParsed,
-                    pageable
-            );
-
-            // Mensaje de error si no hay resultados
-            if (payment.isEmpty()) {
-                errorMessage = "No se encontraron registros para los criterios de búsqueda.";
-            }
-
-        } catch (DateTimeParseException e) {
-            errorMessage = "Formato de fecha inválido. Por favor, ingrese una fecha válida.";
-        } catch (Exception e) {
-            errorMessage = "Ocurrió un error inesperado al realizar la búsqueda.";
+        // Construir el nombre completo
+        String nombreCompleto = null;
+        if (nombre.isPresent() && apellido.isPresent()) {
+            nombreCompleto = nombre.get() + " " + apellido.get();
+        } else if (nombre.isPresent()) {
+            nombreCompleto = nombre.get();
+        } else if (apellido.isPresent()) {
+            nombreCompleto = apellido.get();
         }
 
+        // Realiza la búsqueda con el nombre completo
+        Page<StudentPaymentRecord> payment = pagoService.buscarAlumnoPorNombreCompleto(nombreCompleto, pageable);
+
         // Agregar datos al modelo
-        model.addAttribute("payment", payment);
-        model.addAttribute("errorMessage", errorMessage);
+        model.addAttribute("payments", payment != null? payment: 1);
         model.addAttribute("alumnos", alumnoService.obtenerTodos()); // Lista de alumnos para el filtro
 
         // Paginación
         int totalPages = payment.getTotalPages();
         if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+            int startPage = Math.max(1, currentPage - 2);
+            int endPage = Math.min(totalPages, currentPage + 2);
+
+            List<Integer> pageNumbers = IntStream.rangeClosed(startPage, endPage)
                     .boxed()
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
 
         return "pago/index"; // Retornar la vista
     }
