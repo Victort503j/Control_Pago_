@@ -169,6 +169,7 @@
                                 <tr>
                                     <th>Meses Pagados</th>
                                     <th>Comentario</th>
+                                    <th>Estado</th>
                                     <th>Pago</th>
                                 </tr>
                                 </thead>
@@ -176,6 +177,7 @@
                                 <tr th:each="pago : ${pagos}">
                                     <td th:text="${pago.fecha}"></td>
                                     <td th:text="${pago.comentario}"></td>
+                                    <td th:text="${pago.Estado}"></td>
                                     <td th:text="${pago.cantidadPagar}"></td>
                                 </tr>
                                 </tbody>
@@ -184,9 +186,9 @@
                                 </tfoot>
                             </table>
 
-                            <div  class="text-left font-weight-bold">
-                                Total Pagado: <span th:text="${totalPagado}"></span>
-                            </div>
+<!--                            <div  class="text-left font-weight-bold">-->
+<!--                                Total Pagado: <span th:text="${totalPagado}"></span>-->
+<!--                            </div>-->
                         </div>
                         <div style="margin: 15px" class="text-right">
                             <a th:href="@{/pagos}" class="w-25 btn btn-cancelar font-weight-bold">Regresar</a>

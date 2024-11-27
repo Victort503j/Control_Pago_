@@ -225,6 +225,7 @@ public class PagoController {
         Integer metodoPagoId = pPago.getMetodoPago().getId();
         if (metodoPagoId.equals(1)) { // Pago en efectivo
             pPago.setMetodoPago(pPago.getMetodoPago());
+            pPago.setEstado("Completado");
             Pago pagosave = pagoService.crearOEditar(pPago);
 
             //actualizar StudentPaymentRecord
@@ -240,6 +241,7 @@ public class PagoController {
             return "redirect:/pagos/details/" + pagosave.getStudentPaymentRecord().getId();
         } else if (metodoPagoId.equals(2)) { // Pago con PayPal
             pPago.setMetodoPago(pPago.getMetodoPago());
+            pPago.setEstado("En Proceso");
             Pago pagoSave = pagoService.crearOEditar(pPago);
 
             //Modificar valores de StudentPAymentRecord
@@ -272,7 +274,7 @@ public class PagoController {
 
             RedirectUrls redirectUrls = new RedirectUrls();
             redirectUrls.setCancelUrl("http://localhost:8080/pagos/cancel");
-            redirectUrls.setReturnUrl("http://192.168.1.151:8080/pagos/success?IdPago=" + pagoSave.getId());
+            redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + pagoSave.getId());
             payment.setRedirectUrls(redirectUrls);
 
             Payment createdPayment = payment.create(apiContext);
@@ -360,6 +362,7 @@ public class PagoController {
                 UpdatePago.setDatePaypal(date);
                 UpdatePago.setOrderId(paymentId);
                 UpdatePago.setDetails(executedPayment.getTransactions().get(0).getDescription());
+                UpdatePago.setEstado("Completado");
                 Pago pagoUpdate = pagoService.crearOEditar(UpdatePago);
 
                 //Modificar valores de StudentPAymentRecord

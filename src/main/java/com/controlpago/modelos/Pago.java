@@ -60,6 +60,16 @@ public class Pago {
     private String PaymentStatus;
     private LocalDate DatePaypal;
 
+    public String getEstado() {
+        return Estado;
+    }
+
+    public void setEstado(String estado) {
+        Estado = estado;
+    }
+
+    private String Estado;
+
     public StudentPaymentRecord getStudentPaymentRecord() {
         return studentPaymentRecord;
     }
