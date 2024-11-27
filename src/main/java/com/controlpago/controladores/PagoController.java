@@ -181,7 +181,7 @@ public class PagoController {
             pStudentPaymentRecord.setUpdateAt(LocalDate.now());
             pStudentPaymentRecord.setStatus(true);
             pStudentPaymentRecord.setPaidAmount(BigDecimal.ZERO);
-            pStudentPaymentRecord.setRemainingAmount(BigDecimal.ZERO);
+            pStudentPaymentRecord.setRemainingAmount(pStudentPaymentRecord.getTotalAmount());
             StudentPaymentRecord Record = studentPaymentRecordService.crearOEditar(pStudentPaymentRecord);
             recordId = Record.getId();
             attributes.addFlashAttribute("msg", "creado exitosamente");
@@ -226,11 +226,30 @@ public class PagoController {
         if (metodoPagoId.equals(1)) { // Pago en efectivo
             pPago.setMetodoPago(pPago.getMetodoPago());
             Pago pagosave = pagoService.crearOEditar(pPago);
+
+            //actualizar StudentPaymentRecord
+            Integer paymentId = pagosave.getStudentPaymentRecord().getId();
+            StudentPaymentRecord paymentRecord = studentPaymentRecordService.buscarPorId(paymentId).orElse(null);
+            BigDecimal residual = paymentRecord.getRemainingAmount().subtract(pPago.getCantidadPagar());
+            BigDecimal totalPagado = paymentRecord.getPaidAmount().add(pPago.getCantidadPagar());
+            paymentRecord.setPaidAmount(totalPagado);
+            paymentRecord.setRemainingAmount(residual);
+            studentPaymentRecordService.crearOEditar(paymentRecord);
+
             attributes.addFlashAttribute("success", "Pago en efectivo guardado exitosamente.");
             return "redirect:/pagos/details/" + pagosave.getStudentPaymentRecord().getId();
         } else if (metodoPagoId.equals(2)) { // Pago con PayPal
             pPago.setMetodoPago(pPago.getMetodoPago());
             Pago pagoSave = pagoService.crearOEditar(pPago);
+
+            //Modificar valores de StudentPAymentRecord
+//            Integer paymentId = pagoSave.getStudentPaymentRecord().getId();
+//            StudentPaymentRecord paymentRecord = studentPaymentRecordService.buscarPorId(paymentId).orElse(null);
+//            BigDecimal residual = paymentRecord.getRemainingAmount().subtract(pPago.getCantidadPagar());
+//            BigDecimal totalPagado = paymentRecord.getPaidAmount().add(pPago.getCantidadPagar());
+//            paymentRecord.setPaidAmount(totalPagado);
+//            paymentRecord.setRemainingAmount(residual);
+//            studentPaymentRecordService.crearOEditar(paymentRecord);
 
             Amount amount = new Amount();
             amount.setCurrency("USD");
@@ -341,7 +360,16 @@ public class PagoController {
                 UpdatePago.setDatePaypal(date);
                 UpdatePago.setOrderId(paymentId);
                 UpdatePago.setDetails(executedPayment.getTransactions().get(0).getDescription());
-                pagoService.crearOEditar(UpdatePago);
+                Pago pagoUpdate = pagoService.crearOEditar(UpdatePago);
+
+                //Modificar valores de StudentPAymentRecord
+                StudentPaymentRecord paymentRecord = studentPaymentRecordService.buscarPorId(pagoUpdate.getStudentPaymentRecord().getId()).orElse(null);
+                StudentPaymentRecord StudentpaymentRecord = studentPaymentRecordService.buscarPorId(paymentRecord.getId()).orElse(null);
+                BigDecimal residual = paymentRecord.getRemainingAmount().subtract(pagoUpdate.getCantidadPagar());
+                BigDecimal totalPagado = paymentRecord.getPaidAmount().add(pagoUpdate.getCantidadPagar());
+                paymentRecord.setPaidAmount(totalPagado);
+                paymentRecord.setRemainingAmount(residual);
+                studentPaymentRecordService.crearOEditar(paymentRecord);
                 return "/pago/customerOk";
 
 
