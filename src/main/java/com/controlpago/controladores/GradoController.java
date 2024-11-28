@@ -36,8 +36,28 @@ public class GradoController {
 
         if (search.isPresent() && !search.get().isBlank()) {
             grados = gradoService.buscarPorNombrePaginado(search.get(), pageable);
+            int totalPages = grados.getTotalPages();
+            if (totalPages > 0) {
+                int startPage = Math.max(1, currentPage - 2);
+                int endPage = Math.min(totalPages, currentPage + 2);
+
+                List<Integer> pageNumbers = IntStream.rangeClosed(startPage, endPage)
+                        .boxed()
+                        .collect(Collectors.toList());
+                model.addAttribute("pageNumbers", pageNumbers);
+            }
         } else {
             grados = gradoService.buscarTodosPaginados(pageable);
+            int totalPages = grados.getTotalPages();
+            if (totalPages > 0) {
+                int startPage = Math.max(1, currentPage - 2);
+                int endPage = Math.min(totalPages, currentPage + 2);
+
+                List<Integer> pageNumbers = IntStream.rangeClosed(startPage, endPage)
+                        .boxed()
+                        .collect(Collectors.toList());
+                model.addAttribute("pageNumbers", pageNumbers);
+            }
         }
 
         model.addAttribute("grados", grados);
