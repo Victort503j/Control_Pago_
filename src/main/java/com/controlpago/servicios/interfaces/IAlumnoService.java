@@ -20,6 +20,10 @@ public interface IAlumnoService {
 
     Page<Alumno> buscarPorCriterios(String nombre, String apellido, Integer gradoId, Pageable pageable);
 
+
+    Page<Alumno> buscarPorNombreCompletoYGrado(String nombreCompleto, Integer gradoId, Pageable pageable);
+
+
     long contarAlumnos(); // Existing method
     long contarTotalAlumnos(); // New method
 }

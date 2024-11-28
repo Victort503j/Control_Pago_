@@ -147,23 +147,33 @@
                <form th:action="@{/alumnos/search}" method="get">
                    <div class="row">
                        <div class="col-md-4 mb-3">
-                           <label for="nombre" class="form-label"><strong>Nombre:</strong></label>
-                           <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Ejemplo: Juan">
+                           <label for="nombreCompleto" class="form-label"><strong>Nombre Completo:</strong></label>
+                               <select name="nombreCompleto" id="nombreCompleto" class="form-select select2">
+                                   <option value=""></option>
+                                   <option th:each="alumno : ${todosLosAlumnos}"
+                                           th:value="${alumno.nombre}"
+                                           th:text="${alumno.nombre}"
+                                           th:selected="${alumno.nombre == selectedNombreCompleto}">
+                                   </option>
+                               </select>
                        </div>
+
                        <div class="col-md-4 mb-3">
-                           <label for="apellido" class="form-label"><strong>Apellido:</strong></label>
-                           <input type="text" name="apellido" class="form-control" id="apellido" placeholder="Ejemplo: Pérez">
-                       </div>
-                       <div class="col-md-4 mb-3 ">
                            <label for="grado" class="form-label"><strong>Grado:</strong></label>
-                           <select name="grado" class="form-select select2"  id="grado">
+                           <select name="grado" class="form-select select2" id="grado">
                                <option value="" selected>SELECCIONAR</option>
-                               <option th:each="grado : ${grados}" th:value="${grado.id}" th:text="${grado.nombre}"></option>
+                               <option th:each="grado : ${grados}"
+                                       th:value="${grado.id}"
+                                       th:text="${grado.nombre}"
+                                       th:selected="${grado.id == selectedGradoId}">
+                               </option>
                            </select>
                        </div>
-                   </div>
-                   <div class="form-actions">
-                       <button type="submit" class="btn boton-custom">Buscar</button>
+                       <div class="col-md-4 mt-3">
+                           <div class="form-actions">
+                               <button type="submit" class="btn boton-custom">Buscar</button>
+                           </div>
+                       </div>
                    </div>
                </form>
            </div>
@@ -238,6 +248,11 @@
         $(document).ready(function() {
             $('#grado').select2({
                 placeholder: "Selecciona el grado de estudio",
+                allowClear: true
+            });
+
+            $('#nombreCompleto').select2({
+                placeholder: "Selecciona el alumno",
                 allowClear: true
             });
 

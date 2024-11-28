@@ -55,39 +55,52 @@ public class AlumnoController {
     }
     @GetMapping("/search")
     public String search(
-            @RequestParam("nombre") Optional<String> nombre,
-            @RequestParam("apellido") Optional<String> apellido,
-            @RequestParam("grado") Optional<Integer> gradoId,
-            @RequestParam("page") Optional<Integer> page,
-            @RequestParam("size") Optional<Integer> size,
+            @RequestParam(value = "nombreCompleto", required = false) String nombreCompleto,
+            @RequestParam(value = "grado", required = false) Integer gradoId,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "5") int size,
             Model model) {
 
-        int currentPage = page.orElse(1) - 1;
-        int pageSize = size.orElse(5);
-        Pageable pageable = PageRequest.of(currentPage, pageSize, Sort.by("id").descending());
+        // Ajustar el número de la página (páginas empiezan desde 0)
+        int currentPage = page - 1;
+        Pageable pageable = PageRequest.of(currentPage, size, Sort.by("id").descending());
 
-        Page<Alumno> alumnos = alumnoService.buscarPorCriterios(
-                nombre.orElse(""), apellido.orElse(""), gradoId.orElse(null), pageable);
+        // Buscar alumnos según los criterios de búsqueda
+        Page<Alumno> alumnos = alumnoService.buscarPorNombreCompletoYGrado(nombreCompleto, gradoId, pageable);
         model.addAttribute("alumnos", alumnos);
 
+        // Cargar todos los alumnos para el <select>
+        List<Alumno> todosLosAlumnos = alumnoService.obtenerTodos();
+        model.addAttribute("todosLosAlumnos", todosLosAlumnos);
+
+        // Calcular los números de páginas para mostrar en la paginación
         int totalPages = alumnos.getTotalPages();
         if (totalPages > 0) {
             int startPage = Math.max(1, currentPage - 2);
             int endPage = Math.min(totalPages, currentPage + 2);
 
-            List<Integer> pageNumber = IntStream.rangeClosed(startPage, endPage)
+            List<Integer> pageNumbers = IntStream.rangeClosed(startPage, endPage)
                     .boxed()
                     .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumber);
+            model.addAttribute("pageNumbers", pageNumbers);
         }
-        
-        model.addAttribute("currentPage", currentPage);
+
+        // Agregar el número de página actual y el total de páginas
+        model.addAttribute("currentPage", currentPage + 1);
         model.addAttribute("totalPages", totalPages);
 
+        // Obtener todos los grados para mostrarlos en el filtro
         List<Grado> grados = gradoService.obtenerTodos();
         model.addAttribute("grados", grados);
+
+        // Mantener los valores seleccionados
+        model.addAttribute("selectedNombreCompleto", nombreCompleto);
+        model.addAttribute("selectedGradoId", gradoId);
+
         return "alumno/index";
     }
+
+
 
     @GetMapping("/create")
     public String create(Model model) {

@@ -58,6 +58,12 @@ public class AlumnoService implements IAlumnoService {
         return alumnoRepository.contarTotalAlumnos();
     }
 
+    public Page<Alumno> buscarPorNombreCompletoYGrado(String nombreCompleto, Integer gradoId, Pageable pageable) {
+        return alumnoRepository.buscarPorNombreCompletoYGrado(nombreCompleto, gradoId, pageable);
+    }
+
+
+
 }
 
 
