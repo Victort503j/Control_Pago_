@@ -224,7 +224,7 @@ public class PagoController {
             paymentRecord.setRemainingAmount(residual);
             studentPaymentRecordService.crearOEditar(paymentRecord);
 
-            attributes.addFlashAttribute("success", "Pago en efectivo guardado exitosamente.");
+            attributes.addFlashAttribute("msg", "Pago en efectivo guardado exitosamente.");
             return "redirect:/pagos/details/" + pagosave.getStudentPaymentRecord().getId();
         } else if (metodoPagoId.equals(2)) { // Pago con PayPal
             pPago.setMetodoPago(pPago.getMetodoPago());
