@@ -260,7 +260,7 @@ public class PagoController {
             payment.setTransactions(transactions);
 
             RedirectUrls redirectUrls = new RedirectUrls();
-            redirectUrls.setCancelUrl("http://localhost:8080/pagos/cancel");
+            redirectUrls.setCancelUrl("http://localhost:8080/pagos/cancel?payRecordId="+payRecordId);
             redirectUrls.setReturnUrl("http://localhost:8080/pagos/success?IdPago=" + pagoSave.getId());
             payment.setRedirectUrls(redirectUrls);
 
@@ -390,9 +390,11 @@ public class PagoController {
     }
 
     @GetMapping("/cancel")
-    public String cancel(Model model) {
+    public String cancel(Model model,@RequestParam("payRecordId")Integer payRecordId, @RequestParam("token")String token) {
+        StudentPaymentRecord studentPaymentRecord = studentPaymentRecordService.buscarPorId(payRecordId).orElse(null);
+        Alumno alumno = alumnoService.buscarPorId(studentPaymentRecord.getAlumno().getId()).orElse(null);
         model.addAttribute("message", "El pago fue cancelado.");
-        return "http://localhost:8080/pagos/create";
+        return "http://localhost:8080/pagos/create?alumnoId="+alumno.getId()+"&"+"payRecordId="+payRecordId;
     }
 
 //    @GetMapping("/qr")
