@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="/layouts/_mainLayout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/_mainLayout}"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
@@ -59,7 +60,6 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
-
         .card .text {
             margin: 0;
             text-align: center;
@@ -203,7 +203,6 @@
             overflow-x: auto;
             border-radius: 12px;
         }
-
     </style>
 </head>
 <body>
@@ -226,8 +225,6 @@
                 <img src="/images/pagos-icon.png" alt="Pagos" class="icons">
             </div>
         </section>
-
-
         <section class="charts-and-calendar">
             <div class="chart-container">
                 <div class="chart-wrapper">
@@ -242,7 +239,6 @@
                 </div>
             </div>
         </section>
-
         <section class="table-section">
             <h2>Alumnos que han pagado por grado (Mes actual)</h2>
             <div class="table-responsive">
@@ -272,7 +268,6 @@
             var ctx = document.getElementById('pagosPieChart').getContext('2d');
             var alumnosQueHanPagado = /*[[${alumnosQueHanPagado}]]*/ 0;
             var alumnosQueNoHanPagado = /*[[${alumnosQueNoHanPagado}]]*/ 0;
-
             new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -328,26 +323,21 @@
                     }
                 }
             });
-
             var today = new Date();
             var currentMonth = today.getMonth();
             var currentYear = today.getFullYear();
             var calendarHeader = document.getElementById('calendarHeader');
             var calendarBody = document.getElementById('calendarBody');
-
             calendarHeader.textContent = `${today.toLocaleString('default', { month: 'long' })} ${currentYear}`;
-
             function createCalendar(month, year) {
                 calendarBody.innerHTML = '';
                 var firstDay = new Date(year, month, 1).getDay();
                 var daysInMonth = new Date(year, month + 1, 0).getDate();
                 var todayDate = today.getDate();
-
                 for (var i = 0; i < firstDay; i++) {
                     var emptyCell = document.createElement('div');
                     calendarBody.appendChild(emptyCell);
                 }
-
                 for (var day = 1; day <= daysInMonth; day++) {
                     var dayCell = document.createElement('div');
                     dayCell.className = 'calendar-day';
@@ -358,12 +348,10 @@
                     calendarBody.appendChild(dayCell);
                 }
             }
-
             createCalendar(currentMonth, currentYear);
         });
         /*]]>*/
     </script>
-
 </div>
 </body>
 </html>
